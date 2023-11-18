@@ -35,15 +35,15 @@ namespace backend.Models
             {
                 entity.ToTable("card");
 
-                entity.Property(e => e.CardId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("card_id");
+                entity.Property(e => e.CardId).HasColumnName("card_id");
 
                 entity.Property(e => e.Active).HasColumnName("active");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
-                entity.Property(e => e.Value).HasColumnName("value");
+                entity.Property(e => e.Value)
+                    .HasPrecision(10, 2)
+                    .HasColumnName("value");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Cards)
@@ -56,9 +56,7 @@ namespace backend.Models
             {
                 entity.ToTable("charger");
 
-                entity.Property(e => e.ChargerId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("charger_id");
+                entity.Property(e => e.ChargerId).HasColumnName("charger_id");
 
                 entity.Property(e => e.Created)
                     .HasColumnType("timestamp without time zone")
@@ -70,9 +68,17 @@ namespace backend.Models
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("lastsync");
 
-                entity.Property(e => e.Latitude).HasColumnName("latitude");
+                entity.Property(e => e.Latitude)
+                    .HasPrecision(9, 6)
+                    .HasColumnName("latitude");
 
-                entity.Property(e => e.Longitude).HasColumnName("longitude");
+                entity.Property(e => e.Longitude)
+                    .HasPrecision(9, 6)
+                    .HasColumnName("longitude");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .HasColumnName("name");
 
                 entity.HasOne(d => d.CreatorNavigation)
                     .WithMany(p => p.Chargers)
@@ -118,22 +124,33 @@ namespace backend.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("user");
+                entity.ToTable("users");
 
-                entity.Property(e => e.UserId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("user_id");
+                entity.HasIndex(e => e.Email, "unique_email")
+                    .IsUnique();
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.Property(e => e.Active).HasColumnName("active");
 
-                entity.Property(e => e.Created).HasColumnName("created");
+                entity.Property(e => e.Created)
+                    .HasColumnType("timestamp without time zone")
+                    .HasColumnName("created");
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(50)
                     .HasColumnName("email");
 
+                entity.Property(e => e.Password)
+                    .HasMaxLength(30)
+                    .HasColumnName("password");
+
+                entity.Property(e => e.Role)
+                    .HasMaxLength(30)
+                    .HasColumnName("role");
+
                 entity.Property(e => e.Username)
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .HasColumnName("username");
             });
 

@@ -7,7 +7,7 @@ namespace backend.Models
     {
         public int CardId { get; set; }
         public int UserId { get; set; }
-        public int Value { get; set; }
+        public decimal Value { get; set; }
         public bool Active { get; set; }
 
         public virtual User User { get; set; } = null!;
