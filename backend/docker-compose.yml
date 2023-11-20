@@ -1,0 +1,39 @@
+version: '3.4'
+
+networks:
+  dev:
+    driver: nat
+    
+services:
+    evchargeapi:
+        image: evchargeapi
+        depends_on:
+            - "localhost"
+        container_name: evchargeapi-services
+        ports:
+         - "8080:80"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            - ConnectionStrings__PostgreSQL=User ID=postgres;Password=123;Server=localhost;Port=5433;Database=AirDB; IntegratedSecurity=true;Pooling=true;
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+            - dev
+            
+    localhost:
+        image: mcr.microsoft.com/windows/servercore:ltsc2019
+        container_name: localhost
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=123
+            - POSTGRES_DB=AirDB
+        ports:
+            - "5433:5432"
+        restart: always
+        networks:
+           - dev
+
+
+
+    

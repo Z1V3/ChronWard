@@ -25,7 +25,7 @@ namespace backend.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql("Host=localhost;Database=AirDB;Username=postgres;Password=123");
+                //optionsBuilder.UseNpgsql("Host=localhost;Database=AirDB;Username=postgres;Password=123");
             }
         }
 

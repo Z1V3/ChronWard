@@ -9,7 +9,7 @@ namespace backend.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        public AirDBContext _context;
+        private readonly AirDBContext _context;
         public UserController(AirDBContext context)
         {
             _context = context;

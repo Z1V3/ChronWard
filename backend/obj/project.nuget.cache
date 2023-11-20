@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "xFNp8uX5DC/NFgaTbB6YCenxAE9fVhxYtaT2cHvhKC3kU2CBRd04bqg/crA5vp3Aw8wZ1FL7VhvLIyZCViruYw==",
+  "dgSpecHash": "VSiunW+ZPScqGkUhwYxjDVhVIBSue/R+wFcLXaQRTXgjtSZr+Sv4HILNdvJERrrHpbMPESyS0auDFd8bLk3Jkw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Rule\\Downloads\\Projekt\\EVCharge\\backend\\backend.csproj",
   "expectedPackageFiles": [
@@ -22,7 +22,7 @@
     "C:\\Users\\Rule\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
     "C:\\Users\\Rule\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "C:\\Users\\Rule\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
-    "C:\\Users\\Rule\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.4\\microsoft.visualstudio.azure.containers.tools.targets.1.19.4.nupkg.sha512",
+    "C:\\Users\\Rule\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.5\\microsoft.visualstudio.azure.containers.tools.targets.1.19.5.nupkg.sha512",
     "C:\\Users\\Rule\\.nuget\\packages\\npgsql\\6.0.10\\npgsql.6.0.10.nupkg.sha512",
     "C:\\Users\\Rule\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\6.0.22\\npgsql.entityframeworkcore.postgresql.6.0.22.nupkg.sha512",
     "C:\\Users\\Rule\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
