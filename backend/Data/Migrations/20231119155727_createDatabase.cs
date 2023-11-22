@@ -9,6 +9,18 @@ namespace backend.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "card");
+
+            migrationBuilder.DropTable(
+                name: "event");
+
+            migrationBuilder.DropTable(
+                name: "charger");
+
+            migrationBuilder.DropTable(
+                name: "users");
+
             migrationBuilder.CreateTable(
                 name: "users",
                 columns: table => new
@@ -122,7 +134,17 @@ namespace backend.Data.Migrations
                 table: "users",
                 column: "email",
                 unique: true);
-        }
+
+            //populate database
+            migrationBuilder.InsertData(
+                table: "users",
+                columns: new[] { "username", "email", "password", "active", "created", "role" },
+                values: new object[,]
+                {
+                    { "user1", "user1@example.com", "password1", true, DateTime.Now, "user" },
+                    { "user2", "user2@example.com", "password2", true, DateTime.Now, "user" },
+                });
+            }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {

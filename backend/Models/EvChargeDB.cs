@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace backend.Models
 {
-    public partial class AirDBContext : DbContext
+    public partial class EvChargeDB : DbContext
     {
-        public AirDBContext()
+        public EvChargeDB()
         {
         }
 
-        public AirDBContext(DbContextOptions<AirDBContext> options)
+        public EvChargeDB(DbContextOptions<EvChargeDB> options)
             : base(options)
         {
         }
@@ -25,12 +25,13 @@ namespace backend.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //optionsBuilder.UseNpgsql("Host=localhost;Database=AirDB;Username=postgres;Password=123");
+                //optionsBuilder.UseNpgsql("Host=192.168.1.124;Database=AirDB;Username=postgres;Password=123");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("evchargeschema");
             modelBuilder.Entity<Card>(entity =>
             {
                 entity.ToTable("card");

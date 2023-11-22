@@ -9,7 +9,7 @@ using backend.Models;
 
 namespace backend.Data.Migrations
 {
-    [DbContext(typeof(AirDBContext))]
+    [DbContext(typeof(EvChargeDB))]
     partial class AirDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

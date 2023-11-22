@@ -11,7 +11,7 @@ using backend.Models;
 
 namespace backend.Data.Migrations
 {
-    [DbContext(typeof(AirDBContext))]
+    [DbContext(typeof(EvChargeDB))]
     [Migration("20231119155727_createDatabase")]
     partial class createDatabase
     {

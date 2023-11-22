@@ -5,18 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly AirDBContext _context;
-        public UserController(AirDBContext context)
+        private readonly EvChargeDB _context;
+        public UserController(EvChargeDB context)
         {
             _context = context;
         }
 
-        [HttpGet("GetAllUsers")]
-        public async Task<List<User>> GetAllUsers()
+        [HttpGet(Name = "GetAllUsers")]
+        public async Task<List<User>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
