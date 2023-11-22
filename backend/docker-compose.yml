@@ -1,0 +1,43 @@
+version: '3.4'
+
+networks:
+  dev:
+    driver: nat
+    
+services:          
+    app_db:
+        image: stellirin/postgres-windows
+        container_name: app_db
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=123
+            - POSTGRES_DB=EvChargeDB
+        ports:
+            - "5433:5432"
+        restart: always
+        networks:
+           - dev
+        volumes:
+             - .\pg_data:C:\var\lib\postgresql\data
+             - .\SqlScripts:C:\docker-entrypoint-initdb.d\
+
+    evchargeapi:
+        image: evchargeapi
+        depends_on:
+            - "app_db"
+        container_name: evchargeapi-services
+        ports:
+         - "8080:80"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            - ConnectionStrings__PostgreSQL=Username=postgres;Password=123;Server=app_db;Port=5432;Database=EvChargeDB; IntegratedSecurity=true;Pooling=true;
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+            - dev
+
+volumes:
+    pg_data:
+
+    
