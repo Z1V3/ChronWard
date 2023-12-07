@@ -23,5 +23,28 @@ namespace backend.Services
         {
             return _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
         }
+
+        public User RegisterUser(string username, string email, string password)
+        {
+            if (UserExists(email))
+            {
+                return null;
+            }
+
+            var newRegisteredUser = new User
+            {
+                Username = username,
+                Email = email,
+                Password = password,
+                Active = true,
+                Created = DateTime.UtcNow,
+                Role = "user"
+            };
+
+            _context.Users.Add(newRegisteredUser);
+            _context.SaveChanges();
+
+            return newRegisteredUser;
+        }
     }
 }

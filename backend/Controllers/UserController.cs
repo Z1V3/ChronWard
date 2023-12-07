@@ -50,7 +50,31 @@ namespace backend.Controllers
             }
         }
 
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] userRegisterRequest registrationRequest)
+        {
+            var registeredUser = _userService.RegisterUser(
+                registrationRequest.username,
+                registrationRequest.email,
+                registrationRequest.password
+            );
 
+            if (registeredUser != null)
+            {
+                var userResponse = new
+                {
+                    UserId = registeredUser.UserId,
+                    Username = registeredUser.Username,
+                    Email = registeredUser.Email
+                };
+
+                return Ok(new { Message = "Registration successful", User = userResponse });
+            }
+            else
+            {
+                return Conflict(new { Message = "User with the same email already exists" });
+            }
+        }
 
 
 
