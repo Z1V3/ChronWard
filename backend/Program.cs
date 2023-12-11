@@ -1,4 +1,5 @@
 using backend.Models;
+using backend.Services;
 using Microsoft.EntityFrameworkCore;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<EvChargeDB>(options => options.UseNpgsql(conn));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddSwaggerGen();
 
 
