@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'package:android/pages/registration_page.dart';
 import 'package:flutter/material.dart';
-import 'package:android/pages/registration_page.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -11,16 +12,98 @@ class LoginPage extends StatefulWidget {
 
 final _formKeyLogin = GlobalKey<FormState>();
 
+class ApiConfig {
+  static String apiUrl = 'http://192.168.1.226:8080/api/user/login';
+
+  static void setApiUrl(String newUrl) {
+    apiUrl = newUrl;
+  }
+}
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  Future<void> loginUser() async {
+    final String apiUrl = ApiConfig.apiUrl;
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'email': _emailController.text,
+        'password': _passwordController.text,
+      }),
+    );
+
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      // Successful login
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Login Successful'),
+            content: const Text('Welcome jebote!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (response.statusCode == 404) {
+      // Failed login
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Login Failed'),
+            content: const Text('User not found.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (response.statusCode == 401) {
+      // Failed login
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Login Failed'),
+            content: const Text('Wrong password.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+}
   @override
   Widget build(BuildContext context) {
     bool isLoginPage = ModalRoute.of(context)?.settings.name == '/login';
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Please login to continue',
           style: TextStyle(
               fontWeight: FontWeight.bold
@@ -98,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
@@ -113,9 +196,10 @@ class _LoginPageState extends State<LoginPage> {
                                   color: Colors.grey[200],
                                 ),
                                 child: TextField(
-                                  controller: _usernameController,
+                                  controller: _emailController,
                                   decoration: const InputDecoration(
-                                    labelText: 'Username',
+                                    labelText: 'Email',
+
                                     border: InputBorder.none,
                                   ),
                                 ),
@@ -141,30 +225,8 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                   Expanded(
                                     child: ElevatedButton(
-                                      onPressed: () {
-                                        String username = _usernameController.text;
-                                        String password = _passwordController.text;
-                                        if (username == 'your_username' && password == 'your_password') {
-                                          Navigator.pushReplacementNamed(context, '/home');
-                                        } else {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: const Text('Login Failed'),
-                                                content: const Text('Invalid username or password.'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: const Text('OK'),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        }
+                                      onPressed: ()  {
+                                        loginUser();
                                       },
                                       style: ButtonStyle(
                                         backgroundColor: MaterialStateProperty.all(Colors.indigo),

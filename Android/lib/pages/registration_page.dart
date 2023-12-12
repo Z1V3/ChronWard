@@ -1,20 +1,71 @@
 import 'package:android/pages/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:android/pages/login_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
 
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
 }
+const String registrationApiUrl = 'http://192.168.1.226:8080/api/user/register';
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   bool isChecked = false;
+
+  Future<void> registerUser() async {
+    if (_formKeyRegistration.currentState!.validate()) {
+      String username = _usernameController.text;
+      String email = _emailController.text;
+      String password = _passwordController.text;
+
+      try {
+        final response = await http.post(
+          Uri.parse(registrationApiUrl),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'username' : _usernameController.text,
+            'email': _emailController.text,
+            'password': _passwordController.text,
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          print('User registered successfully!');
+          _showSuccessDialog();
+        } else {
+          // Registration failed
+          print('Registration failed. Status code: ${response.statusCode}');
+        }
+      } catch (error) {
+        print('Error during registration: $error');
+      }
+    }
+  }
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Registration Successful'),
+          content: const Text('You have successfully registered.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, 'registrationRoute');
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   final _formKeyRegistration = GlobalKey<FormState>();
   @override
@@ -118,30 +169,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   const SizedBox(height: 30.0),
                   Row(
                     children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.grey[200],
-                          ),
-                          child: TextFormField(
-                            controller: _firstNameController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your first name';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              labelText: 'First name',
-                              border: InputBorder.none,
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            ),
-                            keyboardType: TextInputType.text,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
-                      ),
+
                       const SizedBox(width: 10),
                       Expanded(
                         child: Container(
@@ -150,20 +178,20 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             color: Colors.grey[200],
                           ),
                           child: TextFormField(
-                            controller: _lastNameController,
+                            controller: _usernameController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your last name';
+                                return 'Please enter your username';
                               }
                               return null;
                             },
-                            decoration: InputDecoration(
-                              labelText: 'Last name',
+                            decoration: const InputDecoration(
+                              labelText: 'Username',
                               border: InputBorder.none,
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                             ),
                             keyboardType: TextInputType.text,
-                            style: TextStyle(fontSize: 18),
+                            style: const TextStyle(fontSize: 18),
                           ),
                         ),
                       ),
@@ -183,13 +211,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Email adress',
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                       ),
                       keyboardType: TextInputType.emailAddress,
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
                   const SizedBox(height: 15.0),
@@ -206,13 +234,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Password',
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                       ),
                       obscureText: true,
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),const SizedBox(height: 15.0),
                   Container(
@@ -230,13 +258,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Confirm your password',
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                       ),
                       obscureText: true,
-                      style: TextStyle(fontSize: 18), // Adjust the font size here
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
 
@@ -246,15 +274,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            if (_formKeyRegistration.currentState!.validate()) {
-                              String name = _firstNameController.text;
-                              String surname = _lastNameController.text;
-                              String email = _emailController.text;
-                              String password = _passwordController.text;
-
-                              print(
-                                  'Name: $name\nLast name: $surname\nEmail: $email\nPassword: $password');
-                            }
+                            registerUser();
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(Colors.indigo),
