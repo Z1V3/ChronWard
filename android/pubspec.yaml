@@ -66,6 +66,7 @@ flutter:
     - assets/biometrics.png
     - assets/ikonica.png
     - assets/skyline.png
+    - assets/teslicaa.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
