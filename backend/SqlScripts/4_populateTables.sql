@@ -12,13 +12,13 @@ VALUES
   ('Charger4', 26.1415, -114.1425, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP),
   ('Charger5', 34.0522, -117.2437, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP);
 
-INSERT INTO evchargeschema.event (charger_id, starttime, endtime, volume, user_id)
+INSERT INTO evchargeschema.event (charger_id, starttime, endtime, chargetime, volume, price, user_id)
 VALUES
-  (1, '2023-01-01 12:00:00', '2023-01-01 13:00:00', 30.5, 2),
-  (2, '2023-01-02 10:00:00', '2023-01-02 11:30:00', 45.0, 3),
-  (2, '2023-01-04 13:00:00', '2023-01-04 15:00:00', 65.0, 3),
-  (2, '2023-01-06 10:00:00', '2023-01-06 11:30:00', 15.0, 2),
-  (2, '2023-01-08 10:00:00', '2023-01-08 11:30:00', 17.0, 2);
+  (1, '2023-01-01 12:00:00', '2023-01-01 13:00:00', '01:00:00'::interval, 30.5, 15.45, 2),
+  (2, '2023-01-02 10:00:00', '2023-01-02 11:30:00', '01:30:00'::interval, 45.0, 16.50, 3),
+  (2, '2023-01-04 13:00:00', '2023-01-04 15:00:00', '02:00:00'::interval, 65.0, 20.84, 3),
+  (2, '2023-01-06 10:00:00', '2023-01-06 11:30:00', '01:30:00'::interval, 15.0, 16.50, 2),
+  (2, '2023-01-08 10:00:00', '2023-01-08 11:30:00', '01:30:00'::interval, 17.0, 16.50, 2);
 
 INSERT INTO evchargeschema.card (user_id, value, active)
 VALUES

@@ -8,7 +8,7 @@ using backend.Models.entity;
 
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
