@@ -1,3 +1,4 @@
+using backend.Controllers;
 using backend.Models;
 using backend.Services;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<EvChargeDB>(options => options.UseNpgsql(conn));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<EventService>();
 builder.Services.AddSwaggerGen();
 
 
