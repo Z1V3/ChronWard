@@ -38,7 +38,9 @@ create table evchargeschema.event
             references evchargeschema.charger,
     starttime  timestamp      not null,
     endtime    timestamp      not null,
+    chargetime interval       not null,
     volume     numeric(10, 1) not null,
+    price      numeric(10, 2) not null,
     user_id    integer        not null
         constraint user_user_id_fk
             references evchargeschema.users
