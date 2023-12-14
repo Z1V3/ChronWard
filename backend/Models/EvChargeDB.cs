@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using backend.Models.entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 

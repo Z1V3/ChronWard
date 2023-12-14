@@ -100,7 +100,6 @@ class MyHomePage extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
-                        // Handle charging history button press
                       },
                       icon: const Icon(Icons.history,
                           size: 30, color: Colors.black),
@@ -115,7 +114,6 @@ class MyHomePage extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
-                        // Handle my cards button press
                       },
                       icon: const Icon(Icons.credit_card,
                           size: 30, color: Colors.black),
@@ -130,7 +128,6 @@ class MyHomePage extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
-                        // Handle add card button press
                       },
                       icon: const Icon(Icons.add, size: 30, color: Colors.black),
                     ),

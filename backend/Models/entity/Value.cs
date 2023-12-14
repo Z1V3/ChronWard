@@ -1,4 +1,4 @@
-﻿namespace backend.Models
+﻿namespace backend.Models.entity
 {
     public class Value
     {
