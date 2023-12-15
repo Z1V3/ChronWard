@@ -1,12 +1,7 @@
-﻿using backend.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using backend.Services;
 using backend.Models.request;
-using backend.Models.entity;
-using System.Linq;
-using System.Globalization;
 
 namespace backend.Controllers
 {
@@ -15,11 +10,9 @@ namespace backend.Controllers
     public class EventController : ControllerBase
     {
         private readonly EventService _eventService;
-        private readonly EvChargeDB _context;
-        public EventController(EventService eventService, EvChargeDB context)
+        public EventController(EventService eventService)
         {
             _eventService = eventService;
-            _context = context;
         }
 
         [HttpPost("createEvent")]
@@ -32,8 +25,8 @@ namespace backend.Controllers
 
             try
             {     
-                    await _eventService.CreateEvent(eventCreateReq.startTime, eventCreateReq.endTime, eventCreateReq.chargeTime, eventCreateReq.volume, eventCreateReq.price, eventCreateReq.userID, eventCreateReq.chargerID);
-                    return Ok(new { Message = "Event created successfully" });               
+                await _eventService.CreateEvent(eventCreateReq.startTime, eventCreateReq.endTime, eventCreateReq.chargeTime, eventCreateReq.volume, eventCreateReq.price, eventCreateReq.userID, eventCreateReq.chargerID);
+                return Ok(new { Message = "Event created successfully" });               
             }
             catch (Exception ex)
             {

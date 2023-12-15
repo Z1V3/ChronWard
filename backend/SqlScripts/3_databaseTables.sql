@@ -25,7 +25,9 @@ create table evchargeschema.charger
     creator    integer       not null
         constraint user_user_id_fk
             references evchargeschema.users,
-    lastsync   timestamp     not null
+    lastsync   timestamp     not null,
+    active     boolean       not null,
+    occupied   boolean       not null
 );
 
 drop table if exists evchargeschema.event cascade;

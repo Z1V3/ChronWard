@@ -16,6 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<EventService>();
+builder.Services.AddScoped<ChargerService>();
 builder.Services.AddSwaggerGen();
 
 

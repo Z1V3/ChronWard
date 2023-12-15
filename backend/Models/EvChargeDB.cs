@@ -82,6 +82,10 @@ namespace backend.Models
                     .HasMaxLength(50)
                     .HasColumnName("name");
 
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.Occupied).HasColumnName("occupied");
+
                 entity.HasOne(d => d.CreatorNavigation)
                     .WithMany(p => p.Chargers)
                     .HasForeignKey(d => d.Creator)

@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using backend.Models;
-using Microsoft.EntityFrameworkCore;
 using backend.Services;
 using backend.Models.request;
-using backend.Models.entity;
 
 namespace backend.Controllers
 {
@@ -12,11 +9,9 @@ namespace backend.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly EvChargeDB _context;
         private readonly UserService _userService;
-        public UserController(EvChargeDB context, UserService userService)
+        public UserController(UserService userService)
         {
-            _context = context;
             _userService = userService;
         }
 
@@ -75,16 +70,5 @@ namespace backend.Controllers
                 return Conflict(new { Message = "User with the same email already exists" });
             }
         }
-
-
-
-
-
-        [HttpGet(Name = "GetAllUsers")]
-        public async Task<List<User>> GetUsers()
-        {
-            return await _context.Users.ToListAsync();
-        }
-
     }
 }

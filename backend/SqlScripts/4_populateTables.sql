@@ -4,13 +4,13 @@ VALUES
   ('mmarkic', 'mmarkic@gmail.com', 'mmarkic1', true, CURRENT_TIMESTAMP, 'user'),
   ('ivoivic', 'iivic@gmail.com', 'ivic321', true, CURRENT_TIMESTAMP, 'user');
 
-INSERT INTO evchargeschema.charger (name, latitude, longitude, created, creator, lastsync)
+INSERT INTO evchargeschema.charger (name, latitude, longitude, created, creator, lastsync, active, occupied)
 VALUES
-  ('Charger1', 40.7128, -74.0060, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP),
-  ('Charger2', 34.0522, -118.2437, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP),
-  ('Charger3', 50.5485, -115.2437, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP),
-  ('Charger4', 26.1415, -114.1425, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP),
-  ('Charger5', 34.0522, -117.2437, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP);
+  ('Charger1', 40.7128, -74.0060, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, true, true),
+  ('Charger2', 34.0522, -118.2437, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, true, true),
+  ('Charger3', 50.5485, -115.2437, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, true, true),
+  ('Charger4', 26.1415, -114.1425, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, true, false),
+  ('Charger5', 34.0522, -117.2437, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, false, false);
 
 INSERT INTO evchargeschema.event (charger_id, starttime, endtime, chargetime, volume, price, user_id)
 VALUES
