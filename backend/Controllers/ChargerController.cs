@@ -66,8 +66,8 @@ namespace backend.Controllers
             }
         }
 
-        [HttpGet("getChargerStatistics")]
-        public async Task<IActionResult> GetChargerStatistics()
+        [HttpGet("getChargersStatistics")]
+        public async Task<IActionResult> GetChargersStatistics()
         {
             try
             {
@@ -84,6 +84,27 @@ namespace backend.Controllers
                 };
 
                 return Ok(new { Message = "Statistics data successfully returned", Statistics = response });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error" });
+            }
+        }
+
+        [HttpPost("updateChargerAvailability")]
+        public async Task<IActionResult> UpdateChargerAvailability([FromBody] chargerAvailabilityRequest chargerAvailabilityReq)
+        {
+            try
+            {
+                var updatedCharger = await _chargerService.UpdateChargerAvailability(chargerAvailabilityReq.ChargerID.Value, chargerAvailabilityReq.Occupied.Value);
+                if (updatedCharger != null)
+                {
+                    return Ok(new { Message = "Charger availability updated successfully"});
+                }
+                else
+                {
+                    return NotFound(new { Message = "Charger not found" });
+                }
             }
             catch (Exception ex)
             {

@@ -21,9 +21,9 @@ namespace backend.Services
                 Name = name,
                 Latitude = latitude,
                 Longitude = longitude,
-                Created = DateTime.UtcNow,
+                Created = DateTime.Now,
                 Creator = creator,
-                Lastsync = DateTime.UtcNow,
+                Lastsync = DateTime.Now,
                 Active = true,
                 Occupied = false
             };
@@ -50,6 +50,19 @@ namespace backend.Services
                 existingCharger.Active = active;
 
                 await _context.SaveChangesAsync();              
+            }
+            return existingCharger;
+        }
+
+        public async Task<Charger> UpdateChargerAvailability(int chargerID, bool occupied)
+        {
+            Charger existingCharger = await GetChargerByID(chargerID);
+            if (existingCharger != null)
+            {
+                existingCharger.Occupied = occupied;
+                existingCharger.Lastsync = DateTime.Now;
+
+                await _context.SaveChangesAsync();
             }
             return existingCharger;
         }

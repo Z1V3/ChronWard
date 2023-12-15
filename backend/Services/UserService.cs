@@ -37,7 +37,7 @@ namespace backend.Services
                 Email = email,
                 Password = password,
                 Active = true,
-                Created = DateTime.UtcNow,
+                Created = DateTime.Now,
                 Role = "user"
             };
 

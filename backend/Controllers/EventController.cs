@@ -34,12 +34,12 @@ namespace backend.Controllers
             }
         }
 
-        [HttpGet("getEventsByUserID/{userId}")]
-        public async Task<IActionResult> GetEventsByUserIdAction(int userId)
+        [HttpGet("getEventsByUserID/{userID}")]
+        public async Task<IActionResult> GetEventsByUserIdAction(int userID)
         {
             try
             {
-                var events = await _eventService.GetEventsByUserId(userId);
+                var events = await _eventService.GetEventsByUserId(userID);
                 return Ok(events);
             }
             catch (Exception ex)
