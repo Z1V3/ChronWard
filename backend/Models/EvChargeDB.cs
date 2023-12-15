@@ -44,7 +44,7 @@ namespace backend.Models
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.Property(e => e.Value)
-                    .HasPrecision(10, 2)
+                    .HasMaxLength(100)
                     .HasColumnName("value");
 
                 entity.HasOne(d => d.User)
