@@ -19,11 +19,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ChargeModePage(),
+      home: const LoginPage(),
       debugShowCheckedModeBanner: false,
       routes: {
         'myHomePageRoute': (context) => MyHomePage(),
         'registrationRoute': (context) => LoginPage(),
+        'chargeModePageRoute': (context) => ChargeModePage()
       }
     );
   }
