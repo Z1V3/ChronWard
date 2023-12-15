@@ -22,7 +22,7 @@ VALUES
 
 INSERT INTO evchargeschema.card (user_id, value, active)
 VALUES
-  (3, 50000, true),
-  (2, 25000, true);
+  (3, 'dsad231sadasddd', true),
+  (2, 'dsad12das11dsas', true);
 
 

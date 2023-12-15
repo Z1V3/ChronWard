@@ -34,5 +34,31 @@ namespace backend.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        [HttpPost("addNewCard")]
+        public async Task<IActionResult> AddNewCard([FromBody] cardAddRequest cardAddReq)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var newCard = await _cardService.AddNewCard(cardAddReq.Value, cardAddReq.UserID.Value);
+
+                if (newCard != null)
+                {
+                    return Ok(new { Message = "New card added" });
+                }
+
+                return Conflict(new { Message = "Card not added" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error" });
+            }
+        }
+
     }
 }

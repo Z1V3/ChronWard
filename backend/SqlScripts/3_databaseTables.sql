@@ -57,7 +57,7 @@ create table evchargeschema.card
     user_id integer        not null
         constraint user_user_id_fk
             references evchargeschema.users,
-    value   integer 	   not null,
+    value   varchar(100)   not null,
     active  boolean        not null
 );
 
