@@ -1,3 +1,4 @@
+import 'package:android/pages/charge_mode_page.dart';
 import 'package:android/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:android/pages/registration_page.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ChargingScreen(),
+      home: const ChargeModePage(),
       debugShowCheckedModeBanner: false,
       routes: {
         'myHomePageRoute': (context) => MyHomePage(),
