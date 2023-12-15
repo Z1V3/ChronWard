@@ -65,5 +65,30 @@ namespace backend.Controllers
                 return StatusCode(500, new { Message = "Internal server error" });
             }
         }
+
+        [HttpGet("getChargerStatistics")]
+        public async Task<IActionResult> GetChargerStatistics()
+        {
+            try
+            {
+                var totalNumberOfChargers = await _chargerService.GetTotalChargersCount();
+                var numberOfOccupiedChargers = await _chargerService.GetOccupiedChargersCount();
+                var numberOfFreeChargers = await _chargerService.GetFreeChargersCount();
+                var numberOfDeactivatedChargers = await _chargerService.GetDeactivatedChargersCount();
+                var response = new
+                {
+                    TotalNumberOfChargers = totalNumberOfChargers,
+                    NumberOfOccupiedChargers = numberOfOccupiedChargers,
+                    NumberOfFreeChargers = numberOfFreeChargers,
+                    NumberOfDeactivatedChargers = numberOfDeactivatedChargers
+                };
+
+                return Ok(new { Message = "Statistics data successfully returned", Statistics = response });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error" });
+            }
+        }
     }
 }

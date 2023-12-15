@@ -53,5 +53,25 @@ namespace backend.Services
             }
             return existingCharger;
         }
+
+        public Task<int> GetTotalChargersCount()
+        {
+            return _context.Chargers.CountAsync();
+        }
+
+        public Task<int> GetDeactivatedChargersCount()
+        {
+            return _context.Chargers.CountAsync(c => !c.Active);
+        }
+
+        public Task<int> GetFreeChargersCount()
+        {
+            return _context.Chargers.CountAsync(c => c.Active && !c.Occupied);
+        }
+
+        public Task<int> GetOccupiedChargersCount()
+        {
+            return _context.Chargers.CountAsync(c => c.Active && c.Occupied);
+        }
     }
 }
