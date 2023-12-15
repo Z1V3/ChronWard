@@ -1,6 +1,4 @@
-﻿using System;
-using backend.Models;
-using System.Linq;
+﻿using backend.Models;
 using backend.Models.entity;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +34,23 @@ namespace backend.Services
             _context.Cards.Add(newCard);
             await _context.SaveChangesAsync();
             return newCard;
+        }
+
+        public async Task<Card> AuthenticateCard(string value)
+        {
+            var authenticatedCard = await _context.Cards
+                .Where(card => card.Value == value && card.Active)
+                .FirstOrDefaultAsync();
+            return authenticatedCard;
+        }
+
+        public async Task<Card> GetCardByValue(string value)
+        {
+            var existingCard = await _context.Cards
+                .Where(card => card.Value == value)
+                .FirstOrDefaultAsync();
+
+            return existingCard;
         }
     }
 }

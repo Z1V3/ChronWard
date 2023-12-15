@@ -1,8 +1,6 @@
 ﻿using backend.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using backend.Models.request;
-using backend.Models.entity;
 
 namespace backend.Controllers
 {
@@ -44,6 +42,11 @@ namespace backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+                var existingCard = await _cardService.GetCardByValue(cardAddReq.Value);
+                if(existingCard != null)
+                {
+                    return Conflict(new { Message = "Card with that value already exists" });
+                }
 
                 var newCard = await _cardService.AddNewCard(cardAddReq.Value, cardAddReq.UserID.Value);
 
@@ -52,13 +55,34 @@ namespace backend.Controllers
                     return Ok(new { Message = "New card added" });
                 }
 
-                return Conflict(new { Message = "Card not added" });
+                return StatusCode(422, new { Message = "Card not added" });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { Message = "Internal server error" });
             }
         }
+        [HttpGet("authenticateCard/{cardValue}")]
+        public async Task<IActionResult> AuthenticateCard(string cardValue)
+        {
+            try
+            {
+                var authenticatedCard = await _cardService.AuthenticateCard(cardValue);
+                if (authenticatedCard == null)
+                {
+                    return NotFound(new { Message = "The card wasn't found or is inactive" });
+                }
+                var response = new
+                {
+                    userID = authenticatedCard.UserId
+                };
 
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error" });
+            }
+        }
     }
 }
