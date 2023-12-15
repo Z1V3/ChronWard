@@ -1,6 +1,7 @@
 import 'package:android/pages/charge_mode_page.dart';
 import 'package:android/pages/charging_history.dart';
 import 'package:android/pages/login_page.dart';
+import 'package:android/pages/main_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:android/pages/user_mode_interface.dart';
 import 'package:android/providers/user_provider.dart';
