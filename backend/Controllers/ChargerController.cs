@@ -41,5 +41,29 @@ namespace backend.Controllers
             }
         }
 
+        [HttpPost("updateCharger")]
+        public async Task<IActionResult> updateCharger([FromBody] chargerUpdateRequest chargerUpdateReq)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var updatedCharger = await _chargerService.UpdateExistingCharger(chargerUpdateReq.ChargerID.Value, chargerUpdateReq.Name, chargerUpdateReq.Latitude.Value, chargerUpdateReq.Longitude.Value, chargerUpdateReq.Active.Value);
+
+                if (updatedCharger != null)
+                {
+                    return Ok(new { Message = "Charger successfully updated" });
+                }
+
+                return Conflict(new { Message = "Charger not updated" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error" });
+            }
+        }
     }
 }

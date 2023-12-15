@@ -29,15 +29,29 @@ namespace backend.Services
             };
 
             _context.Chargers.Add(newCharger);
-            try
+            await _context.SaveChangesAsync();
+            return newCharger;   
+        }
+
+        public async Task<Charger> GetChargerByID(int chargerID)
+        {
+            var charger = await _context.Chargers.FirstOrDefaultAsync(c => c.ChargerId == chargerID);
+            return charger;
+        }
+
+        public async Task<Charger> UpdateExistingCharger(int chargerID, string name, decimal latitude, decimal longitude, bool active)
+        {
+            Charger existingCharger = await GetChargerByID(chargerID);
+            if (existingCharger != null)
             {
-                await _context.SaveChangesAsync();
-                return newCharger;
+                existingCharger.Name = name;
+                existingCharger.Latitude = latitude;
+                existingCharger.Longitude = longitude;
+                existingCharger.Active = active;
+
+                await _context.SaveChangesAsync();              
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Error saving new charger to the database", ex);
-            }        
+            return existingCharger;
         }
     }
 }
