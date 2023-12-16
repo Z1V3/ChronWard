@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using backend.Services;
 using backend.Models.request;
 
@@ -18,57 +17,79 @@ namespace backend.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] userLoginRequest loginRequest)
         {
-            var existingUser = _userService.UserExists(loginRequest.email);
-            
-            if (existingUser == true)
+            try
             {
-                var authenticatedUser = _userService.AuthenticateUser(loginRequest.email, loginRequest.password);
-                if(authenticatedUser != null)
+                if (!ModelState.IsValid)
                 {
-                    var userResponse = new
-                    {
-                        UserId = authenticatedUser.UserId,
-                        Username = authenticatedUser.Username,
-                        Email = authenticatedUser.Email
-                    };
+                    return BadRequest(ModelState);
+                }
+                var existingUser = _userService.UserExists(loginRequest.email);
 
-                    return Ok(new { Message = "Login successful", User = userResponse });
+                if (existingUser == true)
+                {
+                    var authenticatedUser = _userService.AuthenticateUser(loginRequest.email, loginRequest.password);
+                    if (authenticatedUser != null)
+                    {
+                        var userResponse = new
+                        {
+                            UserId = authenticatedUser.UserId,
+                            Username = authenticatedUser.Username,
+                            Email = authenticatedUser.Email
+                        };
+
+                        return Ok(new { Message = "Login successful", User = userResponse });
+                    }
+                    else
+                    {
+                        return Unauthorized(new { Message = "Wrong password" });
+                    }
                 }
                 else
                 {
-                    return Unauthorized(new { Message = "Wrong password" });
+                    return NotFound(new { Message = "User doesn't exist" });
                 }
             }
-            else
+            catch
             {
-                return NotFound(new { Message = "User doesn't exist" });
-            }
+                return StatusCode(500, new { Message = "Internal server error" });
+            }         
         }
 
         [HttpPost("register")]
         public IActionResult Register([FromBody] userRegisterRequest registrationRequest)
         {
-            var registeredUser = _userService.RegisterUser(
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var registeredUser = _userService.RegisterUser(
                 registrationRequest.username,
                 registrationRequest.email,
                 registrationRequest.password
-            );
+                );
 
-            if (registeredUser != null)
-            {
-                var userResponse = new
+                if (registeredUser != null)
                 {
-                    UserId = registeredUser.UserId,
-                    Username = registeredUser.Username,
-                    Email = registeredUser.Email
-                };
+                    var userResponse = new
+                    {
+                        UserId = registeredUser.UserId,
+                        Username = registeredUser.Username,
+                        Email = registeredUser.Email
+                    };
 
-                return Ok(new { Message = "Registration successful", User = userResponse });
+                    return Ok(new { Message = "Registration successful", User = userResponse });
+                }
+                else
+                {
+                    return Conflict(new { Message = "User with the same email already exists" });
+                }
             }
-            else
+            catch 
             {
-                return Conflict(new { Message = "User with the same email already exists" });
-            }
+                return StatusCode(500, new { Message = "Internal server error" });
+            }          
         }
     }
 }

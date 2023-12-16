@@ -2,6 +2,7 @@ import 'package:android/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:android/privateAddress.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -9,7 +10,6 @@ class RegistrationPage extends StatefulWidget {
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
 }
-const String registrationApiUrl = 'http://192.168.1.226:8080/api/user/register';
 
 class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController _usernameController = TextEditingController();
@@ -19,6 +19,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   bool isChecked = false;
 
   Future<void> registerUser() async {
+    String registrationApiUrl = 'http://${returnAddress()}:8080/api/user/register';
+
     if (_formKeyRegistration.currentState!.validate()) {
       String username = _usernameController.text;
       String email = _emailController.text;

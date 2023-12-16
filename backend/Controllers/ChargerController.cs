@@ -1,8 +1,6 @@
 ﻿using backend.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using backend.Models.request;
-using backend.Models.entity;
 
 namespace backend.Controllers
 {
@@ -25,7 +23,11 @@ namespace backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-
+                var chargerWithSameName = await _chargerService.GetChargerByName(chargerCreateReq.Name);
+                if (chargerWithSameName != null)
+                {
+                    return Conflict(new { Message = "Charger with the same name already exists" });
+                }
                 var newCharger = await _chargerService.CreateNewCharger(chargerCreateReq.Name, chargerCreateReq.Latitude.Value, chargerCreateReq.Longitude.Value, chargerCreateReq.Creator.Value);
 
                 if (newCharger != null)
@@ -35,7 +37,7 @@ namespace backend.Controllers
 
                 return Conflict(new { Message = "Charger not created" });
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, new { Message = "Internal server error" });
             }
@@ -50,7 +52,6 @@ namespace backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-
                 var updatedCharger = await _chargerService.UpdateExistingCharger(chargerUpdateReq.ChargerID.Value, chargerUpdateReq.Name, chargerUpdateReq.Latitude.Value, chargerUpdateReq.Longitude.Value, chargerUpdateReq.Active.Value);
 
                 if (updatedCharger != null)
@@ -60,7 +61,7 @@ namespace backend.Controllers
 
                 return Conflict(new { Message = "Charger not updated" });
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, new { Message = "Internal server error" });
             }
@@ -85,7 +86,7 @@ namespace backend.Controllers
 
                 return Ok(new { Message = "Statistics data successfully returned", Statistics = response });
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, new { Message = "Internal server error" });
             }
@@ -96,6 +97,11 @@ namespace backend.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                
                 var updatedCharger = await _chargerService.UpdateChargerAvailability(chargerAvailabilityReq.ChargerID.Value, chargerAvailabilityReq.Occupied.Value);
                 if (updatedCharger != null)
                 {
@@ -106,7 +112,7 @@ namespace backend.Controllers
                     return NotFound(new { Message = "Charger not found" });
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, new { Message = "Internal server error" });
             }
