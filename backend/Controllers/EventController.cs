@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using backend.Services;
 using backend.Models.request;
 
@@ -17,18 +16,22 @@ namespace backend.Controllers
 
         [HttpPost("createEvent")]
         public async Task<IActionResult> CreateEvent([FromBody] eventCreateRequest eventCreateReq)
-        {
-            if (eventCreateReq == null || !ModelState.IsValid)
-            {
-                return BadRequest(new { Message = "Invalid event data" });
-            }
-
+        {           
             try
-            {     
-                await _eventService.CreateEvent(eventCreateReq.startTime, eventCreateReq.endTime, eventCreateReq.chargeTime, eventCreateReq.volume, eventCreateReq.price, eventCreateReq.userID, eventCreateReq.chargerID);
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var newEvent = await _eventService.CreateEvent(eventCreateReq.startTime.Value, eventCreateReq.endTime.Value, eventCreateReq.chargeTime.Value, eventCreateReq.volume.Value, eventCreateReq.price.Value, eventCreateReq.userID.Value, eventCreateReq.chargerID.Value);
+                if (newEvent == null)
+                {
+                    return Conflict(new { Message = "Event not created" });
+                }
                 return Ok(new { Message = "Event created successfully" });               
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, new { Message = "Internal server error" });
             }
@@ -40,9 +43,13 @@ namespace backend.Controllers
             try
             {
                 var events = await _eventService.GetEventsByUserId(userID);
+                if (events == null || events.Count == 0)
+                {
+                    return Conflict(new { Message = "Events for this user not found" });
+                }
                 return Ok(events);
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, "Internal Server Error");
             }
