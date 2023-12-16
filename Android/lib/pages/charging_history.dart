@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:android/privateAddress.dart';
 
 class ChargingHistoryPage extends StatefulWidget {
   const ChargingHistoryPage({Key? key}) : super(key: key);
@@ -70,7 +71,7 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
   }
   void fetchUserHistory() async {
     print('Fetching history');
-    const url = 'http://192.168.1.226:8080/api/event/getEventsByUserID/2';
+    final url = 'http://${returnAddress()}:8080/api/event/getEventsByUserID/2';
     final uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;

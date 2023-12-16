@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:android/models/UserData.dart';
 import 'package:android/pages/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -24,6 +25,31 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  void setUserID() async {
+    final String apiUrl = ApiConfig.apiUrl;
+
+    http.post(Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+      // Include any necessary request parameters here
+          'email': _emailController.text,
+          'password': _passwordController.text,
+
+    })).then((response) {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+        int userId = jsonResponse['user']['userId'];
+        UserData.saveUserId(userId);
+        print('User ID: $userId');
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    }).catchError((error) {
+      print('Error: $error');
+    });
+  }
+
   Future<void> loginUser() async {
     final String apiUrl = ApiConfig.apiUrl;
 
@@ -36,67 +62,78 @@ class _LoginPageState extends State<LoginPage> {
       }),
     );
 
-
     print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       // Successful login
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Login Successful'),
-            content: const Text('Welcome jebote!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, 'myHomePageRoute');
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      AlertDialog alertDialog = AlertDialog(
+        title: const Text('Login Successful'),
+        content: const Text('Welcome!'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+            },
+            child: const Text('OK'),
+          ),
+        ],);
+
+      Future.delayed(const Duration(seconds: 1));
+
+      showDialog(context: context, builder: (context) => alertDialog);
     } else if (response.statusCode == 404) {
       // Failed login
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Login Failed'),
-            content: const Text('User not found.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
+      AlertDialog alertDialog = AlertDialog(
+        title: const Text('Login Failed'),
+        content: const Text('User not found.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          ),
+        ],
       );
+
+      Future.delayed(const Duration(seconds: 1));
+
+      showDialog(context: context, builder: (context) => alertDialog);
     } else if (response.statusCode == 401) {
-      // Failed login
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Login Failed'),
-            content: const Text('Wrong password.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
+      AlertDialog alertDialog = AlertDialog(
+        title: const Text('Login Failed'),
+        content: const Text('Wrong password.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          ),
+        ],
       );
+
+      Future.delayed(const Duration(seconds: 1));
+
+      showDialog(context: context, builder: (context) => alertDialog);
+    }else {
+      // Failed login
+      AlertDialog alertDialog = AlertDialog(
+        title: const Text('Login Failed'),
+        content: const Text('Unexpected error occurred.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+
+      Future.delayed(const Duration(seconds: 1));
+
+      showDialog(context: context, builder: (context) => alertDialog);
     }
 }
   @override
@@ -228,6 +265,7 @@ class _LoginPageState extends State<LoginPage> {
                                     child: ElevatedButton(
                                       onPressed: ()  {
                                         loginUser();
+                                        setUserID();
                                       },
                                       style: ButtonStyle(
                                         backgroundColor: MaterialStateProperty.all(Colors.indigo),
