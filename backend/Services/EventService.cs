@@ -1,11 +1,6 @@
-﻿using System;
-using backend.Models;
-using System.Linq;
+﻿using backend.Models;
 using backend.Models.entity;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
-using Npgsql.Internal.TypeHandlers.NumericHandlers;
-using Microsoft.VisualBasic;
 
 namespace backend.Services
 {
@@ -19,22 +14,15 @@ namespace backend.Services
 
         public async Task<List<object>> GetEventsByUserId(int userId)
         {
-            try
-            {
-                var events = await _context.Events
+            var events = await _context.Events
                     .Where(e => e.UserId == userId)
-                    .Select(e => new { ChargeTime = e.ChargeTime, Volume = e.Volume, Price = e.Price })
+                    .Select(e => new { StartTime = e.Starttime, EndTime = e.Endtime, ChargeTime = e.ChargeTime, Volume = e.Volume, Price = e.Price })
                     .ToListAsync();
 
-                return events.Cast<object>().ToList();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return events.Cast<object>().ToList();
         }
 
-        public async Task CreateEvent(DateTime start, DateTime end, TimeSpan timespan, decimal volume, decimal price, int userId, int chargerId)
+        public async Task<Event> CreateEvent(DateTime start, DateTime end, TimeSpan timespan, decimal volume, decimal price, int userId, int chargerId)
         {
             var newEvent = new Event
             {
@@ -48,15 +36,8 @@ namespace backend.Services
             };
 
             _context.Events.Add(newEvent);
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException ex)
-            {
-                throw new Exception("Error saving to the database", ex);
-            }
+            await _context.SaveChangesAsync();
+            return newEvent;
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using backend.Models;
-using System.Linq;
+﻿using backend.Models;
 using backend.Models.entity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +10,12 @@ namespace backend.Services
         public ChargerService(EvChargeDB context)
         {
             _context = context;
+        }
+
+        public async Task<Charger> GetChargerByName(string name)
+        {
+            var charger = await _context.Chargers.FirstOrDefaultAsync(c => c.Name == name);
+            return charger;
         }
         public async Task<Charger> CreateNewCharger(string name, decimal latitude, decimal longitude, int creator)
         {

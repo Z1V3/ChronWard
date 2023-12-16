@@ -27,7 +27,7 @@ namespace backend.Controllers
 
                 return Ok(cards);
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, "Internal Server Error");
             }
@@ -57,7 +57,7 @@ namespace backend.Controllers
 
                 return StatusCode(422, new { Message = "Card not added" });
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, new { Message = "Internal server error" });
             }
@@ -79,7 +79,7 @@ namespace backend.Controllers
 
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, new { Message = "Internal server error" });
             }
