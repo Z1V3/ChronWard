@@ -49,7 +49,7 @@ class _ChargeModePageState extends State<ChargeModePage>{
   late Timer _timer;
   bool isRunning = false;
   String formattedDateTimeStart = "/", formattedDateTimeEnd = "/", formattedDuration = "/";
-  TextEditingController _textFieldController = TextEditingController();
+  final TextEditingController _textFieldController = TextEditingController();
 
   String formatCounterToDuration(int milliseconds) {
     // Convert milliseconds to a Duration
@@ -180,7 +180,7 @@ class CircleButton extends StatelessWidget {
   final String label;
   final VoidCallback onClick;
 
-  CircleButton({required this.label, required this.onClick});
+  const CircleButton({super.key, required this.label, required this.onClick});
 
   @override
   Widget build(BuildContext context) {

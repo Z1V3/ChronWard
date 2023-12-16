@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:android/pages/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:android/models/UserData.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -23,7 +24,34 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> loginUser() async {
+  // Future<String> getUserId() async {
+  //   final response = await http.get((Uri.parse(ApiConfig.apiUrl)));
+  //   if (response.statusCode == 200) {
+  //     final jsonData = response.body.toString();
+  //
+  //     final user = jsonDecode(jsonData) as Map<String, dynamic>;
+  //
+  //     final userId = user['userId'];
+  //     await UserData.saveUserId(userId);
+  //     return userId;
+  //   } else {
+  //     throw Exception('Failed to get user ID');
+  //   }
+  // }
+  // void GetUserId() async {
+  //   print('Getting user ID');
+  //   const url = 'http://192.168.1.226:8080/api/user/login';
+  //   final uri = Uri.parse(url);
+  //   final response = await http.get(uri);
+  //   final body = response.body;
+  //   final json = jsonDecode(body);
+  //   setState(() {
+  //     UserData.saveUserId(json['userId']);
+  //   });
+  //   print('user ID fetched');
+  // }
+
+  void loginUser() async {
     final String apiUrl = ApiConfig.apiUrl;
 
     final response = await http.post(
@@ -36,68 +64,78 @@ class _LoginPageState extends State<LoginPage> {
     );
 
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
     if (response.statusCode == 200) {
-      // Successful login
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Login Successful'),
-            content: const Text('Welcome jebote!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, 'myHomePageRoute');
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
+
+      AlertDialog alertDialog = AlertDialog(
+        title: const Text('Login Successful'),
+        content: const Text('Welcome!'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+            },
+            child: const Text('OK'),
+          ),
+        ],
       );
-    } else if (response.statusCode == 404) {
-      // Failed login
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Login Failed'),
-            content: const Text('User not found.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    } else if (response.statusCode == 401) {
-      // Failed login
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Login Failed'),
-            content: const Text('Wrong password.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      showDialog(context: context, builder: (context) => alertDialog);
     }
-}
+    else if (response.statusCode == 404) {
+      // Failed login
+      AlertDialog alertDialog = AlertDialog(
+        title: const Text('Login Failed'),
+        content: const Text('User not found.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+      Future.delayed(const Duration(seconds: 1));
+
+      showDialog(context: context, builder: (context) => alertDialog);
+    }
+    else if (response.statusCode == 401) {
+      // Failed login
+      AlertDialog alertDialog = AlertDialog(
+        title: const Text('Login Failed'),
+        content: const Text('Wrong password.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+
+      Future.delayed(const Duration(seconds: 1));
+
+      showDialog(context: context, builder: (context) => alertDialog);
+    } else {
+      // Failed login
+      AlertDialog alertDialog = AlertDialog(
+        title: const Text('Login Failed'),
+        content: const Text('Unexpected error occurred.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+      Future.delayed(const Duration(seconds: 1));
+
+      showDialog(context: context, builder: (context) => alertDialog);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isLoginPage = ModalRoute.of(context)?.settings.name == '/login';
@@ -227,6 +265,7 @@ class _LoginPageState extends State<LoginPage> {
                                     child: ElevatedButton(
                                       onPressed: ()  {
                                         loginUser();
+                                        // GetUserId();
                                       },
                                       style: ButtonStyle(
                                         backgroundColor: MaterialStateProperty.all(Colors.indigo),

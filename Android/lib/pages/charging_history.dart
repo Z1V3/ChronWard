@@ -1,35 +1,20 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-class ChargingHistoryScreen extends StatefulWidget {
-  const ChargingHistoryScreen({Key? key}) : super(key: key);
+class ChargingHistoryPage extends StatefulWidget {
+  const ChargingHistoryPage({Key? key}) : super(key: key);
 
   @override
-  State<ChargingHistoryScreen> createState() => _ChargingHistoryScreenState();
+  State<ChargingHistoryPage> createState() => _ChargingHistoryScreenState();
 }
 
-class _ChargingHistoryScreenState extends State<ChargingHistoryScreen> {
-  List<ChargingHistoryData> chargingHistoryData = [];
-
-  Future<void> fetchChargingHistory() async {
-    const url = 'https://your-api-url/charging-history';
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      final chargingHistoryJson = jsonDecode(response.body);
-      for (var chargingHistoryItem in chargingHistoryJson) {
-        chargingHistoryData.add(ChargingHistoryData.fromJson(chargingHistoryItem));
-      }
-      setState(() {});
-    } else {
-      throw Exception('Failed to fetch charging history');
-    }
-  }
+class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
+  List chargingHistoryData = [];
 
   @override
   void initState() {
     super.initState();
-    fetchChargingHistory();
   }
 
   @override
@@ -43,7 +28,7 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryScreen> {
           ), leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, 'myHomePageRoute');
         },
       ),
           centerTitle: true,
@@ -57,41 +42,44 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryScreen> {
           itemCount: chargingHistoryData.length,
           itemBuilder: (context, index) {
             final chargingHistoryItem = chargingHistoryData[index];
-            return Card(
-              child: ListTile(
-                title: Text('Date Charged: ${chargingHistoryItem.dateCharged}'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Price: ${chargingHistoryItem.price}'),
-                    Text('Time Charged: ${chargingHistoryItem.timeCharged}'),
-                  ],
-                ),
+            final charge_time = chargingHistoryItem['chargeTime'];
+            final volume = chargingHistoryItem['volume'];
+            final price = chargingHistoryItem['price'];
+            return ListTile(
+              leading: CircleAvatar(
+                child: Text('${index+1}'),
               ),
+              title: Text('Time spent charging: $charge_time',style: TextStyle(
+                color: Colors.white
+              ),),
+              subtitle: Text('${volume.toString()}, kWh. You paid: $price, euro'),
+
+
+
+
             );
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          fetchUserHistory();
+        },
+      ),
     );
+  }
+  void fetchUserHistory() async {
+    print('Fetching history');
+    const url = 'http://192.168.1.226:8080/api/event/getEventsByUserID/2';
+    final uri = Uri.parse(url);
+    final response = await http.get(uri);
+    final body = response.body;
+    final json = jsonDecode(body);
+    setState(() {
+      chargingHistoryData = json;
+    });
+    print(json);
+    print('Fetch charging history finished');
   }
 }
 
-class ChargingHistoryData {
-  String dateCharged;
-  double price;
-  String timeCharged;
-
-  ChargingHistoryData({
-    required this.dateCharged,
-    required this.price,
-    required this.timeCharged,
-  });
-
-  factory ChargingHistoryData.fromJson(Map<String, dynamic> json) {
-    return ChargingHistoryData(
-      dateCharged: json['dateCharged'],
-      price: json['price'],
-      timeCharged: json['timeCharged'],
-    );
-  }
-}

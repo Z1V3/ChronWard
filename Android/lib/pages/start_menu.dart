@@ -100,6 +100,7 @@ class MyHomePage extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
+                        Navigator.pushReplacementNamed(context, 'chargeHistoryPage');
                       },
                       icon: const Icon(Icons.history,
                           size: 30, color: Colors.black),
@@ -177,7 +178,7 @@ class YourSideMenuWidget extends StatelessWidget {
             leading: const Icon(Icons.history),
             title: const Text('Charging History'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, 'chargeHistoryPage');
             },
           ),
           ListTile(
