@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:android/privateAddress.dart';
 
 class ChargeModePage extends StatefulWidget {
   const ChargeModePage({Key? key}) : super(key: key);
@@ -67,8 +68,35 @@ class _ChargeModePageState extends State<ChargeModePage>{
     return formattedTime;
   }
 
+  Future<void> sendChargerOccupation(int chargerID, bool occupied) async {
+    final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/charger/updateChargerAvailability');
+
+    try {
+
+      final response = await http.post(
+        uri,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'chargerID': chargerID,
+          'occupied': occupied,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        print('Request successful');
+        print('Response: ${response.body}');
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error sending POST request: $e');
+    }
+  }
+
   Future<void> sendCreateEvent(String startTime, String endTime, String chargeTime, double volume, double price) async {
-    final Uri uri = Uri.parse('http://192.168.88.22:8080/api/event/createEvent');
+    final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/event/createEvent');
 
     try {
       ChargingData chargingData = ChargingData(
@@ -139,6 +167,7 @@ class _ChargeModePageState extends State<ChargeModePage>{
                   setState(() {
                     isRunning = true;
                   });
+                  sendChargerOccupation(1, true);
                   DateTime now = DateTime.now();
                   formattedDateTimeStart = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
                 }
@@ -161,6 +190,7 @@ class _ChargeModePageState extends State<ChargeModePage>{
                   volumeCharge = double.parse(((counter*2.361)/10).toStringAsExponential(3));
                   priceCharge = double.parse(((counter*1.5)/10).toStringAsExponential(3));
 
+                  sendChargerOccupation(1, false);
                   sendCreateEvent(formattedDateTimeStart, formattedDateTimeEnd, formattedDuration, volumeCharge, priceCharge);
                 }
                 print('Time charged: $counter seconds');

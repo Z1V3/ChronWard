@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:android/pages/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:android/privateAddress.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class LoginPage extends StatefulWidget {
 final _formKeyLogin = GlobalKey<FormState>();
 
 class ApiConfig {
-  static String apiUrl = 'http://192.168.1.226:8080/api/user/login';
+  static String apiUrl = 'http://${returnAddress()}:8080/api/user/login';
 
   static void setApiUrl(String newUrl) {
     apiUrl = newUrl;
