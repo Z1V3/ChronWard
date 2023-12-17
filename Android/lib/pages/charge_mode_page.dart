@@ -57,20 +57,18 @@ class _ChargeModePageState extends State<ChargeModePage>{
   String formattedDateTimeStart = "/", formattedDateTimeEnd = "/", formattedDuration = "/";
   int globalUserID = 0;
 
-  String formatCounterToDuration(int milliseconds) {
-    // Convert milliseconds to a Duration
-    Duration duration = Duration(milliseconds: milliseconds);
+  String formatCounterToDuration(int seconds) {
+    Duration duration = Duration(seconds: seconds);
 
-    // Extract hours, minutes, and seconds from the Duration
     int hours = duration.inHours;
-    int minutes = (duration.inMinutes % 60);
-    int seconds = (duration.inSeconds % 60);
+    int minutes = duration.inMinutes % 60;
+    int remainingSeconds = duration.inSeconds % 60;
 
-    // Format the time string with leading zeros
-    String formattedTime =
-        '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    String hoursStr = hours.toString().padLeft(2, '0');
+    String minutesStr = minutes.toString().padLeft(2, '0');
+    String secondsStr = remainingSeconds.toString().padLeft(2, '0');
 
-    return formattedTime;
+    return "$hoursStr:$minutesStr:$secondsStr";
   }
 
   Future<void> sendChargerOccupation(int chargerID, bool occupied) async {
@@ -192,11 +190,11 @@ class _ChargeModePageState extends State<ChargeModePage>{
                   formattedDateTimeEnd = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
 
                   counter = counter/10;
-                  formattedDuration = formatCounterToDuration(counter.toInt());
+                  int unformattedDuration = counter.toInt();
+                  formattedDuration = formatCounterToDuration(unformattedDuration);
 
                   volumeCharge = double.parse(((counter*2.361)/10).toStringAsExponential(3));
                   priceCharge = double.parse(((counter*1.5)/10).toStringAsExponential(3));
-
 
                   sendChargerOccupation(1, false);
                   sendCreateEvent(formattedDateTimeStart, formattedDateTimeEnd, formattedDuration, volumeCharge, priceCharge);
