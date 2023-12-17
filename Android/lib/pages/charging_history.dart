@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:android/models/UserData.dart';
+import 'package:android/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:android/privateAddress.dart';
 
@@ -71,7 +72,8 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
     );
   }
   void fetchUserHistory() async {
-    final int? userId = await UserData.getUserId();
+
+    final int? userId = Provider.of<UserProvider>(context, listen: false).user?.userID;
     print('Fetching history');
     final url = 'http://${returnAddress()}:8080/api/event/getEventsByUserID/$userId';
     final uri = Uri.parse(url);

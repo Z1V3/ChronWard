@@ -1,5 +1,8 @@
 import 'dart:convert';
-import 'package:android/models/UserData.dart';
+import 'package:android/providers/user_provider.dart';
+import 'package:android/models/user_model.dart';
+import 'package:android/handlers/shared_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:android/pages/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -43,9 +46,11 @@ class _LoginPageState extends State<LoginPage> {
 
       Map<String, dynamic> jsonResponse = json.decode(response.body);
 
-      int userId = jsonResponse['user']['userId'];
-      UserData.saveUserId(userId);
-      print('User ID: $userId');
+      int userID = jsonResponse['user']['userId'];
+      UserModel user = UserModel(userID);
+      await SharedHandlerUtil.saveUserID(userID);
+      Provider.of<UserProvider>(context, listen: false).setUser(user);
+      print('User ID: $userID');
 
       AlertDialog alertDialog = AlertDialog(
         title: const Text('Login Successful'),
@@ -54,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
           TextButton(
             onPressed: () {
               Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+
             },
             child: const Text('OK'),
           ),

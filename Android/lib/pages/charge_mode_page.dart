@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:android/privateAddress.dart';
+import 'package:android/providers/user_provider.dart';
+import 'package:provider/provider.dart';
+
 
 class ChargeModePage extends StatefulWidget {
   const ChargeModePage({Key? key}) : super(key: key);
@@ -47,10 +50,12 @@ class ChargingData {
 class _ChargeModePageState extends State<ChargeModePage>{
   double counter = 0;
   double volumeCharge = 0, priceCharge = 0;
+
   late Timer _timer;
   bool isRunning = false;
+
   String formattedDateTimeStart = "/", formattedDateTimeEnd = "/", formattedDuration = "/";
-  final TextEditingController _textFieldController = TextEditingController();
+  int globalUserID = 0;
 
   String formatCounterToDuration(int milliseconds) {
     // Convert milliseconds to a Duration
@@ -98,6 +103,8 @@ class _ChargeModePageState extends State<ChargeModePage>{
   Future<void> sendCreateEvent(String startTime, String endTime, String chargeTime, double volume, double price) async {
     final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/event/createEvent');
 
+    int userID = Provider.of<UserProvider>(context, listen: false).user?.userID ?? 0;
+    globalUserID = userID;
     try {
       ChargingData chargingData = ChargingData(
         startTime: startTime,
@@ -105,7 +112,7 @@ class _ChargeModePageState extends State<ChargeModePage>{
         chargeTime: chargeTime,
         volume: volume,
         price: price,
-        userID: 2,
+        userID: userID,
         chargerID: 2,
       );
 
@@ -190,9 +197,11 @@ class _ChargeModePageState extends State<ChargeModePage>{
                   volumeCharge = double.parse(((counter*2.361)/10).toStringAsExponential(3));
                   priceCharge = double.parse(((counter*1.5)/10).toStringAsExponential(3));
 
+
                   sendChargerOccupation(1, false);
                   sendCreateEvent(formattedDateTimeStart, formattedDateTimeEnd, formattedDuration, volumeCharge, priceCharge);
                 }
+                print('UserID: $globalUserID');
                 print('Time charged: $counter seconds');
                 print('Power: $volumeCharge');
                 print('Price: $priceCharge');
