@@ -1,97 +1,159 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:android/providers/user_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:android/privateAddress.dart';
 
-class ChargingHistoryScreen extends StatefulWidget {
-  const ChargingHistoryScreen({Key? key}) : super(key: key);
+class ChargingHistoryPage extends StatefulWidget {
+  const ChargingHistoryPage({Key? key}) : super(key: key);
 
   @override
-  State<ChargingHistoryScreen> createState() => _ChargingHistoryScreenState();
+  State<ChargingHistoryPage> createState() => _ChargingHistoryScreenState();
 }
 
-class _ChargingHistoryScreenState extends State<ChargingHistoryScreen> {
-  List<ChargingHistoryData> chargingHistoryData = [];
-
-  Future<void> fetchChargingHistory() async {
-    const url = 'https://your-api-url/charging-history';
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      final chargingHistoryJson = jsonDecode(response.body);
-      for (var chargingHistoryItem in chargingHistoryJson) {
-        chargingHistoryData.add(ChargingHistoryData.fromJson(chargingHistoryItem));
-      }
-      setState(() {});
-    } else {
-      throw Exception('Failed to fetch charging history');
-    }
-  }
+class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
+  List chargingHistoryData = [];
 
   @override
   void initState() {
     super.initState();
-    fetchChargingHistory();
   }
 
   @override
   Widget build(BuildContext context) {
+    Future<bool> onWillPop() async {
+      Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+      return false;
+    }
     return Scaffold(
       appBar: AppBar(
           title: const Text('Charging History',
             style: TextStyle(
-                color: Colors.white
+                color: Colors.black
             ),
-          ), leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () {
-          Navigator.pop(context);
-        },
+          // ), leading: IconButton(
+        // icon: const Icon(Icons.arrow_back, color: Colors.black),
+        // onPressed: () {
+        //   Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+        // },
       ),
           centerTitle: true,
-          backgroundColor: Colors.black87
+          backgroundColor: Colors.lightBlue[100],
+
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.black87,
-        ),
-        child: ListView.builder(
-          itemCount: chargingHistoryData.length,
-          itemBuilder: (context, index) {
-            final chargingHistoryItem = chargingHistoryData[index];
-            return Card(
-              child: ListTile(
-                title: Text('Date Charged: ${chargingHistoryItem.dateCharged}'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Price: ${chargingHistoryItem.price}'),
-                    Text('Time Charged: ${chargingHistoryItem.timeCharged}'),
-                  ],
+      drawer: const YourDrawerWidget(),
+      body: WillPopScope(
+        onWillPop: onWillPop,
+        child: Container(
+          color: Colors.lightBlue[100],
+
+          child: ListView.builder(
+            itemCount: chargingHistoryData.length,
+            itemBuilder: (context, index) {
+              final chargingHistoryItem = chargingHistoryData[index];
+              final chargeTime = chargingHistoryItem['chargeTime'];
+              final volume = chargingHistoryItem['volume'];
+              final price = chargingHistoryItem['price'];
+              return ListTile(
+                leading: CircleAvatar(
+                  child: Text('${index+1}'),
                 ),
-              ),
-            );
+                title: Text('Time spent charging: $chargeTime',style: const TextStyle(
+                  color: Colors.black
+                ),),
+                subtitle: Text('${volume.toString()}, kWh. You paid: $price, euro'),
+
+
+
+
+              );
+            },
+          ),
+        ),
+      ),
+
+      floatingActionButton: SizedBox(
+        height: 70.0,
+        width: 70.0,
+        child: FittedBox(
+          child: FloatingActionButton(onPressed: () {
+            fetchUserHistory();
           },
+          child: const Text('Show history', textAlign: TextAlign.center,),),
         ),
       ),
     );
   }
+  void fetchUserHistory() async {
+
+    final int? userId = Provider.of<UserProvider>(context, listen: false).user?.userID;
+    print('Fetching history');
+    final url = 'http://${returnAddress()}:8080/api/event/getEventsByUserID/$userId';
+    final uri = Uri.parse(url);
+    final response = await http.get(uri);
+    final body = response.body;
+    final json = jsonDecode(body);
+    setState(() {
+      chargingHistoryData = json;
+    });
+    print(json);
+    print('Fetch charging history finished');
+  }
 }
+class YourDrawerWidget extends StatelessWidget {
+  const YourDrawerWidget({Key? key}) : super(key: key);
 
-class ChargingHistoryData {
-  String dateCharged;
-  double price;
-  String timeCharged;
+  @override
+  Widget build(BuildContext context) {
+    const Color myColor = Color(0xFFADD8E6);
 
-  ChargingHistoryData({
-    required this.dateCharged,
-    required this.price,
-    required this.timeCharged,
-  });
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: myColor,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Menu',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text('Home Page'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, 'myHomePageRoute');
 
-  factory ChargingHistoryData.fromJson(Map<String, dynamic> json) {
-    return ChargingHistoryData(
-      dateCharged: json['dateCharged'],
-      price: json['price'],
-      timeCharged: json['timeCharged'],
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.credit_card),
+            title: const Text('My Cards'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add),
+            title: const Text('Add Card'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

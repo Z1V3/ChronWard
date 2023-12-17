@@ -17,6 +17,8 @@ namespace backend.Models.entity
         public DateTime Created { get; set; }
         public int Creator { get; set; }
         public DateTime Lastsync { get; set; }
+        public bool Active { get; set; }
+        public bool Occupied { get; set; }
 
         public virtual User CreatorNavigation { get; set; } = null!;
         public virtual ICollection<Event> Events { get; set; }

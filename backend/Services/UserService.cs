@@ -1,6 +1,4 @@
-﻿using System;
-using backend.Models;
-using System.Linq;
+﻿using backend.Models;
 using backend.Models.entity;
 
 namespace backend.Services
@@ -37,7 +35,7 @@ namespace backend.Services
                 Email = email,
                 Password = password,
                 Active = true,
-                Created = DateTime.UtcNow,
+                Created = DateTime.Now,
                 Role = "user"
             };
 

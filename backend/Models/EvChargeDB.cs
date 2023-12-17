@@ -44,7 +44,7 @@ namespace backend.Models
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.Property(e => e.Value)
-                    .HasPrecision(10, 2)
+                    .HasMaxLength(100)
                     .HasColumnName("value");
 
                 entity.HasOne(d => d.User)
@@ -82,6 +82,10 @@ namespace backend.Models
                     .HasMaxLength(50)
                     .HasColumnName("name");
 
+                entity.Property(e => e.Active).HasColumnName("active");
+
+                entity.Property(e => e.Occupied).HasColumnName("occupied");
+
                 entity.HasOne(d => d.CreatorNavigation)
                     .WithMany(p => p.Chargers)
                     .HasForeignKey(d => d.Creator)
@@ -105,11 +109,19 @@ namespace backend.Models
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("starttime");
 
+                entity.Property(e => e.ChargeTime)
+                    .HasColumnType("interval")
+                    .HasColumnName("chargetime");
+
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
                 entity.Property(e => e.Volume)
                     .HasPrecision(10, 2)
                     .HasColumnName("volume");
+
+                entity.Property(e => e.Price)
+                    .HasPrecision(10, 2)
+                    .HasColumnName("price");
 
                 entity.HasOne(d => d.Charger)
                     .WithMany(p => p.Events)
