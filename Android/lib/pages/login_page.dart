@@ -286,12 +286,12 @@ class _LoginPageState extends State<LoginPage> {
                                       const SizedBox(width: 5,),
                                       ElevatedButton(
                                         onPressed: () {},
-                                        child: const Text('Sign in', style: TextStyle(
-                                          color: Colors.white
-                                        ),),
                                         style: ButtonStyle(
                                           backgroundColor: MaterialStateProperty.all(Colors.lightBlue[300])
                                         ),
+                                        child: const Text('Sign in', style: TextStyle(
+                                          color: Colors.white
+                                        ),),
                                       ),
                                       const SizedBox(width: 10,),
                                       Image.asset(
@@ -301,12 +301,12 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () {},
-                                        child: const Text('Sign in',style: TextStyle(
-                                            color: Colors.white
-                                        ),),
                                         style: ButtonStyle(
                                             backgroundColor: MaterialStateProperty.all(Colors.lightBlue[300])
                                         ),
+                                        child: const Text('Sign in',style: TextStyle(
+                                            color: Colors.white
+                                        ),),
                                       )
                                     ],
                                   ),

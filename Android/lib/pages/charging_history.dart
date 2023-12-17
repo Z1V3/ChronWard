@@ -73,14 +73,14 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
         ),
       ),
 
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
         height: 70.0,
         width: 70.0,
         child: FittedBox(
           child: FloatingActionButton(onPressed: () {
             fetchUserHistory();
           },
-          child: Text('Show history', textAlign: TextAlign.center,),),
+          child: const Text('Show history', textAlign: TextAlign.center,),),
         ),
       ),
     );

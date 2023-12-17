@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:android/pages/charging_info.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -56,7 +57,6 @@ class _ChargeModePageState extends State<ChargeModePage>{
 
   String formattedDateTimeStart = "/", formattedDateTimeEnd = "/", formattedDuration = "/";
   final TextEditingController _textFieldController = TextEditingController();
-  int globalUserID = 0;
   int globalUserID = 0;
 
   String formatCounterToDuration(int seconds) {
@@ -163,6 +163,10 @@ class _ChargeModePageState extends State<ChargeModePage>{
       });
       DateTime now = DateTime.now();
       formattedDateTimeStart = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ChargingScreen()), //Leads to Charging info screen
+      );
     }
     print('START button clicked');
   }
@@ -206,12 +210,27 @@ class _ChargeModePageState extends State<ChargeModePage>{
       body: WillPopScope(
         onWillPop: onWillPop,
         child: Container(
-          color: Colors.lightBlue[100],
+          color: Colors.black87,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleButton(
+              const SizedBox(height: 40),
+              const Text(
+                //'Welcome, ${widget.userName}', // Display the welcome message with the user's name
+                'Welcome, Ivan Horvat',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 40),
+              Expanded(child: Center(
+                child: Column (
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleButton(
                   label: 'START',
                   onClick: () {
                     if (!isRunning) {
@@ -254,6 +273,10 @@ class _ChargeModePageState extends State<ChargeModePage>{
                     counter = 0;
                   },
                 ),
+                    ],
+                ),
+              ),
+              ),
               ],
             ),
           ),
