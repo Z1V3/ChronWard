@@ -161,12 +161,9 @@ class _ChargeModePageState extends State<ChargeModePage>{
       setState(() {
         isRunning = true;
       });
+      sendChargerOccupation(1, true);
       DateTime now = DateTime.now();
       formattedDateTimeStart = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ChargingScreen()), //Leads to Charging info screen
-      );
     }
     print('START button clicked');
   }
@@ -174,21 +171,22 @@ class _ChargeModePageState extends State<ChargeModePage>{
   void onPressStop() {
     if (isRunning) {
       stopTimer();
-      setState(() {
-        isRunning = false;
-      });
 
       DateTime now = DateTime.now();
       formattedDateTimeEnd = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
 
       counter = counter/10;
-      formattedDuration = formatCounterToDuration(counter.toInt());
+      int unformattedDuration = counter.toInt();
+      formattedDuration = formatCounterToDuration(unformattedDuration);
 
       volumeCharge = double.parse(((counter*2.361)/10).toStringAsExponential(3));
       priceCharge = double.parse(((counter*1.5)/10).toStringAsExponential(3));
 
+
+      sendChargerOccupation(1, false);
       sendCreateEvent(formattedDateTimeStart, formattedDateTimeEnd, formattedDuration, volumeCharge, priceCharge);
     }
+    print('UserID: $globalUserID');
     print('Time charged: $counter seconds');
     print('Power: $volumeCharge');
     print('Price: $priceCharge');
@@ -231,52 +229,18 @@ class _ChargeModePageState extends State<ChargeModePage>{
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircleButton(
-                  label: 'START',
-                  onClick: () {
-                    if (!isRunning) {
-                      startTimer();
-                      setState(() {
-                        isRunning = true;
-                      });
-                      sendChargerOccupation(1, true);
-                      DateTime now = DateTime.now();
-                      formattedDateTimeStart = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
-                    }
-                    print('START button clicked');
-                  },
-                ),
-                const SizedBox(height: 20),
-                CircleButton(
-                  label: 'STOP',
-                  onClick: () {
-                    if (isRunning) {
-                      stopTimer();
-
-                      DateTime now = DateTime.now();
-                      formattedDateTimeEnd = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
-
-                      counter = counter/10;
-                      int unformattedDuration = counter.toInt();
-                      formattedDuration = formatCounterToDuration(unformattedDuration);
-
-                      volumeCharge = double.parse(((counter*2.361)/10).toStringAsExponential(3));
-                      priceCharge = double.parse(((counter*1.5)/10).toStringAsExponential(3));
-
-
-                      sendChargerOccupation(1, false);
-                      sendCreateEvent(formattedDateTimeStart, formattedDateTimeEnd, formattedDuration, volumeCharge, priceCharge);
-                    }
-                    print('UserID: $globalUserID');
-                    print('Time charged: $counter seconds');
-                    print('Power: $volumeCharge');
-                    print('Price: $priceCharge');
-                    counter = 0;
-                  },
-                ),
+                        label: 'START',
+                        onClick: !isRunning ? () => onPressStart() : null,
+                      ),
+                      const SizedBox(height: 20),
+                      CircleButton(
+                        label: 'STOP',
+                        onClick: isRunning ? () => onPressStop() : null,
+                      ),
                     ],
+                  ),
                 ),
-              ),
-              ),
+                ),
               ],
             ),
           ),
@@ -290,7 +254,7 @@ class CircleButton extends StatelessWidget {
   final String label;
   final VoidCallback? onClick;
 
-  const CircleButton({super.key, required this.label, required this.onClick});
+  const CircleButton({super.key, required this.label, this.onClick});
 
   @override
   Widget build(BuildContext context) {
