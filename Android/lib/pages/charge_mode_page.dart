@@ -48,8 +48,8 @@ class ChargingData {
 }
 
 class _ChargeModePageState extends State<ChargeModePage>{
-  double counter = 0;
-  double volumeCharge = 0, priceCharge = 0;
+  double counter = 0.00;
+  double volumeCharge = 0.00, priceCharge = 0.00;
 
   late Timer _timer;
   bool isRunning = false;
@@ -70,6 +70,7 @@ class _ChargeModePageState extends State<ChargeModePage>{
     String formattedTime =
         '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
 
+    print(formattedTime);
     return formattedTime;
   }
 
@@ -158,57 +159,69 @@ class _ChargeModePageState extends State<ChargeModePage>{
 
   @override
   Widget build(BuildContext context) {
+    Future<bool> onWillPop() async {
+      Navigator.pushReplacementNamed(context, 'startMenuRoute');
+      return false;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Charge Mode'),
+        backgroundColor: Colors.lightBlue[100],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleButton(
-              label: 'START',
-              onClick: () {
-                if (!isRunning) {
-                  startTimer();
-                  setState(() {
-                    isRunning = true;
-                  });
-                  sendChargerOccupation(1, true);
-                  DateTime now = DateTime.now();
-                  formattedDateTimeStart = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
-                }
-                print('START button clicked');
-              },
+      body: WillPopScope(
+        onWillPop: onWillPop,
+        child: Container(
+          color: Colors.lightBlue[100],
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleButton(
+                  label: 'START',
+                  onClick: () {
+                    if (!isRunning) {
+                      startTimer();
+                      setState(() {
+                        isRunning = true;
+                      });
+                      sendChargerOccupation(1, true);
+                      DateTime now = DateTime.now();
+                      formattedDateTimeStart = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
+                    }
+                    print('START button clicked');
+                  },
+                ),
+                const SizedBox(height: 20),
+                CircleButton(
+                  label: 'STOP',
+                  onClick: () {
+                    if (isRunning) {
+                      stopTimer();
+
+                      DateTime now = DateTime.now();
+                      formattedDateTimeEnd = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
+
+                      counter = counter/10;
+                      formattedDuration = formatCounterToDuration(counter.toInt());
+
+                      volumeCharge = double.parse(((counter*2.361)/10).toStringAsExponential(3));
+                      priceCharge = double.parse(((counter*1.5)/10).toStringAsExponential(3));
+
+
+                      sendChargerOccupation(1, false);
+                      sendCreateEvent(formattedDateTimeStart, formattedDateTimeEnd, formattedDuration, volumeCharge, priceCharge);
+                    }
+                    print('UserID: $globalUserID');
+                    print('Time charged: $counter seconds');
+                    print('Power: $volumeCharge');
+                    print('Price: $priceCharge');
+                    counter = 0;
+                  },
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            CircleButton(
-              label: 'STOP',
-              onClick: () {
-                if (isRunning) {
-                  stopTimer();
-
-                  DateTime now = DateTime.now();
-                  formattedDateTimeEnd = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
-
-                  counter = counter/10;
-                  formattedDuration = formatCounterToDuration(counter.toInt());
-
-                  volumeCharge = double.parse(((counter*2.361)/10).toStringAsExponential(3));
-                  priceCharge = double.parse(((counter*1.5)/10).toStringAsExponential(3));
-
-
-                  sendChargerOccupation(1, false);
-                  sendCreateEvent(formattedDateTimeStart, formattedDateTimeEnd, formattedDuration, volumeCharge, priceCharge);
-                }
-                print('UserID: $globalUserID');
-                print('Time charged: $counter seconds');
-                print('Power: $volumeCharge');
-                print('Price: $priceCharge');
-                counter = 0;
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );

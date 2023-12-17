@@ -22,52 +22,66 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    Future<bool> onWillPop() async {
+      Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+      return false;
+    }
     return Scaffold(
       appBar: AppBar(
           title: const Text('Charging History',
             style: TextStyle(
-                color: Colors.white
+                color: Colors.black
             ),
-          ), leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () {
-          Navigator.pushReplacementNamed(context, 'myHomePageRoute');
-        },
+          // ), leading: IconButton(
+        // icon: const Icon(Icons.arrow_back, color: Colors.black),
+        // onPressed: () {
+        //   Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+        // },
       ),
           centerTitle: true,
-          backgroundColor: Colors.black87
+          backgroundColor: Colors.lightBlue[100],
+
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.black87,
+      drawer: const YourDrawerWidget(),
+      body: WillPopScope(
+        onWillPop: onWillPop,
+        child: Container(
+          color: Colors.lightBlue[100],
+
+          child: ListView.builder(
+            itemCount: chargingHistoryData.length,
+            itemBuilder: (context, index) {
+              final chargingHistoryItem = chargingHistoryData[index];
+              final chargeTime = chargingHistoryItem['chargeTime'];
+              final volume = chargingHistoryItem['volume'];
+              final price = chargingHistoryItem['price'];
+              return ListTile(
+                leading: CircleAvatar(
+                  child: Text('${index+1}'),
+                ),
+                title: Text('Time spent charging: $chargeTime',style: const TextStyle(
+                  color: Colors.black
+                ),),
+                subtitle: Text('${volume.toString()}, kWh. You paid: $price, euro'),
+
+
+
+
+              );
+            },
+          ),
         ),
-        child: ListView.builder(
-          itemCount: chargingHistoryData.length,
-          itemBuilder: (context, index) {
-            final chargingHistoryItem = chargingHistoryData[index];
-            final charge_time = chargingHistoryItem['chargeTime'];
-            final volume = chargingHistoryItem['volume'];
-            final price = chargingHistoryItem['price'];
-            return ListTile(
-              leading: CircleAvatar(
-                child: Text('${index+1}'),
-              ),
-              title: Text('Time spent charging: $charge_time',style: TextStyle(
-                color: Colors.white
-              ),),
-              subtitle: Text('${volume.toString()}, kWh. You paid: $price, euro'),
+      ),
 
-
-
-
-            );
+      floatingActionButton: Container(
+        height: 70.0,
+        width: 70.0,
+        child: FittedBox(
+          child: FloatingActionButton(onPressed: () {
+            fetchUserHistory();
           },
+          child: Text('Show history', textAlign: TextAlign.center,),),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          fetchUserHistory();
-        },
       ),
     );
   }
@@ -87,4 +101,59 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
     print('Fetch charging history finished');
   }
 }
+class YourDrawerWidget extends StatelessWidget {
+  const YourDrawerWidget({Key? key}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    const Color myColor = Color(0xFFADD8E6);
+
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: myColor,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Menu',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text('Home Page'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.credit_card),
+            title: const Text('My Cards'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.add),
+            title: const Text('Add Card'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
