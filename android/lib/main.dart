@@ -6,6 +6,7 @@ import 'package:android/pages/user_mode_interface.dart';
 import 'package:android/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:android/pages/start_menu.dart';
+import 'package:android/pages/receipt_report.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +32,16 @@ class MyApp extends StatelessWidget {
           'chargeModePageRoute': (context) => const ChargeModePage(),
           'chargeHistoryPage': (context) => const ChargingHistoryPage(),
           'startMenuRoute': (context) => const StartMenu(),
+          'receiptRoute': (context) => ReceiptScreen(
+            chargingStationName: 'Koprivnica Charging Station',
+            chargingStationLocation: 'Koprivnica, Croatia',
+            dateTimeOfCharge: DateTime(2023, 12, 22, 12, 0, 0),
+            vehicleIdentificationNumber: '123456789ABC',
+            electricityConsumed: 20.0,
+            chargingPricePerKwh: 0.30,
+            paymentMethod: 'Credit Card',
+            transactionId: '1234567890',
+      )
         }
       )
     );

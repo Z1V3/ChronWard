@@ -63,7 +63,12 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
                   color: Colors.black
                 ),),
                 subtitle: Text('${volume.toString()}, kWh. You paid: $price, euro'),
-
+                trailing: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, 'receiptRoute');
+                  },
+                  child: Text('Receipt'),
+                ),
 
 
 
