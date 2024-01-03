@@ -1,10 +1,11 @@
 ﻿using backend.Models;
 using backend.Models.entity;
 using Microsoft.EntityFrameworkCore;
+using backend.IServices;
 
 namespace backend.Services
 {
-    public class EventService
+    public class EventService: IEventService
     {
         private readonly EvChargeDB _context;
         public EventService(EvChargeDB context)

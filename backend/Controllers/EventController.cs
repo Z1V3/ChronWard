@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using backend.Services;
+using backend.IServices;
 using backend.Models.request;
 
 namespace backend.Controllers
@@ -8,10 +8,10 @@ namespace backend.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        private readonly EventService _eventService;
-        public EventController(EventService eventService)
+        private readonly IEventService _iEventService;
+        public EventController(IEventService iEventService)
         {
-            _eventService = eventService;
+            _iEventService = iEventService;
         }
 
         [HttpPost("createEvent")]
@@ -24,7 +24,7 @@ namespace backend.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var newEvent = await _eventService.CreateEvent(eventCreateReq.startTime.Value, eventCreateReq.endTime.Value, eventCreateReq.chargeTime.Value, eventCreateReq.volume.Value, eventCreateReq.price.Value, eventCreateReq.userID.Value, eventCreateReq.chargerID.Value);
+                var newEvent = await _iEventService.CreateEvent(eventCreateReq.startTime.Value, eventCreateReq.endTime.Value, eventCreateReq.chargeTime.Value, eventCreateReq.volume.Value, eventCreateReq.price.Value, eventCreateReq.userID.Value, eventCreateReq.chargerID.Value);
                 if (newEvent == null)
                 {
                     return Conflict(new { Message = "Event not created" });
@@ -42,7 +42,7 @@ namespace backend.Controllers
         {
             try
             {
-                var events = await _eventService.GetEventsByUserId(userID);
+                var events = await _iEventService.GetEventsByUserId(userID);
                 if (events == null || events.Count == 0)
                 {
                     return Conflict(new { Message = "Events for this user not found" });
