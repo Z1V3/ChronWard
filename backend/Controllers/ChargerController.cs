@@ -1,4 +1,4 @@
-﻿using backend.Services;
+﻿using backend.IServices;
 using Microsoft.AspNetCore.Mvc;
 using backend.Models.request;
 
@@ -8,10 +8,10 @@ namespace backend.Controllers
     [ApiController]
     public class ChargerController : ControllerBase
     {
-        private readonly ChargerService _chargerService;
-        public ChargerController(ChargerService chargerService)
+        private readonly IChargerService _iChargerService;
+        public ChargerController(IChargerService iChargerService)
         {
-            _chargerService = chargerService;
+            _iChargerService = iChargerService;
         }
 
         [HttpPost("createCharger")]
@@ -23,12 +23,12 @@ namespace backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var chargerWithSameName = await _chargerService.GetChargerByName(chargerCreateReq.Name);
+                var chargerWithSameName = await _iChargerService.GetChargerByName(chargerCreateReq.Name);
                 if (chargerWithSameName != null)
                 {
                     return Conflict(new { Message = "Charger with the same name already exists" });
                 }
-                var newCharger = await _chargerService.CreateNewCharger(chargerCreateReq.Name, chargerCreateReq.Latitude.Value, chargerCreateReq.Longitude.Value, chargerCreateReq.Creator.Value);
+                var newCharger = await _iChargerService.CreateNewCharger(chargerCreateReq.Name, chargerCreateReq.Latitude.Value, chargerCreateReq.Longitude.Value, chargerCreateReq.Creator.Value);
 
                 if (newCharger != null)
                 {
@@ -52,7 +52,7 @@ namespace backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var updatedCharger = await _chargerService.UpdateExistingCharger(chargerUpdateReq.ChargerID.Value, chargerUpdateReq.Name, chargerUpdateReq.Latitude.Value, chargerUpdateReq.Longitude.Value, chargerUpdateReq.Active.Value);
+                var updatedCharger = await _iChargerService.UpdateExistingCharger(chargerUpdateReq.ChargerID.Value, chargerUpdateReq.Name, chargerUpdateReq.Latitude.Value, chargerUpdateReq.Longitude.Value, chargerUpdateReq.Active.Value);
 
                 if (updatedCharger != null)
                 {
@@ -72,10 +72,10 @@ namespace backend.Controllers
         {
             try
             {
-                var totalNumberOfChargers = await _chargerService.GetTotalChargersCount();
-                var numberOfOccupiedChargers = await _chargerService.GetOccupiedChargersCount();
-                var numberOfFreeChargers = await _chargerService.GetFreeChargersCount();
-                var numberOfDeactivatedChargers = await _chargerService.GetDeactivatedChargersCount();
+                var totalNumberOfChargers = await _iChargerService.GetTotalChargersCount();
+                var numberOfOccupiedChargers = await _iChargerService.GetOccupiedChargersCount();
+                var numberOfFreeChargers = await _iChargerService.GetFreeChargersCount();
+                var numberOfDeactivatedChargers = await _iChargerService.GetDeactivatedChargersCount();
                 var response = new
                 {
                     TotalNumberOfChargers = totalNumberOfChargers,
@@ -102,7 +102,7 @@ namespace backend.Controllers
                     return BadRequest(ModelState);
                 }
                 
-                var updatedCharger = await _chargerService.UpdateChargerAvailability(chargerAvailabilityReq.ChargerID.Value, chargerAvailabilityReq.Occupied.Value);
+                var updatedCharger = await _iChargerService.UpdateChargerAvailability(chargerAvailabilityReq.ChargerID.Value, chargerAvailabilityReq.Occupied.Value);
                 if (updatedCharger != null)
                 {
                     return Ok(new { Message = "Charger availability updated successfully"});

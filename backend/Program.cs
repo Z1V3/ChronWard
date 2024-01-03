@@ -13,7 +13,7 @@ builder.Services.AddDbContext<EvChargeDB>(options => options.UseNpgsql(conn));
 builder.Services.AddControllers();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<EventService>();
-builder.Services.AddScoped<ChargerService>();
+builder.Services.AddScoped<IChargerService, ChargerService>();
 builder.Services.AddScoped<ICardService, CardService>();
 
 var app = builder.Build();

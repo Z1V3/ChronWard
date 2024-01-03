@@ -1,10 +1,11 @@
 ﻿using backend.Models;
 using backend.Models.entity;
 using Microsoft.EntityFrameworkCore;
+using backend.IServices;
 
 namespace backend.Services
 {
-    public class ChargerService
+    public class ChargerService: IChargerService
     {
         private readonly EvChargeDB _context;
         public ChargerService(EvChargeDB context)
