@@ -1,3 +1,4 @@
+using backend.IServices;
 using backend.Models;
 using backend.Services;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<ChargerService>();
-builder.Services.AddScoped<CardService>();
+builder.Services.AddScoped<ICardService, CardService>();
 
 var app = builder.Build();
 

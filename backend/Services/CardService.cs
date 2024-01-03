@@ -1,10 +1,11 @@
 ﻿using backend.Models;
 using backend.Models.entity;
 using Microsoft.EntityFrameworkCore;
+using backend.IServices;
 
 namespace backend.Services
 {
-    public class CardService
+    public class CardService: ICardService
     {
         private readonly EvChargeDB _context;
         public CardService(EvChargeDB context)
