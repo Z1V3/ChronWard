@@ -1,5 +1,5 @@
 # ChronWard - EVCharge
-EVCharge is a Work-Based Learning (WBL) project which is being managed by Faculty of Organisation and Informatics (FOI) and IT company Mobilisis. Project was initialized for the educational purposes for a class called Analysis and Development of Applications.  
+EVCharge is a Work-Based Learning (WBL) project which is being managed by Faculty of Organization and Informatics (FOI) and IT company Mobilisis. Project was initialized for the educational purposes for a class called Analysis and Development of Applications.  
 
 The sole purpose of the project is to simulate charging of personal electric vehicles using RFID cards which are scanned with a mobile phone NFC reader. To achieve this goal we will implement an Android mobile application which will be used to simulate a charger and will have functionalities of managing the RFID cards that user can scan to authenticate themselves and start or stop charging. Also, we will implement a Web application that will be used as a managment and administration system for admins and will have a map so casual users can also find the the chargers more easily.
 

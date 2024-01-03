@@ -1,6 +1,6 @@
-﻿using backend.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using backend.Models.request;
+using backend.IServices;
 
 namespace backend.Controllers
 {
@@ -8,10 +8,10 @@ namespace backend.Controllers
     [ApiController]
     public class CardController : ControllerBase
     {
-        private readonly CardService _cardService;
-        public CardController(CardService cardService)
+        private readonly ICardService _iCardService;
+        public CardController(ICardService iCardService)
         {
-            _cardService = cardService;
+            _iCardService = iCardService;
         }
 
         [HttpGet("getUserCards/{userID}")]
@@ -19,7 +19,7 @@ namespace backend.Controllers
         {
             try
             {
-                var cards = await _cardService.GetCardsByUserId(userID);
+                var cards = await _iCardService.GetCardsByUserId(userID);
                 if (cards == null || cards.Count == 0)
                 {
                     return NotFound(new { Message = "No cards found for this user" });
@@ -42,13 +42,13 @@ namespace backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var existingCard = await _cardService.GetCardByValue(cardAddReq.Value);
+                var existingCard = await _iCardService.GetCardByValue(cardAddReq.Value);
                 if(existingCard != null)
                 {
                     return Conflict(new { Message = "Card with that value already exists" });
                 }
 
-                var newCard = await _cardService.AddNewCard(cardAddReq.Value, cardAddReq.UserID.Value);
+                var newCard = await _iCardService.AddNewCard(cardAddReq.Value, cardAddReq.UserID.Value);
 
                 if (newCard != null)
                 {
@@ -67,7 +67,7 @@ namespace backend.Controllers
         {
             try
             {
-                var authenticatedCard = await _cardService.AuthenticateCard(cardValue);
+                var authenticatedCard = await _iCardService.AuthenticateCard(cardValue);
                 if (authenticatedCard == null)
                 {
                     return NotFound(new { Message = "The card wasn't found or is inactive" });

@@ -1,9 +1,10 @@
 ﻿using backend.Models;
 using backend.Models.entity;
+using backend.IServices;
 
 namespace backend.Services
 {
-    public class UserService
+    public class UserService: IUserService
     {
         private readonly EvChargeDB _context;
 

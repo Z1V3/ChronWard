@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using backend.Services;
+using backend.IServices;
 using backend.Models.request;
 
 namespace backend.Controllers
@@ -8,10 +8,10 @@ namespace backend.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
-        public UserController(UserService userService)
+        private readonly IUserService _iUserService;
+        public UserController(IUserService iUserService)
         {
-            _userService = userService;
+            _iUserService = iUserService;
         }
 
         [HttpPost("login")]
@@ -23,11 +23,11 @@ namespace backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var existingUser = _userService.UserExists(loginRequest.email);
+                var existingUser = _iUserService.UserExists(loginRequest.email);
 
                 if (existingUser == true)
                 {
-                    var authenticatedUser = _userService.AuthenticateUser(loginRequest.email, loginRequest.password);
+                    var authenticatedUser = _iUserService.AuthenticateUser(loginRequest.email, loginRequest.password);
                     if (authenticatedUser != null)
                     {
                         var userResponse = new
@@ -64,7 +64,7 @@ namespace backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var registeredUser = _userService.RegisterUser(
+                var registeredUser = _iUserService.RegisterUser(
                 registrationRequest.username,
                 registrationRequest.email,
                 registrationRequest.password

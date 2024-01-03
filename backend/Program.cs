@@ -1,3 +1,4 @@
+using backend.IServices;
 using backend.Models;
 using backend.Services;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +11,10 @@ var conn = builder.Configuration.GetConnectionString("PostgreSql");
 builder.Services.AddDbContext<EvChargeDB>(options => options.UseNpgsql(conn));
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<EventService>();
-builder.Services.AddScoped<ChargerService>();
-builder.Services.AddScoped<CardService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IChargerService, ChargerService>();
+builder.Services.AddScoped<ICardService, CardService>();
 
 var app = builder.Build();
 
