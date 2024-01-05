@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "17675096509",
+    "project_id": "ev-charge-app-1ccb0",
+    "storage_bucket": "ev-charge-app-1ccb0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17675096509:android:dd910f2a9dfeea501d02d4",
+        "android_client_info": {
+          "package_name": "com.example.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17675096509-5bvt1fp8flvpn9por9fl7upnklllanjn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android",
+            "certificate_hash": "c41f44a2d5ef2b1f4db6f6cb196649a003d5864b"
+          }
+        },
+        {
+          "client_id": "17675096509-a8p6qnftp975o5p6qf4mirsck5o9h9f2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBm13lO_HOXQLIXU3bEMzRElrPTf9mX4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "17675096509-a8p6qnftp975o5p6qf4mirsck5o9h9f2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

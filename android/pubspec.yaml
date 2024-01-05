@@ -41,6 +41,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_nfc_kit: ^3.4.2
   ndef: ^0.3.3
+  firebase_auth: ^4.16.0
+  google_sign_in: ^6.2.1
+  firebase_core: ^2.24.2
 
 dev_dependencies:
   flutter_test:

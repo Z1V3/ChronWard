@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'package:android/pages/user_mode_interface.dart';
 import 'package:android/providers/user_provider.dart';
 import 'package:android/models/user_model.dart';
 import 'package:android/handlers/shared_handler.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:android/pages/registration_page.dart';
 import 'package:flutter/material.dart';
@@ -285,7 +288,9 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                       const SizedBox(width: 5,),
                                       ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          signInWithGoogle();
+                                        },
                                         style: ButtonStyle(
                                           backgroundColor: MaterialStateProperty.all(Colors.lightBlue[300])
                                         ),
@@ -325,5 +330,24 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  signInWithGoogle() async {
+
+    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+
+    );
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    print (userCredential.user?.displayName);
+
+    if (userCredential.user != null) {
+      Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+    }
   }
 }
