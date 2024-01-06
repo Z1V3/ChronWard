@@ -34,7 +34,15 @@ class MyHomePage extends StatelessWidget {
           color: Colors.black,
         ),
         backgroundColor: myColor,
-
+        actions: [
+          IconButton(
+              onPressed: () async{
+                await GoogleSignIn().signOut();
+                FirebaseAuth.instance.signOut();
+                Navigator.pushReplacementNamed(context, 'startMenuRoute');
+              },
+              icon: Icon(Icons.power_settings_new))
+        ],
       ),
       drawer: const YourSideMenuWidget(),
       body: Container(

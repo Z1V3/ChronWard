@@ -298,21 +298,6 @@ class _LoginPageState extends State<LoginPage> {
                                           color: Colors.white
                                         ),),
                                       ),
-                                      const SizedBox(width: 10,),
-                                      Image.asset(
-                                        'assets/biometrics.png',
-                                        width: 30,
-                                        height: 30,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all(Colors.lightBlue[300])
-                                        ),
-                                        child: const Text('Sign in',style: TextStyle(
-                                            color: Colors.white
-                                        ),),
-                                      )
                                     ],
                                   ),
                                 ],
