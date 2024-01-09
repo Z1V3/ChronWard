@@ -7,7 +7,7 @@ create table evchargeschema.users
     email    varchar(50) not null
         constraint unique_email
             unique,
-    password varchar(30) not null,
+    password varchar(60),
     active   boolean     not null,
     created  timestamp   not null,
     role     varchar(30) not null

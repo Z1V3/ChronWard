@@ -1,6 +1,8 @@
 ﻿using backend.Models;
 using backend.Models.entity;
 using backend.IServices;
+using BCrypt.Net;
+using Google.Apis.Auth;
 
 namespace backend.Services
 {
@@ -12,29 +14,45 @@ namespace backend.Services
         {
             _context = context;
         }
-
-        public bool UserExists(string email)
+        public User GetUserByEmail(string email)
         {
-            return _context.Users.Any(u => u.Email == email);
+            return _context.Users.FirstOrDefault(u => u.Email == email);
         }
 
-        public User AuthenticateUser(string email, string password)
+        public bool AuthenticateUser(string password, string hashedPassword)
+        { 
+            bool isPasswordValid = VerifyPassword(password, hashedPassword);
+            if (isPasswordValid)
+            {
+               return true;
+            }
+            return false;
+        }
+        public static string HashPassword(string password)
         {
-            return _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            string salt = BCrypt.Net.BCrypt.GenerateSalt();
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt);
+
+            return hashedPassword;
+        }
+
+        public static bool VerifyPassword(string password, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
 
         public User RegisterUser(string username, string email, string password)
         {
-            if (UserExists(email))
+            if (GetUserByEmail(email) != null)
             {
                 return null;
             }
-
+            string hashedPassword = HashPassword(password);
             var newRegisteredUser = new User
             {
                 Username = username,
                 Email = email,
-                Password = password,
+                Password = hashedPassword,
                 Active = true,
                 Created = DateTime.Now,
                 Role = "user"
@@ -44,6 +62,30 @@ namespace backend.Services
             _context.SaveChanges();
 
             return newRegisteredUser;
+        }
+
+        public User CreateUserFromGoogleSignIn(string email, string name)
+        {
+            var newRegisteredUser = new User
+            {
+                Username = name,
+                Email = email,
+                Active = true,
+                Created = DateTime.Now,
+                Role = "user"
+            };
+
+            _context.Users.Add(newRegisteredUser);
+            _context.SaveChanges();
+
+            return newRegisteredUser;
+        }
+        public GoogleJsonWebSignature.Payload ValidateGoogleIdToken(string googleSignInToken)
+        {
+            var validationSettings = new GoogleJsonWebSignature.ValidationSettings();
+            var payload = GoogleJsonWebSignature.ValidateAsync(googleSignInToken, validationSettings).Result;
+
+            return payload;
         }
     }
 }
