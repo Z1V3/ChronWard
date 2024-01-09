@@ -15,7 +15,7 @@ namespace backend.Models.entity
         public int UserId { get; set; }
         public string Username { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public string Password { get; set; } = null!;
+        public string Password { get; set; }
         public bool Active { get; set; }
         public DateTime Created { get; set; }
         public string Role { get; set; } = null!;

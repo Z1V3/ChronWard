@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "VSiunW+ZPScqGkUhwYxjDVhVIBSue/R+wFcLXaQRTXgjtSZr+Sv4HILNdvJERrrHpbMPESyS0auDFd8bLk3Jkw==",
+  "dgSpecHash": "o/h50CSn0a5+58kPbsNJ1NHwf6wtdMf42T9xXZTNZ1JnOyBga37Wmyna7VZs7v7E+9NjfoeqvGJxrDofZ7LUzQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Rule\\Downloads\\Projekt\\EVCharge\\backend\\backend.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Rule\\.nuget\\packages\\bcrypt.net-core\\1.6.0\\bcrypt.net-core.1.6.0.nupkg.sha512",
     "C:\\Users\\Rule\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Rule\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.25\\microsoft.entityframeworkcore.6.0.25.nupkg.sha512",
     "C:\\Users\\Rule\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\6.0.25\\microsoft.entityframeworkcore.abstractions.6.0.25.nupkg.sha512",
