@@ -2,6 +2,7 @@
 using backend.Models.entity;
 using backend.IServices;
 using BCrypt.Net;
+using Google.Apis.Auth;
 
 namespace backend.Services
 {
@@ -13,21 +14,19 @@ namespace backend.Services
         {
             _context = context;
         }
-
-        public bool UserExists(string email)
+        public User GetUserByEmail(string email)
         {
-            return _context.Users.Any(u => u.Email == email);
+            return _context.Users.FirstOrDefault(u => u.Email == email);
         }
 
-        public User AuthenticateUser(string email, string password)
+        public bool AuthenticateUser(string password, string hashedPassword)
         { 
-            User user = _context.Users.FirstOrDefault(u => u.Email == email);
-            bool isPasswordValid = VerifyPassword(password, user.Password);
+            bool isPasswordValid = VerifyPassword(password, hashedPassword);
             if (isPasswordValid)
             {
-               return user;
+               return true;
             }
-            return null;
+            return false;
         }
         public static string HashPassword(string password)
         {
@@ -44,7 +43,7 @@ namespace backend.Services
 
         public User RegisterUser(string username, string email, string password)
         {
-            if (UserExists(email))
+            if (GetUserByEmail(email) != null)
             {
                 return null;
             }
@@ -63,6 +62,30 @@ namespace backend.Services
             _context.SaveChanges();
 
             return newRegisteredUser;
+        }
+
+        public User CreateUserFromGoogleSignIn(string email, string name)
+        {
+            var newRegisteredUser = new User
+            {
+                Username = name,
+                Email = email,
+                Active = true,
+                Created = DateTime.Now,
+                Role = "user"
+            };
+
+            _context.Users.Add(newRegisteredUser);
+            _context.SaveChanges();
+
+            return newRegisteredUser;
+        }
+        public GoogleJsonWebSignature.Payload ValidateGoogleIdToken(string googleSignInToken)
+        {
+            var validationSettings = new GoogleJsonWebSignature.ValidationSettings();
+            var payload = GoogleJsonWebSignature.ValidateAsync(googleSignInToken, validationSettings).Result;
+
+            return payload;
         }
     }
 }

@@ -23,18 +23,19 @@ namespace backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var existingUser = _iUserService.UserExists(loginRequest.email);
+                var existingUser = _iUserService.GetUserByEmail(loginRequest.email);
 
-                if (existingUser == true)
+                if (existingUser != null)
                 {
-                    var authenticatedUser = _iUserService.AuthenticateUser(loginRequest.email, loginRequest.password);
-                    if (authenticatedUser != null)
+                    bool isPasswordValid = _iUserService.AuthenticateUser(loginRequest.password, existingUser.Password);
+
+                    if (isPasswordValid)
                     {
                         var userResponse = new
                         {
-                            UserId = authenticatedUser.UserId,
-                            Username = authenticatedUser.Username,
-                            Email = authenticatedUser.Email
+                            UserId = existingUser.UserId,
+                            Username = existingUser.Username,
+                            Email = existingUser.Email
                         };
 
                         return Ok(new { Message = "Login successful", User = userResponse });
@@ -91,5 +92,61 @@ namespace backend.Controllers
                 return StatusCode(500, new { Message = "Internal server error" });
             }          
         }
+        [HttpPost("google_login")]
+        public IActionResult GoogleLogin([FromBody] userGoogleLoginRequest googleSignInRequest)
+        {
+            try
+            {
+                var payload =_iUserService.ValidateGoogleIdToken(googleSignInRequest.token);
+
+                if (payload != null)
+                {
+                    string userEmail = payload.Email;
+                    string userName = payload.Name;
+
+                    var existingUser = _iUserService.GetUserByEmail(userEmail);
+
+                    if (existingUser != null)
+                    {
+                        var userResponse = new
+                        {
+                            UserId = existingUser.UserId,
+                            Username = existingUser.Username,
+                            Email = existingUser.Email,
+                        };
+                        return Ok(new { Message = "Login successful", User = userResponse });
+                    }
+                    else
+                    {
+                        var newUser = _iUserService.CreateUserFromGoogleSignIn(userEmail, userName);
+
+                        if (newUser != null)
+                        {
+                            var userResponse = new
+                            {
+                                UserId = newUser.UserId,
+                                Username = newUser.Username,
+                                Email = newUser.Email,
+                            };
+                            return Ok(new { Message = "Registration successful", User = userResponse });
+                        }
+                        else
+                        {
+                            return Conflict(new { Message = "The user could not be created" });
+                        }
+                    }
+                }
+                else
+                {
+                    return BadRequest(new { Message = "Invalid Google ID token" });
+                }
+            }
+            catch
+            {
+                return StatusCode(500, new { Message = "Internal server error"});
+            }
+        }
+
+        
     }
 }
