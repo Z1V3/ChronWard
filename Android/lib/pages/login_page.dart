@@ -22,7 +22,7 @@ final _formKeyLogin = GlobalKey<FormState>();
 
 class ApiConfig {
   static String apiUrl = 'http://${returnAddress()}:8080/api/user/login';
-
+  static String googleApi = 'http://${returnAddress()}:8080/api/user/google_';
   static void setApiUrl(String newUrl) {
     apiUrl = newUrl;
   }
@@ -46,7 +46,6 @@ class _LoginPageState extends State<LoginPage> {
     print('Response status: ${response.statusCode}');
 
     if (response.statusCode == 200) {
-
       Map<String, dynamic> jsonResponse = json.decode(response.body);
 
       int userID = jsonResponse['user']['userId'];
@@ -62,7 +61,6 @@ class _LoginPageState extends State<LoginPage> {
           TextButton(
             onPressed: () {
               Navigator.pushReplacementNamed(context, 'myHomePageRoute');
-
             },
             child: const Text('OK'),
           ),
@@ -106,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
       Future.delayed(const Duration(seconds: 1));
 
       showDialog(context: context, builder: (context) => alertDialog);
-    }else {
+    } else {
       // Failed login
       AlertDialog alertDialog = AlertDialog(
         title: const Text('Login Failed'),
@@ -125,14 +123,18 @@ class _LoginPageState extends State<LoginPage> {
       print('Error: ${response.statusCode}');
       showDialog(context: context, builder: (context) => alertDialog);
     }
-}
+  }
+
   @override
   Widget build(BuildContext context) {
     Future<bool> onWillPop() async {
       Navigator.pushReplacementNamed(context, 'startMenuRoute');
       return false;
     }
-    bool isLoginPage = ModalRoute.of(context)?.settings.name == '/login';
+    bool isLoginPage = ModalRoute
+        .of(context)
+        ?.settings
+        .name == '/login';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue[100],
@@ -148,7 +150,6 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           color: Colors.lightBlue[100],
           child: SingleChildScrollView(
-
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 5.0),
               child: Center(
@@ -168,28 +169,34 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0.2),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 3, vertical: 0.2),
                               decoration: BoxDecoration(
                                 color: Colors.grey[300],
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               child: Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 0.5, vertical: 0.2),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0.5, vertical: 0.2),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
                                   children: [
                                     Expanded(
                                       child: ElevatedButton(
                                         onPressed: () {
                                           Navigator.push(
                                             context,
-                                            MaterialPageRoute(builder: (context) => const RegistrationPage()),
+                                            MaterialPageRoute(builder: (
+                                                context) => const RegistrationPage()),
                                           );
                                         },
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.lightBlue[100],
+                                          backgroundColor: Colors
+                                              .lightBlue[100],
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius: BorderRadius.circular(
+                                                5),
                                           ),
                                         ),
                                         child: const Text(
@@ -203,15 +210,19 @@ class _LoginPageState extends State<LoginPage> {
                                     const SizedBox(width: 5.0),
                                     Expanded(
                                       child: ElevatedButton(
-                                        onPressed: () {
-                                        },
+                                        onPressed: () {},
                                         style: ElevatedButton.styleFrom(
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius: BorderRadius.circular(
+                                                5),
                                           ),
-                                          backgroundColor: isLoginPage ? Colors.lightBlue[100] : Colors.lightBlue[300],
+                                          backgroundColor: isLoginPage ? Colors
+                                              .lightBlue[100] : Colors
+                                              .lightBlue[300],
                                         ),
-                                        child: const Text('Log In', style: TextStyle(color: Colors.white)),
+                                        child: const Text('Log In',
+                                            style: TextStyle(
+                                                color: Colors.white)),
                                       ),
                                     ),
                                   ],
@@ -227,7 +238,8 @@ class _LoginPageState extends State<LoginPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0, vertical: 0.0),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
                                       color: Colors.grey[200],
@@ -243,7 +255,8 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   const SizedBox(height: 16),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0, vertical: 0.0),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
                                       color: Colors.grey[200],
@@ -262,16 +275,18 @@ class _LoginPageState extends State<LoginPage> {
                                     children: [
                                       Expanded(
                                         child: ElevatedButton(
-                                          onPressed: ()  {
+                                          onPressed: () {
                                             loginUser();
                                             //setUserID();
                                           },
                                           style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all(Colors.lightBlue[300]),
+                                            backgroundColor: MaterialStateProperty
+                                                .all(Colors.lightBlue[300]),
                                           ),
                                           child: const Text(
                                             'Login',
-                                            style: TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: Colors.white),
                                           ),
                                         ),
                                       ),
@@ -292,10 +307,12 @@ class _LoginPageState extends State<LoginPage> {
                                           signInWithGoogle();
                                         },
                                         style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.all(Colors.lightBlue[300])
+                                            backgroundColor: MaterialStateProperty
+                                                .all(Colors.lightBlue[300])
                                         ),
-                                        child: const Text('Sign in', style: TextStyle(
-                                          color: Colors.white
+                                        child: const Text(
+                                          'Sign in', style: TextStyle(
+                                            color: Colors.white
                                         ),),
                                       ),
                                     ],
@@ -318,7 +335,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   signInWithGoogle() async {
-
     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
@@ -328,11 +344,23 @@ class _LoginPageState extends State<LoginPage> {
       idToken: googleAuth?.idToken,
 
     );
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-    print (userCredential.user?.displayName);
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithCredential(credential);
+    print(userCredential.user?.displayName);
 
     if (userCredential.user != null) {
       Navigator.pushReplacementNamed(context, 'myHomePageRoute');
     }
+  }
+
+  void sendUserDataToServer(String idToken) async {
+    // Use a package like http or dio to make a POST request to your server
+    // Include the user information in the request body
+    // Example using the http package
+    // Make sure to replace 'your-server-endpoint' with the actual endpoint on your server
+    final response = await http.post(
+        Uri.parse(ApiConfig.googleApi), body: {
+      'idToken': idToken,
+    });
   }
 }
