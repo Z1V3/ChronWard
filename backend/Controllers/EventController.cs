@@ -31,9 +31,9 @@ namespace backend.Controllers
                 }
                 return Ok(new { Message = "Event created successfully" });               
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error" });
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
 
@@ -49,9 +49,9 @@ namespace backend.Controllers
                 }
                 return Ok(events);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal Server Error");
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
     }

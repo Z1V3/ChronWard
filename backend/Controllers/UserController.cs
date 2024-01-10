@@ -52,9 +52,9 @@ namespace backend.Controllers
                     return NotFound(new { Message = "User doesn't exist" });
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error" });
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }         
         }
 
@@ -89,9 +89,9 @@ namespace backend.Controllers
                     return Conflict(new { Message = "User with the same email already exists" });
                 }
             }
-            catch 
+            catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error" });
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }          
         }
         [HttpPost("google_login")]
@@ -143,9 +143,9 @@ namespace backend.Controllers
                     return BadRequest(new { Message = "Invalid Google ID token" });
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error"});
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
 
@@ -175,7 +175,7 @@ namespace backend.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message, StackTrace = ex.StackTrace });
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message});
             }
         }
     }
