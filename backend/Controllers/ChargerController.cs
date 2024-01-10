@@ -37,9 +37,9 @@ namespace backend.Controllers
 
                 return Conflict(new { Message = "Charger not created" });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error" });
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
 
@@ -61,9 +61,9 @@ namespace backend.Controllers
 
                 return Conflict(new { Message = "Charger not updated" });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error" });
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
 
@@ -86,9 +86,9 @@ namespace backend.Controllers
 
                 return Ok(new { Message = "Statistics data successfully returned", Statistics = response });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error" });
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
 
@@ -112,9 +112,9 @@ namespace backend.Controllers
                     return NotFound(new { Message = "Charger not found" });
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error" });
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
     }
