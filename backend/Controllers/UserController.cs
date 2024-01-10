@@ -9,9 +9,11 @@ namespace backend.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _iUserService;
-        public UserController(IUserService iUserService)
+        private readonly IEmailService _emailService;
+        public UserController(IUserService iUserService, IEmailService emailService)
         {
             _iUserService = iUserService;
+            _emailService = emailService;
         }
 
         [HttpPost("login")]
@@ -148,7 +150,7 @@ namespace backend.Controllers
         }
 
         [HttpPost("forgotPassword")]
-        public IActionResult ForgotPassword([FromBody] userForgotPasswordRequest forgotPasswordRequest)
+        public async Task<IActionResult>ForgotPassword([FromBody] userForgotPasswordRequest forgotPasswordRequest)
         {
             try
             {
@@ -162,6 +164,7 @@ namespace backend.Controllers
                 {
                     string newPassword = _iUserService.UserPasswordReset(user);
 
+                    await _emailService.SendPasswordResetEmail(user.Username, user.Email, newPassword);
 
                     return Ok(new { Message = "New password sent to user's email address", newPassword });
                 }
@@ -170,9 +173,9 @@ namespace backend.Controllers
                     return NotFound(new { Message = "User doesn't exist" });
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error" });
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message, StackTrace = ex.StackTrace });
             }
         }
     }
