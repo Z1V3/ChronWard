@@ -87,5 +87,28 @@ namespace backend.Services
 
             return payload;
         }
+        public string UserPasswordReset(User user)
+        {
+            string newPassword = GenerateNewPassword();
+            string hashedPassword = HashPassword(newPassword);
+            SaveNewPassword(user, hashedPassword);
+            return newPassword;
+        }
+        public string GenerateNewPassword()
+        {
+            string newPassword;
+            const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+
+            newPassword = new string(Enumerable.Repeat(allowedChars, 8)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            return newPassword;
+        }
+        private void SaveNewPassword(User user, string hashedPassword)
+        {
+            user.Password = hashedPassword;
+            _context.SaveChanges();
+        }
     }
 }
