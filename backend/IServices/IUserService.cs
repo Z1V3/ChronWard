@@ -10,6 +10,7 @@ namespace backend.IServices
         User RegisterUser(string username, string email, string password);
         User CreateUserFromGoogleSignIn(string email, string name);
         GoogleJsonWebSignature.Payload ValidateGoogleIdToken(string googleSignInToken);
+        string UserPasswordReset(User user);
     }
 }
 
