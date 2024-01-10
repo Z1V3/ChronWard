@@ -27,9 +27,9 @@ namespace backend.Controllers
 
                 return Ok(cards);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "Internal Server Error");
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
 
@@ -57,9 +57,9 @@ namespace backend.Controllers
 
                 return StatusCode(422, new { Message = "Card not added" });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error" });
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
         [HttpGet("authenticateCard/{cardValue}")]
@@ -79,9 +79,9 @@ namespace backend.Controllers
 
                 return Ok(response);
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Internal server error" });
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
     }
