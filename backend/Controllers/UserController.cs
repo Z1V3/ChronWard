@@ -37,7 +37,8 @@ namespace backend.Controllers
                         {
                             UserId = existingUser.UserId,
                             Username = existingUser.Username,
-                            Email = existingUser.Email
+                            Email = existingUser.Email,
+                            Role = existingUser.Role
                         };
 
                         return Ok(new { Message = "Login successful", User = userResponse });
@@ -79,7 +80,8 @@ namespace backend.Controllers
                     {
                         UserId = registeredUser.UserId,
                         Username = registeredUser.Username,
-                        Email = registeredUser.Email
+                        Email = registeredUser.Email,
+                        Role = registeredUser.Role
                     };
 
                     return Ok(new { Message = "Registration successful", User = userResponse });
@@ -115,6 +117,7 @@ namespace backend.Controllers
                             UserId = existingUser.UserId,
                             Username = existingUser.Username,
                             Email = existingUser.Email,
+                            Role = existingUser.Role
                         };
                         return Ok(new { Message = "Login successful", User = userResponse });
                     }
@@ -129,6 +132,7 @@ namespace backend.Controllers
                                 UserId = newUser.UserId,
                                 Username = newUser.Username,
                                 Email = newUser.Email,
+                                Role = newUser.Role
                             };
                             return Ok(new { Message = "Registration successful", User = userResponse });
                         }
@@ -166,7 +170,7 @@ namespace backend.Controllers
 
                     await _emailService.SendPasswordResetEmail(user.Username, user.Email, newPassword);
 
-                    return Ok(new { Message = "New password sent to user's email address", newPassword });
+                    return Ok(new { Message = "New password sent to user's email address"});
                 }
                 else
                 {
