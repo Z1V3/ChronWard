@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
@@ -71,7 +72,7 @@ class MyHomePage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Ivan Horvat',
+                        'jurica',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

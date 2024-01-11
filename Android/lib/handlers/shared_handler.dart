@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedHandlerUtil {
   static const String keyUserID = 'userID';
+  static const String keyUsername = 'username';
 
   static Future<void> saveUserID(int userID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -12,5 +13,14 @@ class SharedHandlerUtil {
   static Future<int?> getUserID() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt(keyUserID);
+  }
+  static Future<void> saveUsername(String username) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(keyUsername, username);
+  }
+
+  static Future<String?> getUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(keyUsername);
   }
 }

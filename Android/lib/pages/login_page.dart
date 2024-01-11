@@ -20,13 +20,25 @@ class LoginPage extends StatefulWidget {
 
 final _formKeyLogin = GlobalKey<FormState>();
 
+class User {
+  final String uid;
+  final String displayName;
+  final String email;
+
+  User({
+    required this.uid,
+    required this.displayName,
+    required this.email,
+  });
+}
 class ApiConfig {
   static String apiUrl = 'http://${returnAddress()}:8080/api/user/login';
-  static String googleApi = 'http://${returnAddress()}:8080/api/user/google_';
+  static String googleApi = 'http://${returnAddress()}:8080/api/user/google_login';
   static void setApiUrl(String newUrl) {
     apiUrl = newUrl;
   }
 }
+
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -49,10 +61,13 @@ class _LoginPageState extends State<LoginPage> {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
 
       int userID = jsonResponse['user']['userId'];
+      String username = jsonResponse['user']['username'];
       UserModel user = UserModel(userID);
       await SharedHandlerUtil.saveUserID(userID);
+      await SharedHandlerUtil.saveUsername(username);
       Provider.of<UserProvider>(context, listen: false).setUser(user);
       print('User ID: $userID');
+      print('username: $username');
 
       AlertDialog alertDialog = AlertDialog(
         title: const Text('Login Successful'),
@@ -344,23 +359,40 @@ class _LoginPageState extends State<LoginPage> {
       idToken: googleAuth?.idToken,
 
     );
-    UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithCredential(credential);
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
     print(userCredential.user?.displayName);
 
+
     if (userCredential.user != null) {
+      String? idToken = googleAuth?.idToken;
+      //String? base64IdToken = base64Url.encode(utf8.encode(idToken!));
+      await sendIdTokenToBackend(idToken);
+      //await SharedHandlerUtil.saveUsername(userCredential.user!.displayName!);
       Navigator.pushReplacementNamed(context, 'myHomePageRoute');
     }
   }
+  Future<void> sendIdTokenToBackend(String? idToken) async {
+    final String backendApiUrl = ApiConfig.googleApi;
 
-  void sendUserDataToServer(String idToken) async {
-    // Use a package like http or dio to make a POST request to your server
-    // Include the user information in the request body
-    // Example using the http package
-    // Make sure to replace 'your-server-endpoint' with the actual endpoint on your server
-    final response = await http.post(
-        Uri.parse(ApiConfig.googleApi), body: {
-      'idToken': idToken,
-    });
+    try {
+      final response = await http.post(
+        Uri.parse(backendApiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'token': idToken,
+        }),
+      );
+      if (response.statusCode == 200) {
+        print('ID token sent successfully');
+      } else {
+        print('Failed to send ID token. Status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (error) {
+      print('Error sending IdToken to backend: $error');
+    }
   }
+
 }
