@@ -76,15 +76,7 @@ namespace backend.Controllers
 
                 if (registeredUser != null)
                 {
-                    var userResponse = new
-                    {
-                        UserId = registeredUser.UserId,
-                        Username = registeredUser.Username,
-                        Email = registeredUser.Email,
-                        Role = registeredUser.Role
-                    };
-
-                    return Ok(new { Message = "Registration successful", User = userResponse });
+                    return Ok(new { Message = "Registration successful" });
                 }
                 else
                 {

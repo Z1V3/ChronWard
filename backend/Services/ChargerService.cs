@@ -20,7 +20,12 @@ namespace backend.Services
         }
         public async Task<Charger> CreateNewCharger(string name, decimal latitude, decimal longitude, int creator)
         {
-
+            if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
+            {
+                return null;
+            }
+            latitude = Math.Round(latitude, 4);
+            longitude = Math.Round(longitude, 4);
             var newCharger = new Charger
             {
                 Name = name,
@@ -47,18 +52,37 @@ namespace backend.Services
         public async Task<Charger> UpdateExistingCharger(int chargerID, string name, decimal latitude, decimal longitude, bool active)
         {
             Charger existingCharger = await GetChargerByID(chargerID);
+
             if (existingCharger != null)
             {
+                if (existingCharger.Name != name)
+                {
+                    Charger duplicateCharger = await GetChargerByName(name);
+
+                    if (duplicateCharger != null && duplicateCharger.ChargerId != chargerID)
+                    {
+                        return null;
+                    }
+                }
+
+                if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
+                {
+                    return null;
+                }
+                latitude = Math.Round(latitude, 4);
+                longitude = Math.Round(longitude, 4);
+
                 existingCharger.Name = name;
                 existingCharger.Latitude = latitude;
                 existingCharger.Longitude = longitude;
                 existingCharger.Active = active;
 
-                await _context.SaveChangesAsync();              
-            }
-            return existingCharger;
-        }
+                await _context.SaveChangesAsync();
 
+                return existingCharger;
+            }
+            return null;
+        }
         public async Task<Charger> UpdateChargerAvailability(int chargerID, bool occupied)
         {
             Charger existingCharger = await GetChargerByID(chargerID);
