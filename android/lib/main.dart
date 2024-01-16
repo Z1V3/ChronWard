@@ -1,14 +1,14 @@
-import 'package:android/pages/add_card_page.dart';
-import 'package:android/pages/charge_mode_page.dart';
-import 'package:android/pages/charging_history.dart';
-import 'package:android/pages/login_page.dart';
-import 'package:android/pages/registration_page.dart';
+import 'package:android/presentation/add_card_page.dart';
+import 'package:android/presentation/charge_mode_page.dart';
+import 'package:android/presentation/charging_history.dart';
+import 'package:android/presentation/login_page.dart';
+import 'package:android/presentation/registration_page.dart';
 import 'package:flutter/material.dart';
-import 'package:android/pages/user_mode_page.dart';
-import 'package:android/providers/user_provider.dart';
+import 'package:android/presentation/user_mode_page.dart';
+import 'package:core/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:android/pages/start_menu.dart';
-import 'package:android/pages/receipt_report.dart';
+import 'package:android/presentation/start_menu.dart';
+import 'package:android/presentation/receipt_report.dart';
 
 void main() {
   runApp(const MyApp());

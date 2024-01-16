@@ -41,6 +41,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_nfc_kit: ^3.4.2
   ndef: ^0.3.3
+  core:
+    path: ./core
+  ws:
+    path: ./ws
 
 dev_dependencies:
   flutter_test:

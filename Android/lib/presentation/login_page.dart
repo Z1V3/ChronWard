@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:android/providers/user_provider.dart';
-import 'package:android/models/user_model.dart';
-import 'package:android/handlers/shared_handler.dart';
+import 'package:core/providers/user_provider.dart';
+import 'package:core/models/user_model.dart';
+import 'package:core/handlers/shared_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:android/pages/registration_page.dart';
+import 'package:android/presentation/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:android/privateAddress.dart';
