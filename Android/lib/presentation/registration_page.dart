@@ -2,7 +2,7 @@ import 'package:android/presentation/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:android/privateAddress.dart';
+import 'package:ws/privateAddress.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);

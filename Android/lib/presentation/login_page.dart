@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:android/presentation/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:android/privateAddress.dart';
+import 'package:ws/privateAddress.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

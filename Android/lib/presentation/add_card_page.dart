@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:android/privateAddress.dart';
+import 'package:ws/privateAddress.dart';
 import 'package:core/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 

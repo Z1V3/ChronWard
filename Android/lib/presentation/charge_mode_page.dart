@@ -1,12 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:android/presentation/charging_info.dart';
+import 'package:android/domain/use_cases/create_charging_event.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:android/privateAddress.dart';
 import 'package:core/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:core/utils/duration_formatter.dart';
+import 'package:android/domain/controllers/charger_controller.dart';
+import 'package:ws/services/charging_service.dart';
+import 'package:android/domain/use_cases/update_charger_availability.dart';
 
 
 class ChargeModePage extends StatefulWidget {
@@ -16,123 +17,24 @@ class ChargeModePage extends StatefulWidget {
   State<ChargeModePage> createState() => _ChargeModePageState();
 }
 
-class ChargingData {
-  String startTime;
-  String endTime;
-  String chargeTime;
-  double volume;
-  double price;
-  int userID;
-  int chargerID;
-
-  ChargingData({
-    required this.startTime,
-    required this.endTime,
-    required this.chargeTime,
-    required this.volume,
-    required this.price,
-    required this.userID,
-    required this.chargerID,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'startTime': startTime,
-      'endTime': endTime,
-      'chargeTime': chargeTime,
-      'volume': volume,
-      'price': price,
-      'userID': userID,
-      'chargerID': chargerID,
-    };
-  }
-}
-
 class _ChargeModePageState extends State<ChargeModePage>{
-  double counter = 0.00;
-  double volumeCharge = 0.00, priceCharge = 0.00;
+  late ChargeController _chargeController;
+
+  @override
+  void initState() {
+    super.initState();
+    _chargeController = ChargeController(UpdateChargerAvailability(ChargingService()),
+        CreateChargingEvent(ChargingService()));
+  }
 
   late Timer _timer;
   bool isRunning = false;
 
+  double counter = 0.00;
+  double volumeCharge = 0.00, priceCharge = 0.00;
+
   String formattedDateTimeStart = "/", formattedDateTimeEnd = "/", formattedDuration = "/";
-  final TextEditingController _textFieldController = TextEditingController();
-  int globalUserID = 0;
-
-  String formatCounterToDuration(int seconds) {
-    Duration duration = Duration(seconds: seconds);
-    int minutes = duration.inMinutes % 60;
-    int remainingSeconds = duration.inSeconds % 60;
-
-    int hours = duration.inHours;
-    String hoursStr = hours.toString().padLeft(2, '0');
-    String minutesStr = minutes.toString().padLeft(2, '0');
-    String secondsStr = remainingSeconds.toString().padLeft(2, '0');
-
-    return "$hoursStr:$minutesStr:$secondsStr";
-  }
-
-    Future<void> sendChargerOccupation(int chargerID, bool occupied) async {
-    final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/charger/updateChargerAvailability');
-
-    try {
-
-      final response = await http.post(
-        uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'chargerID': chargerID,
-          'occupied': occupied,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        print('Request successful');
-        print('Response: ${response.body}');
-      } else {
-        print('Request failed with status: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error sending POST request: $e');
-    }
-  }
-
-  Future<void> sendCreateEvent(String startTime, String endTime, String chargeTime, double volume, double price) async {
-    final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/event/createEvent');
-
-    int userID = Provider.of<UserProvider>(context, listen: false).user?.userID ?? 0;
-    globalUserID = userID;
-    try {
-      ChargingData chargingData = ChargingData(
-        startTime: startTime,
-        endTime: endTime,
-        chargeTime: chargeTime,
-        volume: volume,
-        price: price,
-        userID: userID,
-        chargerID: 2,
-      );
-
-      final response = await http.post(
-        uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(chargingData.toJson()),
-      );
-
-      if (response.statusCode == 200) {
-        print('Request successful');
-        print('Response: ${response.body}');
-      } else {
-        print('Request failed with status: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error sending POST request: $e');
-    }
-  }
+  int globalUserID = 0;   // This is being outputted to the user so in the production version make it not be hardcoded or don't log it at all
 
   @override
   void dispose() {
@@ -161,7 +63,7 @@ class _ChargeModePageState extends State<ChargeModePage>{
       setState(() {
         isRunning = true;
       });
-      sendChargerOccupation(1, true);
+      _chargeController.updateChargerAvailability(1, true);
       DateTime now = DateTime.now();
       formattedDateTimeStart = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
     }
@@ -177,14 +79,14 @@ class _ChargeModePageState extends State<ChargeModePage>{
 
       counter = counter/10;
       int unformattedDuration = counter.toInt();
-      formattedDuration = formatCounterToDuration(unformattedDuration);
+      formattedDuration = DurationFormatter.formatCounterToDuration(unformattedDuration);
 
       volumeCharge = double.parse(((counter*2.361)/10).toStringAsExponential(3));
       priceCharge = double.parse(((counter*1.5)/10).toStringAsExponential(3));
 
 
-      sendChargerOccupation(1, false);
-      sendCreateEvent(formattedDateTimeStart, formattedDateTimeEnd, formattedDuration, volumeCharge, priceCharge);
+      _chargeController.updateChargerAvailability(1, false);
+      _chargeController.createChargingEvent(formattedDateTimeStart, formattedDateTimeEnd, formattedDuration, volumeCharge, priceCharge);
     }
     print('UserID: $globalUserID');
     print('Time charged: $counter seconds');
