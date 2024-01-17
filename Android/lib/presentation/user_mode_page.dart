@@ -1,3 +1,4 @@
+import 'package:android/pages/rfid_cards_page.dart';
 import 'package:flutter/material.dart';
 
 class UserModePage extends StatelessWidget {
@@ -125,6 +126,10 @@ class UserModePage extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const RfidCardsPage()),
+                            );
                           },
                           icon: const Icon(Icons.credit_card,
                               size: 30, color: Colors.black),

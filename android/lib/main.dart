@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
           'userModePageRoute': (context) => const UserModePage(),
           'chargeHistoryPageRoute': (context) => const ChargingHistoryPage(),
           'addCardPageRoute': (context) => const AddCardPage(),
+          'rfidCardsPage': (context) => const RfidCardsPage(),
           'receiptRoute': (context) => ReceiptScreen(
             chargingStationName: 'Koprivnica Charging Station',
             chargingStationLocation: 'Koprivnica, Croatia',
