@@ -1,5 +1,5 @@
-import 'package:android/pages/charge_mode_page.dart';
-import 'package:android/pages/login_page.dart';
+import 'package:android/presentation/charge_mode_page.dart';
+import 'package:android/presentation/login_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';

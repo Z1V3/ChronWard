@@ -1,8 +1,8 @@
-import 'package:android/pages/rfid_cards_page.dart';
+import 'package:android/presentation/rfid_cards_page.dart';
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class UserModePage extends StatelessWidget {
+  const UserModePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +144,7 @@ class MyHomePage extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
+                            Navigator.pushReplacementNamed(context, 'addCardPageRoute');
                           },
                           icon: const Icon(Icons.add, size: 30, color: Colors.black),
                         ),
