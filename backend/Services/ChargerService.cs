@@ -115,5 +115,11 @@ namespace backend.Services
         {
             return _context.Chargers.CountAsync(c => c.Active && c.Occupied);
         }
+        public async Task<List<Charger>> GetAllChargers()
+        {
+            var chargers = await _context.Chargers.ToListAsync();
+            return chargers;
+        }
+
     }
 }
