@@ -8,8 +8,8 @@ const mapContainerStyle = {
   height: "100vh",
 };
 const center = {
-  lat: 37.835819, // default latitude
-  lng: -98.964961, // default longitude
+  lat: 46.308849, // default latitude
+  lng: 16.33885, // default longitude
 };
 
 const Map = () => {
