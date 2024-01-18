@@ -2,11 +2,11 @@ version: '3.4'
 
 networks:
   dev:
-    driver: nat
+    driver: bridge
     
 services:          
     app_db:
-        image: stellirin/postgres-windows
+        image: postgres
         container_name: app_db
         environment:
             - POSTGRES_USER=postgres
@@ -18,8 +18,8 @@ services:
         networks:
            - dev
         volumes:
-             - .\pg_data:C:\var\lib\postgresql\data
-             - .\SqlScripts:C:\docker-entrypoint-initdb.d\
+             - ./pg_data:/var/lib/postgresql/data
+             - ./SqlScripts:/docker-entrypoint-initdb.d/
 
     evchargeapi:
         image: evchargeapi
