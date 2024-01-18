@@ -1,6 +1,7 @@
 ﻿using backend.IServices;
 using Microsoft.AspNetCore.Mvc;
 using backend.Models.request;
+using backend.Services;
 
 namespace backend.Controllers
 {
@@ -117,5 +118,25 @@ namespace backend.Controllers
                 return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
+        [HttpGet("getAllChargers")]
+        public async Task<IActionResult> GetAllChargers()
+        {
+            try
+            {
+                var chargers = await _iChargerService.GetAllChargers();
+
+                if (chargers == null || chargers.Count == 0)
+                {
+                    return NotFound(new { Message = "No chargers found" });
+                }
+
+                return Ok(new { Message = "Chargers successfully returned", Chargers = chargers });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
+            }
+        }
+
     }
 }
