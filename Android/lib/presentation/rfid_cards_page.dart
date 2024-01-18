@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:android/providers/user_provider.dart';
+import 'package:core/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:android/privateAddress.dart';
+import 'package:ws/privateAddress.dart';
 
 class RfidCardsPage extends StatefulWidget {
   const RfidCardsPage({Key? key}) : super(key: key);

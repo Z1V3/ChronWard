@@ -1,4 +1,4 @@
-import 'package:android/pages/rfid_cards_page.dart';
+import 'package:android/presentation/rfid_cards_page.dart';
 import 'package:flutter/material.dart';
 
 class UserModePage extends StatelessWidget {

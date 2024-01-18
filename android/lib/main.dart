@@ -9,6 +9,7 @@ import 'package:core/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:android/presentation/start_menu.dart';
 import 'package:android/presentation/receipt_report.dart';
+import 'package:android/presentation/rfid_cards_page.dart';
 
 void main() {
   runApp(const MyApp());
