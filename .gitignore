@@ -1,2 +1,5 @@
 # Default ignored files
 .idea/
+backend/.vs
+backend/obj
+backend/pg_data
