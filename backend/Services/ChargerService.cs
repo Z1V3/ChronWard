@@ -83,6 +83,7 @@ namespace backend.Services
             }
             return null;
         }
+
         public async Task<Charger> UpdateChargerAvailability(int chargerID, bool occupied)
         {
             Charger existingCharger = await GetChargerByID(chargerID);

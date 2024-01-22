@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Models.request;
 using backend.Services;
+using backend.Models.entity;
 
 namespace backend.Controllers
 {
@@ -45,7 +46,7 @@ namespace backend.Controllers
         }
 
         [HttpPost("updateCharger")]
-        public async Task<IActionResult> updateCharger([FromBody] chargerUpdateRequest chargerUpdateReq)
+        public async Task<IActionResult> UpdateCharger([FromBody] chargerUpdateRequest chargerUpdateReq)
         {
             try
             {
@@ -53,7 +54,20 @@ namespace backend.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var updatedCharger = await _iChargerService.UpdateExistingCharger(chargerUpdateReq.ChargerID.Value, chargerUpdateReq.Name, chargerUpdateReq.Latitude.Value, chargerUpdateReq.Longitude.Value, chargerUpdateReq.Active.Value);
+
+                Charger updatedCharger = null;
+
+                var existingCharger = await _iChargerService.GetChargerByID(chargerUpdateReq.ChargerID.Value);
+                if (existingCharger != null && existingCharger.Name != chargerUpdateReq.Name)
+                {
+                    var duplicateCharger = await _iChargerService.GetChargerByName(chargerUpdateReq.Name);
+                    if (duplicateCharger != null && duplicateCharger.ChargerId != chargerUpdateReq.ChargerID)
+                    {
+                        return Conflict(new { Message = "Charger with the same name already exists" });
+                    }
+                }
+
+                updatedCharger = await _iChargerService.UpdateExistingCharger(chargerUpdateReq.ChargerID.Value, chargerUpdateReq.Name, chargerUpdateReq.Latitude.Value, chargerUpdateReq.Longitude.Value, chargerUpdateReq.Active.Value);
 
                 if (updatedCharger != null)
                 {
