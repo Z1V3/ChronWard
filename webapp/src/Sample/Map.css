@@ -1,10 +1,20 @@
 /* Map.css (create a new CSS file named Map.css) */
 
 /* Styling for the Map container */
+/* MapContainer.css */
 .MapContainer {
-    height: 400px;
+    padding-top: 138px;
     width: 100%;
+    height: 60vh;
+    right: 20%;
+    margin: 0 auto;
+    margin-top: 20px;
+    position: relative;
+    z-index: -1; /* Set a lower z-index than the header */
 }
+
+
+
 
 /* Style for the form to add a new charger */
 .AddChargerForm {

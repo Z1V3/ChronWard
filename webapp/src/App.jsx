@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./App.css";
 import AddChargerModal from "./components/AddEditChargerModal/AddChargerModal";
 import Map from "./Sample/Map";
+import HistoryButton from './components/ViewChargingHistory/HistoryButton';
+import ChargerAvailabilityHeader from './components/DisplayChargerAvailability/ChargerAvailabilityHeader';
 
 function App() {
   const [isAddChargerModalOpen, setIsAddChargerModalOpen] = useState(false);
@@ -21,9 +23,10 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header"></header>
-      <div className="map-container">
-        <Map chargersUpdated={chargersUpdated} chargersUpdatedCallback={handleChargersUpdated} />
+      <ChargerAvailabilityHeader />
+      <Map chargersUpdated={chargersUpdated} chargersUpdatedCallback={handleChargersUpdated} />
+      <div>
+        <HistoryButton />
       </div>
       <div>
         <button onClick={openAddChargerModal}>Add charging station</button>

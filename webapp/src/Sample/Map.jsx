@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import apiOrigin from "../api/api";
 import EditChargerModal from "../components/AddEditChargerModal/EditChargerModal";
+import './Map.css';
 
 const libraries = ["places"];
 const mapContainerStyle = {
   width: "80%",
-  height: "100vh",
+  height: "75vh",
   margin: "0 auto",
 };
 const center = {
@@ -63,7 +64,7 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
   }
 
   return (
-    <div>
+    <div className="MapContainer">
       <GoogleMap mapContainerStyle={mapContainerStyle} zoom={12} center={center}>
         {chargerData.map((charger) => (
           <Marker

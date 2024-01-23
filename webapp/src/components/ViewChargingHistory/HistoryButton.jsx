@@ -1,6 +1,6 @@
 // HistoryButton.js
 import React, { useState, useEffect } from 'react';
-import { getChargingSessionsByUserId } from '../api/eventHistory';
+import { getChargingSessionsByUserId } from '../../api/event';
 import ChargingHistoryList from './ChargingHistoryList';
 import './HistoryButton.css'; // Import the HistoryButton styles
 
