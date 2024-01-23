@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-import apiOrigin from "@/api/api";
+import { fetchChargerData } from "@/api/map";
 
 const libraries = ["places"];
 const mapContainerStyle = {
@@ -16,13 +16,12 @@ const Map = () => {
   const [chargerData, setChargerData] = useState([]);
 
   useEffect(() => {
-    const fetchChargerData = async () => {
-      const response = await fetch(`${apiOrigin}/charger/getAllChargers`);
-      const data = await response.json();
-      setChargerData(data.chargers);
+    const getChargers = async () => {
+      const chargers = await fetchChargerData();
+      setChargerData(chargers);
     };
 
-    fetchChargerData();
+    getChargers();
   }, []);
 
   const { isLoaded, loadError } = useLoadScript({

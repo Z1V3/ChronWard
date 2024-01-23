@@ -1,7 +1,9 @@
+"use client";
+
 import React, { useState } from "react";
-import AddChargerModal from "./components/AddEditChargerModal/AddChargerModal";
 import Navbar from "@/components/Navbar/Navbar";
 import Map from "@/components/Map/Map";
+import AddChargerModal from "@/components/AddEditChargerModal/AddChargerModal";
 
 function App() {
   const [isAddChargerModalOpen, setIsAddChargerModalOpen] = useState(false);
@@ -17,6 +19,7 @@ function App() {
   return (
     <div className="App">
       <Navbar />
+      <Map />
       <header className="App-header">
         <button onClick={openAddChargerModal}>Add charging station</button>
         {isAddChargerModalOpen && (
@@ -25,9 +28,7 @@ function App() {
           </div>
         )}
       </header>
-      <div className="map-container">
-        <Map />
-      </div>
+      <div className="map-container"></div>
     </div>
   );
 }
