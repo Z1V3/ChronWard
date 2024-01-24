@@ -1,0 +1,15 @@
+.button-styleA {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-styleA:disabled {
+  background-color: #7f8c8d !important;
+  cursor: not-allowed;
+}

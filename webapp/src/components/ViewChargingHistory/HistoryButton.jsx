@@ -1,8 +1,7 @@
-// HistoryButton.js
 import React, { useState, useEffect } from 'react';
 import { getChargingSessionsByUserId } from '../../api/event';
 import ChargingHistoryList from './ChargingHistoryList';
-import './HistoryButton.css'; // Import the HistoryButton styles
+import './HistoryButton.css';
 
 const HistoryButton = () => {
   const [chargingSessions, setChargingSessions] = useState([]);
@@ -13,13 +12,12 @@ const HistoryButton = () => {
     const fetchChargingHistory = async () => {
       try {
         setIsLoading(true);
-        const userId = 1; // Replace with the actual user ID
+        const userId = 1;
         const sessions = await getChargingSessionsByUserId(userId);
         setChargingSessions(sessions);
         setModalIsOpen(true);
       } catch (error) {
         console.error('Error fetching charging history:', error.message);
-        // Implement error handling logic if needed
       } finally {
         setIsLoading(false);
       }

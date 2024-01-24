@@ -1,5 +1,3 @@
-// ChargerAvailabilityHeader.jsx
-
 import React, { useState, useEffect } from 'react';
 import { getChargersStatistics } from '../../api/charger';
 import './ChargerAvailabilityHeader.css';

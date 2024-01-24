@@ -8,7 +8,8 @@ const libraries = ["places"];
 const mapContainerStyle = {
   width: "80%",
   height: "75vh",
-  margin: "0 auto",
+  position: "relative",
+  zIndex: 1,
 };
 const center = {
   lat: 46.308849,
@@ -30,8 +31,6 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
 
   const closeEditChargerModal = () => {
     setIsEditChargerModalOpen(false);
-    setSelectedCharger(null);
-    setClickedMarker(null);
   };
 
   useEffect(() => {
@@ -64,28 +63,28 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
   }
 
   return (
-    <div className="MapContainer">
-      <GoogleMap mapContainerStyle={mapContainerStyle} zoom={12} center={center}>
-        {chargerData.map((charger) => (
-          <Marker
-            key={charger.chargerId}
-            position={{ lat: charger.latitude, lng: charger.longitude }}
-            onClick={() => handleMarkerClick(charger)}
-            options={{
-              icon: {
-                path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                scale: 5,
-                fillColor: clickedMarker && clickedMarker.chargerId === charger.chargerId ? "red" : "blue",
-                fillOpacity: 1,
-                strokeColor: "black",
-                strokeWeight: 1,
-                rotation: 0,
-              },
-            }}
-          />
-        ))}
-      </GoogleMap>
-      <button onClick={openEditChargerModal} disabled={!isEditButtonEnabled}>
+    <div>
+        <GoogleMap mapContainerStyle={mapContainerStyle} zoom={12} center={center}>
+          {chargerData.map((charger) => (
+            <Marker
+              key={charger.chargerId}
+              position={{ lat: charger.latitude, lng: charger.longitude }}
+              onClick={() => handleMarkerClick(charger)}
+              options={{
+                icon: {
+                  path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                  scale: 5,
+                  fillColor: clickedMarker && clickedMarker.chargerId === charger.chargerId ? "red" : "blue",
+                  fillOpacity: 1,
+                  strokeColor: "black",
+                  strokeWeight: 1,
+                  rotation: 0,
+                },
+              }}
+            />
+          ))}
+        </GoogleMap>   
+      <button class="button-styleA" onClick={openEditChargerModal} disabled={!isEditButtonEnabled}>
         Edit Charger Station
       </button>
       {isEditChargerModalOpen && (

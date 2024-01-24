@@ -8,6 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 }
 
 .add-charger,
@@ -35,16 +36,6 @@ input {
     box-sizing: border-box;
 }
 
-.modal-overlay,
-.modal {
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    position: relative;
-    color: black;
-}
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -55,6 +46,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 3;
 }
 
 .close {

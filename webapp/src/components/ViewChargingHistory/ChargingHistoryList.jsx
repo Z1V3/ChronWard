@@ -1,4 +1,3 @@
-// ChargingHistoryList.js
 import React from 'react';
 import Modal from 'react-modal';
 import './ChargingHistoryList.css';
