@@ -1,7 +1,7 @@
 import 'package:android/presentation/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:core/bloc/auth_bloc.dart';
-import 'package:core/bloc/google_login_bloc.dart';
+import 'package:core/bloc/google_log_in_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

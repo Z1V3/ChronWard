@@ -1,5 +1,6 @@
 import 'package:android/presentation/rfid_cards_page.dart';
 import 'package:flutter/material.dart';
+import 'package:core/bloc/google_sign_out_bloc.dart';
 
 class UserModePage extends StatelessWidget {
   const UserModePage({Key? key}) : super(key: key);
@@ -33,6 +34,14 @@ class UserModePage extends StatelessWidget {
           color: Colors.black,
         ),
         backgroundColor: myColor,
+        actions: [
+          IconButton(
+            onPressed: () async{
+              GoogleSignOutService.signOutWithGoogle(context);
+            },
+            icon: Icon(Icons.power_settings_new)
+          )
+        ],
       ),
       drawer: const YourSideMenuWidget(),
       body: Container(
