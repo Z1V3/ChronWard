@@ -120,7 +120,7 @@ class UserModePage extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
-                            Navigator.pushReplacementNamed(context, 'chargeHistoryPage');
+                            Navigator.pushReplacementNamed(context, 'chargeHistoryPageRoute');
                           },
                           icon: const Icon(Icons.history,
                               size: 30, color: Colors.black),
