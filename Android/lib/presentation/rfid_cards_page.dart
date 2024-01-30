@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:ws/privateAddress.dart';
+import 'package:android/presentation/drawer_widget.dart';
 
 class RfidCardsPage extends StatefulWidget {
   const RfidCardsPage({Key? key}) : super(key: key);
@@ -83,6 +84,7 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
           },
         ),
       ),
+      drawer: DrawerWidget(),
       body: Container(
         color: Colors.black87,
         child: ListView.builder(

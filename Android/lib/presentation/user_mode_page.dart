@@ -1,6 +1,7 @@
 import 'package:android/presentation/rfid_cards_page.dart';
 import 'package:flutter/material.dart';
 import 'package:core/bloc/google_sign_out_bloc.dart';
+import 'package:android/presentation/drawer_widget.dart';
 
 class UserModePage extends StatelessWidget {
   const UserModePage({Key? key}) : super(key: key);
@@ -43,7 +44,7 @@ class UserModePage extends StatelessWidget {
           )
         ],
       ),
-      drawer: const YourSideMenuWidget(),
+      drawer: const DrawerWidget(),
       body: Container(
         color: myColor,
         child: Column(
@@ -169,61 +170,6 @@ class UserModePage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class YourSideMenuWidget extends StatelessWidget {
-  const YourSideMenuWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    const Color myColor = Color(0xFFADD8E6);
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: myColor,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Menu',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.history),
-            title: const Text('Charging History'),
-            onTap: () {
-              Navigator.pushReplacementNamed(context, 'chargeHistoryPage');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.credit_card),
-            title: const Text('My Cards'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.add),
-            title: const Text('Add Card'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
       ),
     );
   }
