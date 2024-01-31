@@ -1,12 +1,7 @@
-import 'dart:convert';
-import 'package:core/providers/user_provider.dart';
-import 'package:core/models/user_model.dart';
-import 'package:core/handlers/shared_handler.dart';
-import 'package:provider/provider.dart';
 import 'package:android/presentation/registration_page.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:ws/privateAddress.dart';
+import 'package:core/bloc/auth_bloc.dart';
+import 'package:core/bloc/google_log_in_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -17,112 +12,13 @@ class LoginPage extends StatefulWidget {
 
 final _formKeyLogin = GlobalKey<FormState>();
 
-class ApiConfig {
-  static String apiUrl = 'http://${returnAddress()}:8080/api/user/login';
-
-  static void setApiUrl(String newUrl) {
-    apiUrl = newUrl;
-  }
-}
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> loginUser() async {
-    final String apiUrl = ApiConfig.apiUrl;
-
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'email': _emailController.text,
-        'password': _passwordController.text,
-      }),
-    );
-
-    print('Response status: ${response.statusCode}');
-
-    if (response.statusCode == 200) {
-
-      Map<String, dynamic> jsonResponse = json.decode(response.body);
-
-      int userID = jsonResponse['user']['userId'];
-      UserModel user = UserModel(userID);
-      await SharedHandlerUtil.saveUserID(userID);
-      Provider.of<UserProvider>(context, listen: false).setUser(user);
-      print('User ID: $userID');
-
-      AlertDialog alertDialog = AlertDialog(
-        title: const Text('Login Successful'),
-        content: const Text('Welcome!'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, 'userModePageRoute');
-
-            },
-            child: const Text('OK'),
-          ),
-        ],);
-
-      Future.delayed(const Duration(seconds: 1));
-
-      showDialog(context: context, builder: (context) => alertDialog);
-    } else if (response.statusCode == 404) {
-      // Failed login
-      AlertDialog alertDialog = AlertDialog(
-        title: const Text('Login Failed'),
-        content: const Text('User not found.'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      );
-
-      Future.delayed(const Duration(seconds: 1));
-
-      showDialog(context: context, builder: (context) => alertDialog);
-    } else if (response.statusCode == 401) {
-      AlertDialog alertDialog = AlertDialog(
-        title: const Text('Login Failed'),
-        content: const Text('Wrong password.'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      );
-
-      Future.delayed(const Duration(seconds: 1));
-
-      showDialog(context: context, builder: (context) => alertDialog);
-    }else {
-      // Failed login
-      AlertDialog alertDialog = AlertDialog(
-        title: const Text('Login Failed'),
-        content: const Text('Unexpected error occurred.'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      );
-
-      Future.delayed(const Duration(seconds: 1));
-      print('Error: ${response.statusCode}');
-      showDialog(context: context, builder: (context) => alertDialog);
-    }
-}
+    AuthService.loginUser(context, _emailController.text, _passwordController.text);
+  }
   @override
   Widget build(BuildContext context) {
     Future<bool> onWillPop() async {
@@ -285,29 +181,16 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                       const SizedBox(width: 5,),
                                       ElevatedButton(
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          backgroundColor: MaterialStateProperty.all(Colors.lightBlue[300])
-                                        ),
-                                        child: const Text('Sign in', style: TextStyle(
-                                          color: Colors.white
-                                        ),),
-                                      ),
-                                      const SizedBox(width: 10,),
-                                      Image.asset(
-                                        'assets/biometrics.png',
-                                        width: 30,
-                                        height: 30,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          GoogleSignInService.signInWithGoogle(context);
+                                        },
                                         style: ButtonStyle(
                                             backgroundColor: MaterialStateProperty.all(Colors.lightBlue[300])
                                         ),
-                                        child: const Text('Sign in',style: TextStyle(
+                                        child: const Text('Sign in', style: TextStyle(
                                             color: Colors.white
                                         ),),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -327,3 +210,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

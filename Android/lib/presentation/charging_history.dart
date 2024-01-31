@@ -1,9 +1,7 @@
-import 'dart:convert';
-import 'package:core/providers/user_provider.dart';
+import 'package:android/domain/use_cases/fetch_user_history.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'package:ws/privateAddress.dart';
+import 'package:android/domain/controllers/history_data_manager.dart';
+import 'package:android/presentation/drawer_widget.dart';
 
 class ChargingHistoryPage extends StatefulWidget {
   const ChargingHistoryPage({Key? key}) : super(key: key);
@@ -18,8 +16,15 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
   @override
   void initState() {
     super.initState();
+    fetchChargingHistoryData();
   }
 
+  Future<void> fetchChargingHistoryData() async {
+    await FetchHistoryService.fetchUserHistory(context);
+    setState(() {
+      chargingHistoryData = HistoryDataManager.chargingHistoryList;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     Future<bool> onWillPop() async {
@@ -32,17 +37,12 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
             style: TextStyle(
                 color: Colors.black
             ),
-          // ), leading: IconButton(
-        // icon: const Icon(Icons.arrow_back, color: Colors.black),
-        // onPressed: () {
-        //   Navigator.pushReplacementNamed(context, 'myHomePageRoute');
-        // },
       ),
           centerTitle: true,
           backgroundColor: Colors.lightBlue[100],
 
       ),
-      drawer: const YourDrawerWidget(),
+      drawer: const DrawerWidget(),
       body: WillPopScope(
         onWillPop: onWillPop,
         child: Container(
@@ -69,95 +69,10 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
                   },
                   child: Text('Receipt'),
                 ),
-
-
-
               );
             },
           ),
         ),
-      ),
-
-      floatingActionButton: SizedBox(
-        height: 70.0,
-        width: 70.0,
-        child: FittedBox(
-          child: FloatingActionButton(onPressed: () {
-            fetchUserHistory();
-          },
-          child: const Text('Show history', textAlign: TextAlign.center,),),
-        ),
-      ),
-    );
-  }
-  void fetchUserHistory() async {
-
-    final int? userId = Provider.of<UserProvider>(context, listen: false).user?.userID;
-    print('Fetching history');
-    final url = 'http://${returnAddress()}:8080/api/event/getEventsByUserID/$userId';
-    final uri = Uri.parse(url);
-    final response = await http.get(uri);
-    final body = response.body;
-    final json = jsonDecode(body);
-    setState(() {
-      chargingHistoryData = json;
-    });
-    print(json);
-    print('Fetch charging history finished');
-  }
-}
-class YourDrawerWidget extends StatelessWidget {
-  const YourDrawerWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    const Color myColor = Color(0xFFADD8E6);
-
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: myColor,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Menu',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Home Page'),
-            onTap: () {
-              Navigator.pushReplacementNamed(context, 'myHomePageRoute');
-
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.credit_card),
-            title: const Text('My Cards'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.add),
-            title: const Text('Add Card'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
       ),
     );
   }

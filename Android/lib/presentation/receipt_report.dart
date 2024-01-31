@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:android/presentation/drawer_widget.dart';
 
 class ReceiptScreen extends StatelessWidget {
   final String chargingStationName;
@@ -38,6 +39,7 @@ class ReceiptScreen extends StatelessWidget {
           },
         ),
       ),
+      drawer: const DrawerWidget(),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16.0),
