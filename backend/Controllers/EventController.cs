@@ -54,5 +54,23 @@ namespace backend.Controllers
                 return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
+
+        [HttpGet("getAllEvents")]
+        public async Task<IActionResult> GetAllEvents()
+        {
+            try
+            {
+                var events = await _iEventService.GetAllEvents();
+                if (events == null || events.Count == 0)
+                {
+                    return Conflict(new { Message = "No events found" });
+                }
+                return Ok(events);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
+            }
+        }
     }
 }
