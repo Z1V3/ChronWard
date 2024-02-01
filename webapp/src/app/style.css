@@ -14,19 +14,19 @@ code {
 
 .App {
     text-align: center;
+    width: 100%;
 }
 
 .App-header {
-    background-color: #282c34;
-    min-height: 100vh;
+    background-color: #1782c9;
     display: flex;
-    flex-direction: column;
+    height: 130px;
     align-items: center;
     justify-content: center;
-    font-size: calc(10px + 2vmin);
+    font-size: 30px;
     color: white;
 }
 
-.App-link {
-    color: #61dafb;
+.AddChargerDiv {
+    padding: 0 15px 15px 15px;
 }

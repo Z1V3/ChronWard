@@ -1,11 +1,11 @@
+"use client";
+
 import React, { useState } from "react";
-import "./App.css";
-import AddChargerModal from "./components/AddEditChargerModal/AddChargerModal";
-import Map from "./Sample/Map";
-import HistoryButton from './components/ViewChargingHistory/HistoryButton';
-import ChargerAvailabilityHeader from './components/DisplayChargerAvailability/ChargerAvailabilityHeader';
-import "./Sample/Map.css";
-import "./components/button.css";
+import Navbar from "@/components/Navbar/Navbar";
+import Map from "@/components/Map/Map";
+import AddChargerModal from "@/components/AddEditChargerModal/AddChargerModal";
+import ChargerAvailabilityHeader from "@/components/DisplayChargerAvailability/ChargerAvailabilityHeader";
+import HistoryButton from "@/components/ViewChargingHistory/HistoryButton";
 
 function App() {
   const [isAddChargerModalOpen, setIsAddChargerModalOpen] = useState(false);
@@ -20,7 +20,7 @@ function App() {
   };
 
   const handleChargersUpdated = () => {
-    setChargersUpdated((prev) => !prev); 
+    setChargersUpdated((prev) => !prev);
   };
 
   return (
@@ -30,22 +30,29 @@ function App() {
       </div>
       <ChargerAvailabilityHeader />
       <div className="MapContainer">
-        <Map chargersUpdated={chargersUpdated} chargersUpdatedCallback={handleChargersUpdated} />
+        <Map
+          chargersUpdated={chargersUpdated}
+          chargersUpdatedCallback={handleChargersUpdated}
+        />
       </div>
       <div>
         <HistoryButton />
       </div>
       <div className="AddChargerDiv">
-        <button className="button-styleA" onClick={openAddChargerModal}>Add charging station</button>
+        <button className="button-styleA" onClick={openAddChargerModal}>
+          Add charging station
+        </button>
         {isAddChargerModalOpen && (
           <div className="modal-overlay">
-            <AddChargerModal onClose={closeAddChargerModal} chargersUpdatedCallback={handleChargersUpdated} />
+            <AddChargerModal
+              onClose={closeAddChargerModal}
+              chargersUpdatedCallback={handleChargersUpdated}
+            />
           </div>
         )}
       </div>
     </div>
   );
-  
 }
 
 export default App;
