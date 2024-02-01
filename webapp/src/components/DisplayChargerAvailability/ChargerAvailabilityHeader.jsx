@@ -16,8 +16,13 @@ const ChargerAvailabilityHeader = () => {
       try {
         const response = await getChargersStatistics();
 
-        if (response.message === 'Statistics data successfully returned') {
-          const { totalNumberOfChargers, numberOfOccupiedChargers, numberOfFreeChargers, numberOfDeactivatedChargers } = response.statistics;
+        if (response.message === "Statistics data successfully returned") {
+          const {
+            totalNumberOfChargers,
+            numberOfOccupiedChargers,
+            numberOfFreeChargers,
+            numberOfDeactivatedChargers,
+          } = response.statistics;
 
           setChargerStatistics({
             total: totalNumberOfChargers,
@@ -28,10 +33,10 @@ const ChargerAvailabilityHeader = () => {
 
           setLoading(false);
         } else {
-          throw new Error('Failed to fetch charger statistics.');
+          throw new Error("Failed to fetch charger statistics.");
         }
       } catch (error) {
-        console.error('Error fetching charger statistics:', error.message);
+        console.error("Error fetching charger statistics:", error.message);
         setLoading(false);
       }
     };
