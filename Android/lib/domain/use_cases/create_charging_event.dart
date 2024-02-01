@@ -1,11 +1,11 @@
-import 'package:ws/services/charging_service.dart';
+import 'package:ws/services/charge_service.dart';
 
 class CreateChargingEvent {
-  final ChargingService _chargingService;
+  final ChargeService _chargeService;
 
-  CreateChargingEvent(this._chargingService);
+  CreateChargingEvent(this._chargeService);
 
   Future<void> execute(String startTime, String endTime, String chargeTime, double volume, double price) async {
-    await _chargingService.sendCreateEvent(startTime, endTime, chargeTime, volume, price);
+    await _chargeService.sendCreateEvent(startTime, endTime, chargeTime, volume, price);
   }
 }

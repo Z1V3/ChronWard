@@ -5,8 +5,7 @@ import '../models/charging_data.dart';
 import 'package:provider/provider.dart';
 import 'package:core/providers/user_provider.dart';
 
-class ChargingService {
-  // Implementation of the charging service, including your sendChargerOccupation function
+class ChargeService {
   Future<void> sendChargerOccupation(int chargerID, bool occupied) async {
     final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/charger/updateChargerAvailability');
 

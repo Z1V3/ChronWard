@@ -6,7 +6,7 @@ import 'package:core/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:core/utils/duration_formatter.dart';
 import 'package:android/domain/controllers/charger_controller.dart';
-import 'package:ws/services/charging_service.dart';
+import 'package:ws/services/charge_service.dart';
 import 'package:android/domain/use_cases/update_charger_availability.dart';
 
 
@@ -23,8 +23,8 @@ class _ChargeModePageState extends State<ChargeModePage>{
   @override
   void initState() {
     super.initState();
-    _chargeController = ChargeController(UpdateChargerAvailability(ChargingService()),
-        CreateChargingEvent(ChargingService()));
+    _chargeController = ChargeController(UpdateChargerAvailability(ChargeService()),
+        CreateChargingEvent(ChargeService()));
   }
 
   late Timer _timer;

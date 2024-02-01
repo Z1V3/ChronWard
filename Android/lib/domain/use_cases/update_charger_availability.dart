@@ -1,11 +1,11 @@
-import 'package:ws/services/charging_service.dart';
+import 'package:ws/services/charge_service.dart';
 
 class UpdateChargerAvailability {
-  final ChargingService _chargingService;
+  final ChargeService _chargeService;
 
-  UpdateChargerAvailability(this._chargingService);
+  UpdateChargerAvailability(this._chargeService);
 
   Future<void> execute(int chargerID, bool occupied) async {
-    await _chargingService.sendChargerOccupation(chargerID, occupied);
+    await _chargeService.sendChargerOccupation(chargerID, occupied);
   }
 }
