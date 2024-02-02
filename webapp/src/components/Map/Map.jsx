@@ -61,7 +61,11 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
   });
 
   const getMarkerColor = (charger) => {
-    return charger.occupied ? "red" : "green";
+    return charger.active ? getOccupancyColor(charger) : "red"; // Red for inactive chargers
+  };
+
+  const getOccupancyColor = (charger) => {
+    return charger.occupied ? "blue" : "green"; // Blue for occupied, green for unoccupied
   };
 
   if (loadError) {
@@ -124,6 +128,7 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
                 {dateFormat(selectedCharger.lastsync, fullDateAndTimeFormat)}
               </p>
               <p>{selectedCharger.active ? "Active" : "Not active"}</p>
+              <p>{selectedCharger.occupied ? "Occupied" : "Not occupied"}</p>
               {/* Add additional charger details here */}
             </div>
           </InfoWindow>

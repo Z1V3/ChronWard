@@ -10,7 +10,12 @@ VALUES
   ('Charger2', 46.2872, 16.3212, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, true, true),
   ('Charger3', 46.2919, 16.3423, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, true, true),
   ('Charger4', 46.3191, 16.3139, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, true, false),
-  ('Charger5', 46.3090, 16.3486, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, false, false);
+  ('Charger5', 46.3090, 16.3486, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, false, false),
+  ('Charger6', 46.3041, 16.3344, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, false, false),
+  ('Charger7', 46.3053, 16.3356, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, true, false),
+  ('Charger8', 46.3059, 16.3323, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, true, false),
+  ('Charger9', 46.3108, 16.3381, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, true, true),
+  ('Charger10', 46.3105, 16.3377, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP, true, true);
 
 INSERT INTO evchargeschema.event (charger_id, starttime, endtime, chargetime, volume, price, user_id)
 VALUES
