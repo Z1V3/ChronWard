@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:ws/privateAddress.dart';
-import 'package:android/presentation/drawer_widget.dart';
+import 'package:android/presentation/widgets/drawer_widget.dart';
 
 class RfidCardsPage extends StatefulWidget {
   const RfidCardsPage({Key? key}) : super(key: key);

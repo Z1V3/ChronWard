@@ -1,4 +1,4 @@
-import 'package:android/presentation/drawer_widget.dart';
+import 'package:android/presentation/widgets/drawer_widget.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:ws/privateAddress.dart';
 import 'package:core/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:android/presentation/drawer_widget.dart';
+import 'package:android/presentation/widgets/drawer_widget.dart';
 
 class AddCardPage extends StatefulWidget {
   const AddCardPage({Key? key}) : super(key: key);

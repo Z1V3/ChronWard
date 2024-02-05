@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:android/presentation/drawer_widget.dart';
+import 'package:android/presentation/widgets/drawer_widget.dart';
 
 class ReceiptScreen extends StatelessWidget {
   final String chargingStationName;

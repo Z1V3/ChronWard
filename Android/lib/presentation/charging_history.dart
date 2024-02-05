@@ -1,7 +1,7 @@
 import 'package:android/domain/use_cases/fetch_user_history.dart';
 import 'package:flutter/material.dart';
-import 'package:android/domain/controllers/history_data_manager.dart';
-import 'package:android/presentation/drawer_widget.dart';
+import 'package:core/services/history_data_manager_service.dart';
+import 'package:android/presentation/widgets/drawer_widget.dart';
 
 class ChargingHistoryPage extends StatefulWidget {
   const ChargingHistoryPage({Key? key}) : super(key: key);

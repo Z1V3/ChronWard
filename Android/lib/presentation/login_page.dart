@@ -1,7 +1,7 @@
 import 'package:android/presentation/registration_page.dart';
 import 'package:flutter/material.dart';
-import 'package:core/bloc/auth_bloc.dart';
-import 'package:core/bloc/google_log_in_bloc.dart';
+import 'package:core/services/authentication/username_authentication.dart';
+import 'package:core/services/authentication/google_log_in_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -36,12 +36,11 @@ class _LoginPageState extends State<LoginPage> {
           ),),
         centerTitle: true,
       ),
-      body: WillPopScope(
-        onWillPop: onWillPop,
-        child: Container(
-          color: Colors.lightBlue[100],
-          child: SingleChildScrollView(
+      resizeToAvoidBottomInset: false,
+      body:Container(
+        color: Colors.lightBlue[100],
 
+          child: Expanded(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 5.0),
               child: Center(
@@ -129,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                                       controller: _emailController,
                                       decoration: const InputDecoration(
                                         labelText: 'Email',
-
+            
                                         border: InputBorder.none,
                                       ),
                                     ),
@@ -205,7 +204,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-        ),
       ),
     );
   }
