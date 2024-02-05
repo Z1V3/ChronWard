@@ -8,6 +8,7 @@ import ChargerAvailabilityHeader from "@/components/DisplayChargerAvailability/C
 import HistoryButton from "@/components/ViewChargingHistory/HistoryButton";
 import "@/app/style.css";
 import "@/components/button.css";
+import ChargerStatisticsButton from "@/components/DisplayChargerStatistics/ChargerStatisticsButton";
 
 function App() {
   const [isAddChargerModalOpen, setIsAddChargerModalOpen] = useState(false);
@@ -39,6 +40,7 @@ function App() {
       </div>
       <div>
         <HistoryButton />
+		    <ChargerStatisticsButton />
       </div>
       <div className="AddChargerDiv">
         <button className="button-styleA" onClick={openAddChargerModal}>

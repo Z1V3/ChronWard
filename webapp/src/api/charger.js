@@ -114,3 +114,25 @@ export const deleteChargerData = async (chargerID) => {
     throw error;
   }
 };
+
+export const getAllChargers = async () => {
+  try {
+    const response = await fetch(`${apiOrigin}/charger/getAllChargers`);
+
+    if (!response.ok) {
+      let errorMessage = 'Failed to fetch charger statistics.';
+      try {
+        const errorResponse = await response.json();
+        errorMessage = errorResponse.message || errorMessage;
+      } catch (jsonError) {
+        console.error('Error parsing JSON error response:', jsonError);
+      }
+      throw new Error(errorMessage);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching charger statistics:', error.message);
+    throw error;
+  }
+};

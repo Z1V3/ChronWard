@@ -15,7 +15,7 @@ const ChargingHistoryList = ({ chargingSessions, modalIsOpen, openModal, closeMo
       className="modal-styles"
       contentLabel="Charging History Modal"
     >
-      <button className="close-button" onClick={closeModal}>
+      <button className="close-button-list" onClick={closeModal}>
         Close
       </button>
       <div className="list-container">
