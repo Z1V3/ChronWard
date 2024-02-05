@@ -135,7 +135,7 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
         )}
       </GoogleMap>
       <button
-        class="button-styleA"
+        className="button-styleA"
         onClick={openEditChargerModal}
         disabled={!isEditButtonEnabled}
       >

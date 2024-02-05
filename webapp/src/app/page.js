@@ -6,6 +6,8 @@ import Map from "@/components/Map/Map";
 import AddChargerModal from "@/components/AddEditChargerModal/AddChargerModal";
 import ChargerAvailabilityHeader from "@/components/DisplayChargerAvailability/ChargerAvailabilityHeader";
 import HistoryButton from "@/components/ViewChargingHistory/HistoryButton";
+import "@/app/style.css";
+import "@/components/button.css";
 
 function App() {
   const [isAddChargerModalOpen, setIsAddChargerModalOpen] = useState(false);
