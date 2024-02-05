@@ -40,5 +40,10 @@ namespace backend.Services
             await _context.SaveChangesAsync();
             return newEvent;
         }
+        public async Task<List<Event>> GetAllEvents()
+        {
+            var events = await _context.Events.ToListAsync();
+            return events;
+        }
     }
 }

@@ -3,3 +3,5 @@
 backend/.vs
 backend/obj
 backend/pg_data
+webapp/.next
+backend/bin
