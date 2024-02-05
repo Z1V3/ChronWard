@@ -87,3 +87,30 @@ export const getChargersStatistics = async () => {
     throw error;
   }
 };
+
+export const deleteChargerData = async (chargerID) => {
+  try {
+    const response = await fetch(`${apiOrigin}/charger/deleteCharger/${chargerID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      let errorMessage = "Failed to delete charger.";
+      try {
+        const errorResponse = await response.json();
+        errorMessage = errorResponse.message || errorMessage;
+      } catch (jsonError) {
+        console.error("Error parsing JSON error response:", jsonError);
+      }
+      throw new Error(errorMessage);
+    }
+
+    return await response.json(); // You can adjust this based on the server's response after successful deletion
+  } catch (error) {
+    console.error("Error deleting charger:", error.message);
+    throw error;
+  }
+};
