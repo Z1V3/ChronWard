@@ -34,7 +34,7 @@ const HistoryButton = () => {
 
   return (
     <div>
-      <button className="button-style" onClick={() => setModalIsOpen(true)}>
+      <button className="button-style1" onClick={() => setModalIsOpen(true)}>
         View Charging History
       </button>
       {isLoading && <p>Loading...</p>}
