@@ -6,6 +6,7 @@ import {
   InfoWindow,
 } from "@react-google-maps/api";
 import { fetchChargerData } from "@/api/map";
+import { deleteChargerData } from "@/api/charger";
 import dateFormat from "dateformat";
 import { fullDateAndTimeFormat } from "@/utils/constants";
 import "./Map.css";
@@ -29,6 +30,16 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
   const [isEditButtonEnabled, setEditButtonEnabled] = useState(false);
   const [isEditChargerModalOpen, setIsEditChargerModalOpen] = useState(false);
   const [clickedMarker, setClickedMarker] = useState(null);
+
+  const deleteCharger = async () => {
+    if (selectedCharger) {
+      await deleteChargerData(selectedCharger.chargerId);
+      const updatedChargers = await fetchChargerData();
+      setChargerData(updatedChargers);
+      setSelectedCharger(null);
+      setEditButtonEnabled(false);
+    }
+  };
 
   const openEditChargerModal = () => {
     if (selectedCharger) {
@@ -61,11 +72,11 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
   });
 
   const getMarkerColor = (charger) => {
-    return charger.active ? getOccupancyColor(charger) : "red"; // Red for inactive chargers
+    return charger.active ? getOccupancyColor(charger) : "red";
   };
 
   const getOccupancyColor = (charger) => {
-    return charger.occupied ? "blue" : "green"; // Blue for occupied, green for unoccupied
+    return charger.occupied ? "blue" : "green";
   };
 
   if (loadError) {
@@ -97,23 +108,6 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
           />
         ))}
 
-        {/* <Marker
-              key={charger.chargerId}
-              position={{ lat: charger.latitude, lng: charger.longitude }}
-              onClick={() => handleMarkerClick(charger)}
-              options={{
-                icon: {
-                  path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                  scale: 5,
-                  fillColor: clickedMarker && clickedMarker.chargerId === charger.chargerId ? "red" : "blue",
-                  fillOpacity: 1,
-                  strokeColor: "black",
-                  strokeWeight: 1,
-                  rotation: 0,
-                },
-              }}
-            /> */}
-
         {selectedCharger && (
           <InfoWindow
             position={{
@@ -129,17 +123,16 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
               </p>
               <p>{selectedCharger.active ? "Active" : "Not active"}</p>
               <p>{selectedCharger.occupied ? "Occupied" : "Not occupied"}</p>
-              {/* Add additional charger details here */}
             </div>
           </InfoWindow>
         )}
       </GoogleMap>
       <button
-        class="button-styleA"
+        className="button-styleA"
         onClick={openEditChargerModal}
         disabled={!isEditButtonEnabled}
       >
-        Edit Charger Station
+        Edit charging station
       </button>
       {isEditChargerModalOpen && (
         <div className="modal-overlay">
@@ -150,6 +143,13 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
           />
         </div>
       )}
+      <button
+        className="button-styleA"
+        onClick={deleteCharger}
+        disabled={!isEditButtonEnabled}
+      >
+        Delete charging station
+      </button>
     </div>
   );
 };

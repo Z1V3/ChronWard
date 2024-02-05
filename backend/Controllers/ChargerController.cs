@@ -151,6 +151,26 @@ namespace backend.Controllers
                 return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
+        [HttpDelete("deleteCharger/{chargerID}")]
+        public async Task<IActionResult> DeleteCharger(int chargerID)
+        {
+            try
+            {
+                var existingCharger = await _iChargerService.GetChargerByID(chargerID);
 
+                if (existingCharger == null)
+                {
+                    return NotFound(new { Message = "Charger not found" });
+                }
+
+                await _iChargerService.DeleteCharger(existingCharger);
+
+                return Ok(new { Message = "Charger deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
+            }
+        }
     }
 }
