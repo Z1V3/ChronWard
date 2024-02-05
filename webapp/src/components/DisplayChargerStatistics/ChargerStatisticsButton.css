@@ -1,0 +1,12 @@
+.button-style2 {
+  position: fixed;
+  bottom: 20px;
+  right: 250px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
