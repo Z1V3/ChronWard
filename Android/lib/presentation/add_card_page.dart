@@ -1,8 +1,11 @@
+import 'package:android/domain/controllers/card_controller.dart';
 import 'package:android/presentation/widgets/drawer_widget.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:android/presentation/widgets/drawer_widget.dart';
 import 'package:core/handlers/nfc_handler.dart';
+import 'package:ws/services/card_service.dart';
+import 'package:android/domain/use_cases/add_card.dart';
 
 class AddCardPage extends StatefulWidget {
   const AddCardPage({Key? key}) : super(key: key);
@@ -12,12 +15,23 @@ class AddCardPage extends StatefulWidget {
 }
 
 class _AddCardPageState extends State<AddCardPage> {
+  late CardController _cardController;
 
   @override
   void initState() {
     super.initState();
+    _cardController = CardController(AddCard(CardService()));
+    NFCHandler.startNFCReading(
+            (hexIdentifier) {
+          print("Received NFC Identifier (Hex): $hexIdentifier");
+          _cardController.sendAddNewCard(hexIdentifier);
+        },
+            (errorMessage) {
+          print("Error occurred while reading NFC: $errorMessage");
+          // Handle the error
+        }
+    );
 
-    NFCHandler.startNFCReading();
   }
 
   @override
@@ -31,6 +45,12 @@ class _AddCardPageState extends State<AddCardPage> {
       appBar: AppBar(
         title: const Text('Charge Mode'),
         backgroundColor: Colors.lightBlue[100],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       drawer: const DrawerWidget(),
       body: WillPopScope(
