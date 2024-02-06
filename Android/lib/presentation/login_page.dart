@@ -10,11 +10,11 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-final _formKeyLogin = GlobalKey<FormState>();
 
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _formKeyLogin = GlobalKey<FormState>();
 
   Future<void> loginUser() async {
     AuthService.loginUser(context, _emailController.text, _passwordController.text);

@@ -14,8 +14,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  bool isChecked = false;
   final _formKeyRegistration = GlobalKey<FormState>();
+  bool isChecked = false;
 
   Future<void> registerUser() async {
     if (_formKeyRegistration.currentState!.validate()) {
