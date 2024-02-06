@@ -24,7 +24,7 @@ create table evchargeschema.charger
     created    timestamp     not null,
     creator    integer       not null
         constraint user_user_id_fk
-            references evchargeschema.users,
+            references evchargeschema.users ON DELETE CASCADE,
     lastsync   timestamp     not null,
     active     boolean       not null,
     occupied   boolean       not null
@@ -37,7 +37,7 @@ create table evchargeschema.event
         primary key,
     charger_id integer        not null
         constraint charger_charger_id_fk
-            references evchargeschema.charger,
+            references evchargeschema.charger ON DELETE CASCADE,
     starttime  timestamp      not null,
     endtime    timestamp      not null,
     chargetime interval       not null,
@@ -45,7 +45,7 @@ create table evchargeschema.event
     price      numeric(10, 2) not null,
     user_id    integer        not null
         constraint user_user_id_fk
-            references evchargeschema.users
+            references evchargeschema.users ON DELETE CASCADE
 );
 
 
@@ -56,7 +56,7 @@ create table evchargeschema.card
         primary key,
     user_id integer        not null
         constraint user_user_id_fk
-            references evchargeschema.users,
+            references evchargeschema.users ON DELETE CASCADE,
     value   varchar(100)   not null,
     active  boolean        not null
 );

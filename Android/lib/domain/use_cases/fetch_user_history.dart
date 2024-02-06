@@ -5,8 +5,7 @@ import 'package:ws/privateAddress.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:core/utils/api_configuration.dart';
-
-import '../controllers/history_data_manager.dart';
+import 'package:core/services/history_data_manager_service.dart';
 
 class FetchHistoryService {
   static Future <void> fetchUserHistory (BuildContext context) async {

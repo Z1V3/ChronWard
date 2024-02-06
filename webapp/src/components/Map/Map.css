@@ -3,5 +3,5 @@
     height: auto;
     padding: 15px;
     position: relative;
-    z-index: 1;
+    z-index: 0; /* Makes charge history and statistics be behind the map if value is set to 1, DO NOT CHANGE*/
 }

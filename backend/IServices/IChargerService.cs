@@ -14,5 +14,6 @@ namespace backend.IServices
         Task<int> GetFreeChargersCount();
         Task<int> GetOccupiedChargersCount();
         Task<List<Charger>> GetAllChargers();
+        Task<bool> DeleteCharger(Charger charger);
     }
 }

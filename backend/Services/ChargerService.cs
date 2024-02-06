@@ -122,5 +122,17 @@ namespace backend.Services
             return chargers;
         }
 
+        public async Task<bool> DeleteCharger(Charger charger)
+        {
+            if (charger == null)
+            {
+                return false;
+            }
+
+            _context.Chargers.Remove(charger);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

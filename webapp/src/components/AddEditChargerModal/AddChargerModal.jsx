@@ -7,7 +7,7 @@ import {
   validateLongitude,
 } from "@/utils/validation";
 
-const AddChargerModal = ({ onClose }) => {
+const AddChargerModal = ({ onClose, chargersUpdatedCallback }) => {
   const [name, setName] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -51,6 +51,8 @@ const AddChargerModal = ({ onClose }) => {
       setLonError("");
       setErrorMessage("");
       setSuccessMessage("Charger added successfully");
+
+      chargersUpdatedCallback();
     } catch (error) {
       setSuccessMessage("");
       setErrorMessage("Error adding charger: " + error.message);

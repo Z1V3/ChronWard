@@ -1,6 +1,7 @@
+import 'package:android/presentation/widgets/drawer_widget.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:android/presentation/drawer_widget.dart';
+import 'package:android/presentation/widgets/drawer_widget.dart';
 import 'package:core/handlers/nfc_handler.dart';
 
 class AddCardPage extends StatefulWidget {

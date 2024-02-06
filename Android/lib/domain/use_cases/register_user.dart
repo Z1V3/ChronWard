@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:core/utils/api_configuration.dart';
-import 'package:android/domain/use_cases/success_dialog_service.dart';
+import 'package:core/services/success_dialog_service.dart';
 
 class RegisterService {
   static Future<void> registerUser({

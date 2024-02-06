@@ -1,7 +1,7 @@
 import 'package:android/presentation/rfid_cards_page.dart';
 import 'package:flutter/material.dart';
-import 'package:core/bloc/google_sign_out_bloc.dart';
-import 'package:android/presentation/drawer_widget.dart';
+import 'package:core/services/authentication/google_sign_out_auth.dart';
+import 'package:android/presentation/widgets/drawer_widget.dart';
 
 class UserModePage extends StatelessWidget {
   const UserModePage({Key? key}) : super(key: key);

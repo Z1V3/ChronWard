@@ -26,6 +26,7 @@
     "react-leaflet": "^4.2.1",
     "react-modal": "^3.16.1",
     "react-query": "^3.39.3",
+    "recharts": "^2.11.0",
     "toastify": "^2.0.1",
     "use-places-autocomplete": "^4.0.1",
     "web-vitals": "^3.5.1"
