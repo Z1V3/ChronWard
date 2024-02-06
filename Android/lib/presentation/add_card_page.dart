@@ -1,8 +1,6 @@
 import 'package:android/domain/controllers/card_controller.dart';
 import 'package:android/presentation/widgets/drawer_widget.dart';
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:android/presentation/widgets/drawer_widget.dart';
 import 'package:core/handlers/nfc_handler.dart';
 import 'package:ws/services/card_service.dart';
 import 'package:android/domain/use_cases/add_card.dart';
@@ -23,11 +21,11 @@ class _AddCardPageState extends State<AddCardPage> {
     _cardController = CardController(AddCard(CardService()));
     NFCHandler.startNFCReading(
             (hexIdentifier) {
-          print("Received NFC Identifier (Hex): $hexIdentifier");
+          debugPrint("Received NFC Identifier (Hex): $hexIdentifier");
           _cardController.sendAddNewCard(hexIdentifier);
         },
             (errorMessage) {
-          print("Error occurred while reading NFC: $errorMessage");
+          debugPrint("Error occurred while reading NFC: $errorMessage");
           // Handle the error
         }
     );
@@ -36,25 +34,20 @@ class _AddCardPageState extends State<AddCardPage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<bool> onWillPop() async {
-      Navigator.pushReplacementNamed(context, 'startMenuRoute');
-      return false;
-    }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Charge Mode'),
         backgroundColor: Colors.lightBlue[100],
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
-          },
+            Navigator.pushReplacementNamed(context, 'userModePageRoute');
+            },
         ),
       ),
       drawer: const DrawerWidget(),
-      body: WillPopScope(
-        onWillPop: onWillPop,
+      body: PopScope(
         child: Container(
           color: Colors.black87,
           child: const Center(
