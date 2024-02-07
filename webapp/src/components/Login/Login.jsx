@@ -1,5 +1,5 @@
 "use client"
-
+import {useEffect} from 'react';
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -9,8 +9,12 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { GoogleLogin } from '@react-oauth/google';
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 export default function SignIn() {
+  const [user, saveUser] = useLocalStorage("user", null);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -19,6 +23,17 @@ export default function SignIn() {
       password: data.get("password"),
     });
   };
+
+  useEffect(() => {
+    if(user) {
+      window.location.href = "/"
+    }
+  }, [user])
+  
+
+  const onSuccessLogin = (clientData) => {
+    saveUser(clientData);
+  }
 
   return (
     <Container component="main" maxWidth="sm">
@@ -83,7 +98,20 @@ export default function SignIn() {
             </Grid>
           </Grid>
         </Box>
+        <div className="google-login">
+        <GoogleLogin
+        onSuccess={credentialResponse => {
+          onSuccessLogin(credentialResponse);
+        }}
+        onError={() => {
+          console.log('Login Failed');
+        }}
+        useOneTap
+      />
+          </div>
+        
       </Box>
+      
     </Container>
   );
 }

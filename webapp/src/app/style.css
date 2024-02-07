@@ -18,6 +18,7 @@ code {
 }
 
 .App-header {
+    position: relative;
     background-color: #1782c9;
     height: 130px;
     display: flex;
@@ -25,8 +26,20 @@ code {
     justify-content: center;
     color: white;
     font-size: 30px;
+    width: 100%;
+}
+
+.logout-button {
+    position: absolute !important;
+    right: 30px;
+    background-color: #45cdff !important;
+    color: #000 !important; 
 }
 
 .AddChargerDiv {
     padding: 0 15px 15px 15px;
+}
+
+.google-login {
+    margin-top: 30px;
 }
