@@ -35,7 +35,7 @@ class ReceiptScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, 'chargeHistoryPage');
+            Navigator.pushReplacementNamed(context, 'chargeHistoryPageRoute');
           },
         ),
       ),

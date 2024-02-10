@@ -28,7 +28,7 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
   @override
   Widget build(BuildContext context) {
     Future<bool> onWillPop() async {
-      Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+      Navigator.pushReplacementNamed(context, 'userModePageRoute');
       return false;
     }
     return Scaffold(

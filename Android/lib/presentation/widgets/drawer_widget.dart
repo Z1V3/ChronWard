@@ -32,21 +32,21 @@ class DrawerWidget extends StatelessWidget {
             leading: const Icon(Icons.home),
             title: const Text('Home Page'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, 'myHomePageRoute');
+              Navigator.pushReplacementNamed(context, 'userModePageRoute');
             },
           ),
           ListTile(
             leading: const Icon(Icons.credit_card),
             title: const Text('My Cards'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, 'rfidCardsPage');
             },
           ),
           ListTile(
             leading: const Icon(Icons.add),
             title: const Text('Add Card'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.pushReplacementNamed(context, 'addCardPageRoute');
             },
           ),
         ],
