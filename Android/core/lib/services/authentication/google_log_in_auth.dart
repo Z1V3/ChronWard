@@ -17,7 +17,8 @@ class GoogleSignInService {
         idToken: googleAuth?.idToken,
       );
       UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-      print(userCredential.user?.displayName);
+      String? username = userCredential.user?.displayName.toString();
+      SharedHandlerUtil.saveUserName(username!);
 
       if (userCredential.user != null) {
         String? idToken = googleAuth?.idToken;

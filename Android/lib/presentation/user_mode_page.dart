@@ -1,17 +1,37 @@
-import 'package:android/presentation/rfid_cards_page.dart';
 import 'package:flutter/material.dart';
 import 'package:core/services/authentication/google_sign_out_auth.dart';
 import 'package:android/presentation/widgets/drawer_widget.dart';
+import 'package:core/handlers/shared_handler.dart';
+import 'package:android/presentation/rfid_cards_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class UserModePage extends StatelessWidget {
-  const UserModePage({Key? key}) : super(key: key);
+class UserModePage extends StatefulWidget {
+  @override
+  _UserModePageState createState() => _UserModePageState();
+}
+
+class _UserModePageState extends State<UserModePage> {
+  String? username;
+
+  @override
+  void initState() {
+    super.initState();
+    loadSavedUserName();
+  }
+
+  Future<void> loadSavedUserName() async {
+    String? userName = await SharedHandlerUtil.getSavedUserName();
+    setState(() {
+      username = userName;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     const Color myColor = Color(0xFFADD8E6);
+
     return Scaffold(
       appBar: AppBar(
-
         title: Row(
           children: [
             Image.asset(
@@ -37,11 +57,10 @@ class UserModePage extends StatelessWidget {
         backgroundColor: myColor,
         actions: [
           IconButton(
-            onPressed: () async{
-              GoogleSignOutService.signOutWithGoogle(context);
-            },
-            icon: Icon(Icons.power_settings_new)
-          )
+              onPressed: () async {
+                GoogleSignOutService.signOutWithGoogle(context);
+              },
+              icon: Icon(Icons.power_settings_new)),
         ],
       ),
       drawer: const DrawerWidget(),
@@ -54,7 +73,7 @@ class UserModePage extends StatelessWidget {
               color: Colors.black,
               thickness: 0.5,
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(16.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +90,7 @@ class UserModePage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Ivan Horvat',
+                        '$username',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -121,7 +140,8 @@ class UserModePage extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
-                            Navigator.pushReplacementNamed(context, 'chargeHistoryPageRoute');
+                            Navigator.pushReplacementNamed(
+                                context, 'chargeHistoryPageRoute');
                           },
                           icon: const Icon(Icons.history,
                               size: 30, color: Colors.black),
@@ -138,7 +158,8 @@ class UserModePage extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const RfidCardsPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => const RfidCardsPage()),
                             );
                           },
                           icon: const Icon(Icons.credit_card,
@@ -154,9 +175,11 @@ class UserModePage extends StatelessWidget {
                       children: [
                         IconButton(
                           onPressed: () {
-                            Navigator.pushReplacementNamed(context, 'addCardPageRoute');
+                            Navigator.pushReplacementNamed(
+                                context, 'addCardPageRoute');
                           },
-                          icon: const Icon(Icons.add, size: 30, color: Colors.black),
+                          icon: const Icon(Icons.add,
+                              size: 30, color: Colors.black),
                         ),
                         const Text(
                           'Add Card',

@@ -6,6 +6,7 @@ import 'package:core/handlers/shared_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:core/providers/user_provider.dart';
+import 'package:core/handlers/shared_handler.dart';
 
 class AuthService {
   static Future<void> loginUser(BuildContext context, String email, String password) async {
@@ -26,8 +27,11 @@ class AuthService {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
 
       int userID = jsonResponse['user']['userId'];
+      String username = jsonResponse['user']['username'];
+
       UserModel user = UserModel(userID);
       await SharedHandlerUtil.saveUserID(userID);
+      await SharedHandlerUtil.saveUserName(username);
       Provider.of<UserProvider>(context, listen: false).setUser(user);
       print('User ID: $userID');
 

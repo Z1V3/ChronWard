@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           'loginPageRoute': (context) => const LoginPage(),
           'registrationRoute': (context) => const RegistrationPage(),
           'chargeModePageRoute': (context) => const ChargeModePage(),
-          'userModePageRoute': (context) => const UserModePage(),
+          'userModePageRoute': (context) => UserModePage(),
           'chargeHistoryPageRoute': (context) => const ChargingHistoryPage(),
           'addCardPageRoute': (context) => const AddCardPage(),
           'rfidCardsPage': (context) => const RfidCardsPage(),
