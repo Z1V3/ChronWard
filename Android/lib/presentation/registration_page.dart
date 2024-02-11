@@ -180,13 +180,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
                             }
+                            // Regular expression for email validation
+                            final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                            if (!emailRegex.hasMatch(value)) {
+                              return 'Please enter a valid email';
+                            }
                             return null;
                           },
                           decoration: const InputDecoration(
                             labelText: 'Email address',
                             border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 10.0),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                           ),
                           keyboardType: TextInputType.emailAddress,
                           style: const TextStyle(fontSize: 18),
