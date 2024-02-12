@@ -6,7 +6,7 @@ class CardController {
 
   CardController(this._addCard);
 
-  Future<void> sendAddNewCard(String cardValue) async {
-    await _addCard.execute(cardValue);
+  Future<void> sendAddNewCard(int userID, String cardValue) async {
+    await _addCard.execute(userID, cardValue);
   }
 }
