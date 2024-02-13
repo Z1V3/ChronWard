@@ -116,7 +116,8 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
         child: FittedBox(
           child: FloatingActionButton(
             onPressed: () {
-              Navigator.pushNamed(context, 'addRfidCardRoute');
+              Navigator.pushReplacementNamed(
+                  context, 'addCardPageRoute');
             },
             child: const Icon(Icons.add, color: Colors.white),
             backgroundColor: Colors.blue,
