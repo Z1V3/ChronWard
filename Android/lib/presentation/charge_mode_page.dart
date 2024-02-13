@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:ui'; // Add this import
+
 import 'package:android/domain/use_cases/create_charging_event.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,14 +17,21 @@ class ChargeModePage extends StatefulWidget {
   State<ChargeModePage> createState() => _ChargeModePageState();
 }
 
-class _ChargeModePageState extends State<ChargeModePage>{
+class _ChargeModePageState extends State<ChargeModePage> {
   late ChargeController _chargeController;
-  final ChargingData _chargingData = ChargingData(startTime: "/", endTime: "/", chargeTime: "/", volume: 0, price: 0, userID: 0, chargerID: 0);
+  final ChargingData _chargingData = ChargingData(
+      startTime: "/",
+      endTime: "/",
+      chargeTime: "/",
+      volume: 0,
+      price: 0,
+      userID: 0,
+      chargerID: 0);
 
   late Timer _timer;
   bool isRunning = false;
   double counter = 0.00;
-  double loadingProgress = 0.0; // Added loading progress
+  double loadingProgress = 0.0;
 
   bool startButtonVisible = true;
   bool stopButtonVisible = false;
@@ -30,7 +39,8 @@ class _ChargeModePageState extends State<ChargeModePage>{
   @override
   void initState() {
     super.initState();
-    _chargeController = ChargeController(UpdateChargerAvailability(ChargeService()),
+    _chargeController = ChargeController(
+        UpdateChargerAvailability(ChargeService()),
         CreateChargingEvent(ChargeService()));
   }
 
@@ -44,7 +54,7 @@ class _ChargeModePageState extends State<ChargeModePage>{
     _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       setState(() {
         counter++;
-        loadingProgress = counter / 300; // 30 seconds -> 300 ticks
+        loadingProgress = counter / 1200; // 30 seconds -> 300 ticks
         // Update charging session information while running
         _updateChargingData();
       });
@@ -68,7 +78,8 @@ class _ChargeModePageState extends State<ChargeModePage>{
       });
       _chargeController.updateChargerAvailability(1, true);
       DateTime now = DateTime.now();
-      _chargingData.startTime = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
+      _chargingData.startTime =
+          DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
     }
     debugPrint('START button clicked');
   }
@@ -78,19 +89,26 @@ class _ChargeModePageState extends State<ChargeModePage>{
       stopTimer();
 
       DateTime now = DateTime.now();
-      _chargingData.endTime = DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
+      _chargingData.endTime =
+          DateFormat("yyyy-MM-ddTHH:mm:ss").format(now);
 
-      counter = counter/10;
+      counter = counter / 10;
       int unformattedDuration = counter.toInt();
 
-      _chargingData.chargeTime = DurationFormatter.formatCounterToDuration(unformattedDuration);
+      _chargingData.chargeTime =
+          DurationFormatter.formatCounterToDuration(unformattedDuration);
       _chargingData.volume = _calculateVolume(counter);
       _chargingData.price = _calculatePrice(counter);
       _chargingData.userID = 1;
       _chargingData.chargerID = 1;
 
       _chargeController.updateChargerAvailability(1, false);
-      _chargeController.createChargingEvent(_chargingData.startTime, _chargingData.endTime, _chargingData.chargeTime, _chargingData.volume, _chargingData.price);
+      _chargeController.createChargingEvent(
+          _chargingData.startTime,
+          _chargingData.endTime,
+          _chargingData.chargeTime,
+          _chargingData.volume,
+          _chargingData.price);
 
       // Show pop-up message with charging data
       showDialog(
@@ -102,28 +120,32 @@ class _ChargeModePageState extends State<ChargeModePage>{
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('UserID: ${_chargingData.userID}',
-                  style: TextStyle(
+                Text(
+                  'User number: ${_chargingData.userID}',
+                  style: const TextStyle(
                     fontSize: 18,
-                    fontFamily: 'Bahnschrift', // or any other desired font
+                    fontFamily: 'Bahnschrift',
                   ),
                 ),
-                Text('Time charged: ${_chargingData.chargeTime}',
-                  style: TextStyle(
+                Text(
+                  'Time charged: ${_chargingData.chargeTime}',
+                  style: const TextStyle(
                     fontSize: 18,
-                    fontFamily: 'Bahnschrift', // or any other desired font
+                    fontFamily: 'Bahnschrift',
                   ),
                 ),
-                Text('Power: ${(_chargingData.volume).toStringAsFixed(3)} kWh',
-                  style: TextStyle(
+                Text(
+                  'Power: ${(_chargingData.volume).toStringAsFixed(3)} kWh',
+                  style: const TextStyle(
                     fontSize: 18,
-                    fontFamily: 'Bahnschrift', // or any other desired font
+                    fontFamily: 'Bahnschrift',
                   ),
                 ),
-                Text('Price: ${(_chargingData.price).toStringAsFixed(3)} EUR',
-                  style: TextStyle(
+                Text(
+                  'Price: ${(_chargingData.price).toStringAsFixed(3)} EUR',
+                  style: const TextStyle(
                     fontSize: 18,
-                    fontFamily: 'Bahnschrift', // or any other desired font
+                    fontFamily: 'Bahnschrift',
                   ),
                 ),
               ],
@@ -147,18 +169,16 @@ class _ChargeModePageState extends State<ChargeModePage>{
       stopButtonVisible = false;
     });
   }
-  // Update charging data information
+
   void _updateChargingData() {
     _chargingData.volume = _calculateVolume(counter);
     _chargingData.price = _calculatePrice(counter);
   }
 
-  // Calculate volume
   double _calculateVolume(double counter) {
     return double.parse(((counter * 2.361) / 10).toStringAsExponential(3));
   }
 
-  // Calculate price
   double _calculatePrice(double counter) {
     return double.parse(((counter * 1.5) / 10).toStringAsExponential(3));
   }
@@ -172,13 +192,31 @@ class _ChargeModePageState extends State<ChargeModePage>{
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Charge Mode'),
-        backgroundColor: Colors.white,
+        title: const Text(
+          'Charge Mode',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: const Color(0xff48c8ff),
+        elevation: 0, // Removes the shadow
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.sunny,
+              color: Colors.white,
+              size: 28,
+            ),
+          ),
+        ],
       ),
       body: WillPopScope(
         onWillPop: onWillPop,
         child: Container(
-          color: Colors.blueAccent,
+          color: const Color(0xFF9EF9FF),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -186,74 +224,160 @@ class _ChargeModePageState extends State<ChargeModePage>{
                 const SizedBox(height: 40),
                 Expanded(
                   child: Center(
-                    child: Column (
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Display charging session information
-                        isRunning ?
-                        Column(
+                        isRunning
+                            ? Column(
                           children: [
-                            Text(
-                              'Time Elapsed: ${Duration(milliseconds: (counter * 100).toInt()).inMinutes}:${Duration(milliseconds: (counter * 100).toInt()).inSeconds.remainder(60)} seconds',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                              ),
-                            ),
-                            Text(
-                              'Power: ${(_chargingData.volume / 10).toStringAsFixed(3)} kWh',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                              ),
-                            ),
-                            Text(
-                              'Price: ${(_chargingData.price / 10).toStringAsFixed(3)} EUR',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                              ),
+                            Column(
+                              children: [
+                                // Time Elapsed
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.access_time,
+                                        color: Colors.blue, size: 54),
+                                    const SizedBox(width: 10),
+                                    const Text(
+                                      'Time (min):',
+                                      style: TextStyle(
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '${Duration(milliseconds: (counter * 100).toInt()).inMinutes}:${Duration(milliseconds: (counter * 100).toInt()).inSeconds.remainder(60)}',
+                                      style: const TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+
+                                // Power
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.flash_on,
+                                        color: Colors.yellow, size: 54),
+                                    const SizedBox(width: 10),
+                                    const Text(
+                                      'Power:',
+                                      style: TextStyle(
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '${(_chargingData.volume / 10).toStringAsFixed(3)} kWh',
+                                      style: const TextStyle(
+                                        color: Colors.yellow,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+
+                                // Price
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.attach_money,
+                                        color: Colors.green, size: 54),
+                                    const SizedBox(width: 10),
+                                    const Text(
+                                      'Price:',
+                                      style: TextStyle(
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Text(
+                                      '${(_chargingData.price / 10).toStringAsFixed(3)} EUR',
+                                      style: const TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
                               child: Container(
                                 height: 20,
-                                width: 200,
+                                width: 250,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius:
+                                  BorderRadius.circular(10),
                                   color: Colors.grey[300],
                                 ),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10), // Rounded corners for the clip
+                                  borderRadius: BorderRadius.circular(
+                                      10), // Rounded corners for the clip
                                   child: LinearProgressIndicator(
                                     value: loadingProgress,
-                                    backgroundColor: Colors.transparent,
-                                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+                                    backgroundColor:
+                                    Colors.transparent,
+                                    valueColor:
+                                    const AlwaysStoppedAnimation<
+                                        Color>(Colors.greenAccent),
                                   ),
                                 ),
                               ),
                             ),
                           ],
-                        ) :
-                        const SizedBox.shrink(),
+                        )
+                            : const Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Text(
+                            'Touch sun to charge',
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 20),
-                        startButtonVisible ?
-                        CircleButton(
-                          color: Colors.yellow,
-                          icon: Icons.lightbulb,
-                          breathing: false,
-                          onClick: !isRunning ? () => onPressStart() : null,
-                        ) :
-                        const SizedBox.shrink(),
+                        startButtonVisible
+                            ? GestureDetector(
+                          onTap: !isRunning ? () => onPressStart() : null,
+                          child: Image.asset(
+                            'assets/start_icon.png',
+                            width: 330,
+                            height: 330,
+                          ),
+                        )
+                            : const SizedBox.shrink(),
                         const SizedBox(height: 20),
-                        stopButtonVisible ?
-                        CircleButton(
+                        stopButtonVisible
+                            ? CircleButton(
                           color: Colors.redAccent,
                           icon: Icons.stop_rounded,
                           breathing: true,
-                          onClick: isRunning ? () => onPressStop(context) : null,
-                        ) :
-                        const SizedBox.shrink(),
+                          onClick:
+                          isRunning ? () => onPressStop(context) : null,
+                        )
+                            : const SizedBox.shrink(),
                       ],
                     ),
                   ),
@@ -266,19 +390,27 @@ class _ChargeModePageState extends State<ChargeModePage>{
     );
   }
 }
+
 class CircleButton extends StatefulWidget {
   final IconData icon;
   final VoidCallback? onClick;
   final Color color;
-  final bool breathing; // Added boolean to control breathing effect
+  final bool breathing;
 
-  const CircleButton({Key? key, required this.icon, required this.color, required this.breathing, this.onClick}) : super(key: key);
+  const CircleButton(
+      {Key? key,
+        required this.icon,
+        required this.color,
+        required this.breathing,
+        this.onClick})
+      : super(key: key);
 
   @override
   _CircleButtonState createState() => _CircleButtonState();
 }
 
-class _CircleButtonState extends State<CircleButton> with SingleTickerProviderStateMixin {
+class _CircleButtonState extends State<CircleButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -287,7 +419,7 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 7000),
     );
     _animation = Tween<double>(begin: 1.0, end: 1.2).animate(_controller);
     if (widget.breathing) {
@@ -317,7 +449,7 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
       animation: _controller,
       builder: (context, child) {
         return Transform.scale(
-          scale: widget.breathing ? _animation.value : 1.0, // Apply scale only when breathing
+          scale: widget.breathing ? _animation.value : 1.0,
           child: ElevatedButton(
             onPressed: widget.onClick,
             style: ElevatedButton.styleFrom(
@@ -325,8 +457,8 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
               padding: const EdgeInsets.all(30),
               backgroundColor: widget.color,
               minimumSize: const Size(200, 200),
-              shadowColor: widget.color.withOpacity(0.5), // Adding a shadow effect
-              elevation: 10, // Adding elevation for a 3D effect
+              shadowColor: widget.color.withOpacity(0.5),
+              elevation: 10,
             ),
             child: Stack(
               alignment: Alignment.center,
@@ -338,8 +470,8 @@ class _CircleButtonState extends State<CircleButton> with SingleTickerProviderSt
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        Colors.yellow.withOpacity(0.8), // Lighter yellow at the center
-                        Colors.orange.withOpacity(0.9), // Darker yellow at the edges
+                        Colors.yellow.withOpacity(0.8),
+                        Colors.orange.withOpacity(0.9),
                       ],
                       stops: const [0.4, 1],
                     ),
