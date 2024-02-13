@@ -16,22 +16,22 @@ class AddCardPage extends StatefulWidget {
 
 class _AddCardPageState extends State<AddCardPage> {
   late CardController _cardController;
-  bool _isLoading = true; // Set initial loading state to true
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _cardController = CardController(AddCard(CardService()));
     NFCHandler.startNFCReading(
-          (hexIdentifier) {
+      (hexIdentifier) {
         setState(() {
           _isLoading = false; // Update loading state when NFC reading is complete
         });
         debugPrint("Received NFC Identifier (Hex): $hexIdentifier");
         int userID = Provider.of<UserProvider>(context, listen: false).user?.userID ?? 0;
         _cardController.sendAddNewCard(userID, hexIdentifier);
-        // Show Snackbar when the card is added successfully
         _showSnackbar(context, 'Card added successfully');
+        NFCHandler.stopNFCReading();
         Navigator.pushReplacementNamed(context, 'userModePageRoute');
       },
           (errorMessage) {
@@ -42,6 +42,13 @@ class _AddCardPageState extends State<AddCardPage> {
         // Handle the error
       },
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // Stop NFC session when the page is disposed
+    NFCHandler.stopNFCReading();
   }
 
   void _showSnackbar(BuildContext context, String message) {
@@ -61,6 +68,7 @@ class _AddCardPageState extends State<AddCardPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            NFCHandler.stopNFCReading();
             Navigator.pushReplacementNamed(context, 'userModePageRoute');
           },
         ),
@@ -72,12 +80,20 @@ class _AddCardPageState extends State<AddCardPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Icon(
+                  Icons.credit_card,
+                  size: 150,
+                  color: Colors.white,
+                ),
+              ),
               if (_isLoading)
-                const CircularProgressIndicator() // Show loading indicator if isLoading is true
+                CircularProgressIndicator() // Show loading indicator if isLoading is true
               else
                 const SizedBox(height: 40), // Empty SizedBox if not loading
               const Text(
-                'Please scan your card...',
+                'Scan your card...',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -96,7 +112,8 @@ class CircleButton extends StatelessWidget {
   final String label;
   final VoidCallback? onClick;
 
-  const CircleButton({Key? key, required this.label, this.onClick}) : super(key: key);
+  const CircleButton({Key? key, required this.label, this.onClick})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
