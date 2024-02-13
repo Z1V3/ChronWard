@@ -25,4 +25,18 @@ class CardService {
       print('Error sending API request: $e');
     }
   }
+
+  Future<bool> sendAuthenticateCard(String cardValue) async {
+    try {
+      final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/card/authenticateCard/${cardValue}');
+      final response = await http.get(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      return (response.statusCode == 200);
+    } catch (e) {
+      return false;
+    }
+  }
 }

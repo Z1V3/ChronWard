@@ -49,6 +49,14 @@ class _StartMenuState extends State<StartMenu> {
     );
   }
 
+  void _showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,35 +129,31 @@ class _StartMenuState extends State<StartMenu> {
                       label: 'Charge Mode',
                       onClick: () async {
                         setState(() {
-                          isLoading =
-                          true; // Show the bottom button when "Charge Mode" is pressed
+                          isLoading = true; // Show the bottom button when "Charge Mode" is pressed
                         });
 
-                        _cardController =
-                            CardController(AddCard(CardService()));
+                        _cardController = CardController();
                         NFCHandler.startNFCReading(
                               (hexIdentifier) async {
-                            setState(() {
-                              isLoading =
-                              false; // Update loading state when NFC reading is complete
-                            });
-                            debugPrint(
-                                "Received NFC Identifier (Hex): $hexIdentifier");
-                            int userID = Provider
-                                .of<UserProvider>(context, listen: false)
-                                .user
-                                ?.userID ?? 0;
-                            // _cardController.sendAddNewCard(userID, hexIdentifier);
-                            // _showSnackbar(context, 'Card added successfully');
+                            bool exists = await _cardController.sendAuthenticateCard(hexIdentifier);
                             NFCHandler.stopNFCReading();
+                            setState(() {
+                              isLoading = false; // Update loading state when NFC reading is complete
+                            });
 
-                            await _navigateToNewScreen(context);
+                            if (!context.mounted) return;
+                            if (exists) {
+                              await _navigateToNewScreen(context);
+                            }
+                            else {
+                              _showSnackbar(context, 'Card was not found!');
+                            }
                           },
                               (errorMessage) {
                             setState(() {
-                              isLoading =
-                              false; // Update loading state when NFC reading encounters an error
+                              isLoading = false; // Update loading state when NFC reading encounters an error
                             });
+                            _showSnackbar(context, 'Card was not read successfully!');
                             debugPrint(
                                 "Error occurred while reading NFC: $errorMessage");
                             // Handle the error

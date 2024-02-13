@@ -21,7 +21,7 @@
     @override
     void initState() {
       super.initState();
-      _cardController = CardController(AddCard(CardService()));
+      _cardController = CardController();
       NFCHandler.startNFCReading(
         (hexIdentifier) {
           setState(() {
