@@ -14,31 +14,7 @@ class RfidCardsPage extends StatefulWidget {
 }
 
 class _RfidCardsPageState extends State<RfidCardsPage> {
-  List rfidCardsData = [
-    {'cardID': '1234567890', 'cardName': 'FOI', 'cardID': '1234567890'},
-    {'cardID': '9876543210', 'cardName': 'SICK Mobilisis', 'cardID': '9876543210'},
-    {'cardID': '0987654321', 'cardName': 'ChronWard', 'cardID': '0987654321'},
-  ]; //dummy data for page layout
-
-/*class _RfidCardsPageState extends State<RfidCardsPage> {
   List rfidCardsData = [];
-  bool _isLoading = false;*/
-
-  /*Future<void> fetchRfidCards() async {
-    setState(() {
-      _isLoading = true;
-    });
-    final int? userId = Provider.of<UserProvider>(context, listen: false).user?.userID;
-    final url = 'http://${returnAddress()}:8080/api/card/getUserCards/$userId';
-    final uri = Uri.parse(url);
-    final response = await http.get(uri);
-    final body = response.body;
-    final json = jsonDecode(body);
-    setState(() {
-      rfidCardsData = json;
-      _isLoading = false;
-    });
-  }*/
 
   void fetchRfidCards() async {
 
@@ -97,14 +73,14 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
                 leading: CircleAvatar(
                 child: Text('${index + 1}'),
             ),
-              title:  Text(' ${rfidCard['cardName']}',
+              title:  Text('Kartica ${cardID}',
                 style: const TextStyle(
                 color: Colors.black,
                 ),
               ),
 
               onTap: () {
-                _showPopUp(context, rfidCard);
+                // _showPopUp(context, rfidCard);
               },
             ));
           },
@@ -116,7 +92,8 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
         child: FittedBox(
           child: FloatingActionButton(
             onPressed: () {
-              Navigator.pushNamed(context, 'addRfidCardRoute');
+              Navigator.pushReplacementNamed(
+                  context, 'addCardPageRoute');
             },
             child: const Icon(Icons.add, color: Colors.white),
             backgroundColor: Colors.blue,
@@ -149,7 +126,7 @@ void _showPopUp(BuildContext context, Map<String, dynamic> cardData) {
 }
 
 class RfidCard {
-  final String cardID;
+  final int cardID;
   final String cardName;
 
   RfidCard(this.cardID, this.cardName);
