@@ -11,7 +11,7 @@ class ChargingHistoryPage extends StatefulWidget {
 }
 
 class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
-  List chargingHistoryData = [];
+  static List chargingHistoryData = [];
 
   @override
   void initState() {

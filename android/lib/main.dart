@@ -43,12 +43,12 @@ class MyApp extends StatelessWidget {
           'addCardPageRoute': (context) => const AddCardPage(),
           'rfidCardsPage': (context) => const RfidCardsPage(),
           'receiptRoute': (context) => ReceiptScreen(
-            chargingStationName: 'Koprivnica Charging Station',
-            chargingStationLocation: 'Koprivnica, Croatia',
+            chargingStationName: 'Varaždin Charging Station',
+            chargingStationLocation: 'Ulica Julija Merlića 9, 42000 Varaždin',
             dateTimeOfCharge: DateTime(2023, 12, 22, 12, 0, 0),
             vehicleIdentificationNumber: '123456789ABC',
-            electricityConsumed: 20.0,
-            chargingPricePerKwh: 0.30,
+            electricityConsumed: 30.5,
+            chargingPricePerKwh: 0.506558,
             paymentMethod: 'Credit Card',
             transactionId: '1234567890',
       )

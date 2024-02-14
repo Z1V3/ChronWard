@@ -39,7 +39,6 @@ class ReceiptScreen extends StatelessWidget {
           },
         ),
       ),
-      drawer: const DrawerWidget(),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16.0),
