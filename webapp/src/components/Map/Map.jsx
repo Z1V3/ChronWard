@@ -66,6 +66,12 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
     setClickedMarker(charger);
   };
 
+  const handleMarkerClose = () => {
+    setSelectedCharger(null);
+    setEditButtonEnabled(false);
+    setClickedMarker(null);
+  };
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB9ut80NdYyNVey4ZWLGbeINVrIFQqoIx4",
     libraries,
@@ -114,7 +120,7 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
               lat: selectedCharger.latitude,
               lng: selectedCharger.longitude,
             }}
-            onCloseClick={() => setSelectedCharger(null)}
+            onCloseClick={() => handleMarkerClose()}
           >
             <div>
               <h3>{selectedCharger.name}</h3>
