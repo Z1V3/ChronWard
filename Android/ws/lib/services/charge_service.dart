@@ -33,7 +33,7 @@ class ChargeService {
     }
   }
 
-  Future<void> sendCreateEvent(String startTime, String endTime, String chargeTime, double volume, double price) async {
+  Future<void> sendCreateEvent(String startTime, String endTime, String chargeTime, double volume, double price, int userID) async {
     final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/event/createEvent');
 
     try {
@@ -43,7 +43,7 @@ class ChargeService {
         chargeTime: chargeTime,
         volume: volume,
         price: price,
-        userID: 1,
+        userID: userID,
         chargerID: 2,
       );
 
