@@ -14,8 +14,8 @@ class CardController {
     _authenticateCard = AuthenticateCard(CardService());
   }
 
-  Future<void> sendAddNewCard(int userID, String cardValue) async {
-    await _addCard.execute(userID, cardValue);
+  Future<int> sendAddNewCard(int userID, String cardValue) async {
+    return await _addCard.execute(userID, cardValue);
   }
 
   Future<bool> sendAuthenticateCard(String cardValue) async {
