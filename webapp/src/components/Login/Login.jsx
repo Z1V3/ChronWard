@@ -1,5 +1,5 @@
-"use client"
-
+"use client";
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -9,15 +9,41 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { GoogleLogin } from "@react-oauth/google";
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { login } from "@/api/user";
+import { Alert, Snackbar } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const router = useRouter();
+  const [user, saveUser] = useLocalStorage("user", null);
+  const [open, setOpen] = useState(false);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const userData = {
       email: data.get("email"),
       password: data.get("password"),
-    });
+    };
+
+    const response = await login(userData);
+    if (response) {
+      saveUser(response);
+    } else {
+      setOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      router.replace("/");
+    }
+  }, [router, user]);
+
+  const onSuccessLogin = (clientData) => {
+    saveUser(clientData);
   };
 
   return (
@@ -83,7 +109,33 @@ export default function SignIn() {
             </Grid>
           </Grid>
         </Box>
+        <div className="google-login">
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              onSuccessLogin(credentialResponse);
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+            useOneTap
+          />
+        </div>
       </Box>
+      <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+          onClose={() => setOpen(false)}
+          severity="error"
+          variant="standard"
+          sx={{ width: "100%" }}
+          anchorOrigin={{ horizontal: "center" }}
+        >
+          You entered wrong credentials
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

@@ -5,3 +5,5 @@ backend/obj
 backend/pg_data
 webapp/.next
 backend/bin
+
+node_modules
