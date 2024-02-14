@@ -1,9 +1,11 @@
 import 'dart:async';
-import 'dart:ui'; // Add this import
-
+import 'package:provider/provider.dart';
+import 'package:core/providers/user_provider.dart';
 import 'package:android/domain/use_cases/create_charging_event.dart';
+import 'package:core/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:ws/models/charging_data.dart';
 import 'package:core/utils/duration_formatter.dart';
 import 'package:android/domain/controllers/charger_controller.dart';
@@ -99,7 +101,7 @@ class _ChargeModePageState extends State<ChargeModePage> {
           DurationFormatter.formatCounterToDuration(unformattedDuration);
       _chargingData.volume = _calculateVolume(counter);
       _chargingData.price = _calculatePrice(counter);
-      _chargingData.userID = 1;
+      _chargingData.userID = Provider.of<UserProvider>(context, listen: false).user?.userID ?? 0;
       _chargingData.chargerID = 1;
 
       _chargeController.updateChargerAvailability(1, false);
@@ -108,7 +110,8 @@ class _ChargeModePageState extends State<ChargeModePage> {
           _chargingData.endTime,
           _chargingData.chargeTime,
           _chargingData.volume,
-          _chargingData.price);
+          _chargingData.price,
+          _chargingData.userID);
 
       // Show pop-up message with charging data
       showDialog(

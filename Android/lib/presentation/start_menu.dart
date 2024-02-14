@@ -1,6 +1,7 @@
 import 'package:android/presentation/charge_mode_page.dart';
 import 'package:android/presentation/login_page.dart';
 import 'package:core/handlers/nfc_handler.dart';
+import 'package:core/models/user_model.dart';
 import 'package:core/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -135,14 +136,17 @@ class _StartMenuState extends State<StartMenu> {
                         _cardController = CardController();
                         NFCHandler.startNFCReading(
                               (hexIdentifier) async {
-                            bool exists = await _cardController.sendAuthenticateCard(hexIdentifier);
+                            int userID = await _cardController.sendAuthenticateCard(hexIdentifier);
                             NFCHandler.stopNFCReading();
                             setState(() {
                               isLoading = false; // Update loading state when NFC reading is complete
                             });
 
                             if (!context.mounted) return;
-                            if (exists) {
+
+                            UserModel userModel = UserModel(userID);
+                            Provider.of<UserProvider>(context, listen: false).setUser(userModel);
+                            if (userID > 0) {
                               await _navigateToNewScreen(context);
                             }
                             else {

@@ -12,8 +12,8 @@ class ChargeController {
     await _updateChargerAvailability.execute(chargerID, occupied);
   }
 
-  Future<void> createChargingEvent(String startTime, String endTime, String chargeTime, double volume, double price) async {
-    await _createChargingEvent.execute(startTime, endTime, chargeTime, volume, price);
+  Future<void> createChargingEvent(String startTime, String endTime, String chargeTime, double volume, double price, int userID) async {
+    await _createChargingEvent.execute(startTime, endTime, chargeTime, volume, price, userID);
   }
 
 }
