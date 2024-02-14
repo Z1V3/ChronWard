@@ -28,7 +28,7 @@ class CardService {
     return -1;
   }
 
-  Future<bool> sendAuthenticateCard(String cardValue) async {
+  Future<int> sendAuthenticateCard(String cardValue) async {
     try {
       final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/card/authenticateCard/${cardValue}');
       final response = await http.get(
@@ -36,9 +36,14 @@ class CardService {
         headers: {'Content-Type': 'application/json'},
       );
 
-      return (response.statusCode == 200);
+      if (response.statusCode == 200) {
+        final cardResponse = jsonDecode(response.body) as Map<String, dynamic>;
+        return cardResponse.values.toList().first;
+      }
+
+      return 0;
     } catch (e) {
-      return false;
+      return 0;
     }
   }
 }

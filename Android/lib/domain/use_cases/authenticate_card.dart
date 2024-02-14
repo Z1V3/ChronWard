@@ -5,7 +5,7 @@ class AuthenticateCard {
 
   AuthenticateCard(this._cardService);
 
-  Future<bool> execute(String cardValue) async {
+  Future<int> execute(String cardValue) async {
     return await _cardService.sendAuthenticateCard(cardValue);
   }
 }
