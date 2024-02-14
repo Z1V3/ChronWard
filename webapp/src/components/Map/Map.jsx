@@ -24,7 +24,7 @@ const center = {
   lng: 16.33885, // default longitude
 };
 
-const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
+const Map = ({ chargersUpdated, chargersUpdatedCallback, isAdmin }) => {
   const [chargerData, setChargerData] = useState([]);
   const [selectedCharger, setSelectedCharger] = useState(null);
   const [isEditButtonEnabled, setEditButtonEnabled] = useState(false);
@@ -133,29 +133,33 @@ const Map = ({ chargersUpdated, chargersUpdatedCallback }) => {
           </InfoWindow>
         )}
       </GoogleMap>
-      <button
-        className="button-styleA"
-        onClick={openEditChargerModal}
-        disabled={!isEditButtonEnabled}
-      >
-        Edit charging station
-      </button>
-      {isEditChargerModalOpen && (
-        <div className="modal-overlay">
-          <EditChargerModal
-            charger={selectedCharger}
-            onClose={closeEditChargerModal}
-            chargersUpdatedCallback={chargersUpdatedCallback}
-          />
-        </div>
+      {isAdmin && (
+        <>
+          <button
+            className="button-styleA"
+            onClick={openEditChargerModal}
+            disabled={!isEditButtonEnabled}
+          >
+            Edit charging station
+          </button>
+          {isEditChargerModalOpen && (
+            <div className="modal-overlay">
+              <EditChargerModal
+                charger={selectedCharger}
+                onClose={closeEditChargerModal}
+                chargersUpdatedCallback={chargersUpdatedCallback}
+              />
+            </div>
+          )}
+          <button
+            className="button-styleA"
+            onClick={deleteCharger}
+            disabled={!isEditButtonEnabled}
+          >
+            Delete charging station
+          </button>
+        </>
       )}
-      <button
-        className="button-styleA"
-        onClick={deleteCharger}
-        disabled={!isEditButtonEnabled}
-      >
-        Delete charging station
-      </button>
     </div>
   );
 };
