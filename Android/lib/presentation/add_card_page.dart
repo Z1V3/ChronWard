@@ -23,14 +23,18 @@
       super.initState();
       _cardController = CardController(AddCard(CardService()));
       NFCHandler.startNFCReading(
-        (hexIdentifier) {
+        (hexIdentifier) async {
           setState(() {
             _isLoading = false; // Update loading state when NFC reading is complete
           });
           debugPrint("Received NFC Identifier (Hex): $hexIdentifier");
           int userID = Provider.of<UserProvider>(context, listen: false).user?.userID ?? 0;
-          _cardController.sendAddNewCard(userID, hexIdentifier);
-          _showSnackbar(context, 'Card added successfully');
+          int code = await _cardController.sendAddNewCard(userID, hexIdentifier);
+          if(code != 409){
+            _showSnackbar('Card added successfully');
+          }else {
+            _showSnackbar('Card already exists!');
+          }
           NFCHandler.stopNFCReading();
           Navigator.pushReplacementNamed(context, 'userModePageRoute');
         },
@@ -51,7 +55,9 @@
       NFCHandler.stopNFCReading();
     }
 
-    void _showSnackbar(BuildContext context, String message) {
+
+
+    void _showSnackbar(String message) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
