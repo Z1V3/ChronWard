@@ -61,7 +61,7 @@ class _StartMenuState extends State<StartMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.blue,
         title: const Text(
           '',
           style: TextStyle(
@@ -89,7 +89,7 @@ class _StartMenuState extends State<StartMenu> {
         fit: StackFit.expand,
         children: [
           Container(
-            color: Colors.black87,
+            color: Colors.white70,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -108,16 +108,16 @@ class _StartMenuState extends State<StartMenu> {
                           child: Icon(
                             Icons.credit_card,
                             size: 150,
-                            color: Colors.white70,
+                            color: Colors.black87,
                           ),
                         ),
-                          CircularProgressIndicator(color: Colors.white70), // Show loading indicator if isLoading is true
+                          CircularProgressIndicator(color: Colors.black87), // Show loading indicator if isLoading is true
                           SizedBox(height: 40), // Empty SizedBox if not loading
                         Text(
                           'Scan your card...',
                           style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 24,
+                            color: Colors.black87,
+                            fontSize: 26,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -186,7 +186,7 @@ class CircleButton extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 60, horizontal: 30),
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.blue,
+          color: Colors.lightBlueAccent,
         ),
         child: Center(
           child: Text(

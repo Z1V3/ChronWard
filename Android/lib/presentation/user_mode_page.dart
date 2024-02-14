@@ -28,7 +28,7 @@ class _UserModePageState extends State<UserModePage> {
 
   @override
   Widget build(BuildContext context) {
-    const Color myColor = Color(0xFFADD8E6);
+    const Color myColor = Colors.white70;
 
     return Scaffold(
       appBar: AppBar(
@@ -43,7 +43,7 @@ class _UserModePageState extends State<UserModePage> {
             const Text(
               'EVCharge',
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -52,9 +52,9 @@ class _UserModePageState extends State<UserModePage> {
         ),
         centerTitle: true,
         iconTheme: const IconThemeData(
-          color: Colors.black,
+          color: Colors.black87,
         ),
-        backgroundColor: myColor,
+        backgroundColor: Colors.blue,
         actions: [
           IconButton(
               onPressed: () async {
@@ -81,8 +81,8 @@ class _UserModePageState extends State<UserModePage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Hello',
+                      const Text(
+                        'Welcome',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -91,7 +91,7 @@ class _UserModePageState extends State<UserModePage> {
                       ),
                       Text(
                         '$username',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Georgia',
@@ -126,11 +126,11 @@ class _UserModePageState extends State<UserModePage> {
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 8,
-                    offset: Offset(0, -5),
+                    offset: Offset(0, -9),
                   ),
                 ],
               ),
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(14),
               child: Container(
                 color: myColor,
                 child: Row(
@@ -163,11 +163,11 @@ class _UserModePageState extends State<UserModePage> {
                             );
                           },
                           icon: const Icon(Icons.credit_card,
-                              size: 30, color: Colors.black),
+                              size: 30, color: Colors.black87),
                         ),
                         const Text(
                           'My Cards',
-                          style: TextStyle(fontSize: 14, color: Colors.black),
+                          style: TextStyle(fontSize: 14, color: Colors.black87),
                         ),
                       ],
                     ),
@@ -179,11 +179,11 @@ class _UserModePageState extends State<UserModePage> {
                                 context, 'addCardPageRoute');
                           },
                           icon: const Icon(Icons.add,
-                              size: 30, color: Colors.black),
+                              size: 30, color: Colors.black87),
                         ),
                         const Text(
                           'Add Card',
-                          style: TextStyle(fontSize: 14, color: Colors.black),
+                          style: TextStyle(fontSize: 14, color: Colors.black87),
                         ),
                       ],
                     ),

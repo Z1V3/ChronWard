@@ -49,9 +49,9 @@ class ReceiptScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.receipt, size: 40, color: Colors.blue),
+              const Icon(Icons.receipt, size: 40, color: Colors.blue),
               const SizedBox(height: 8.0),
-              Text(
+              const Text(
                 'Receipt for Charging',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
@@ -62,7 +62,7 @@ class ReceiptScreen extends StatelessWidget {
               _buildReceiptRow(Icons.directions_car, 'Vehicle ID:', vehicleIdentificationNumber),
               _buildReceiptRow(Icons.flash_on, 'Electricity Consumed (kWh):', electricityConsumed.toStringAsFixed(2)),
               _buildReceiptRow(Icons.attach_money, 'Price per kWh:', '\$$chargingPricePerKwh'),
-              Divider(height: 20, color: Colors.blue),
+              const Divider(height: 20, color: Colors.blue),
               _buildReceiptRow(Icons.money, 'Total Charge Cost:', '\$$totalChargeCost', fontWeight: FontWeight.bold),
               const SizedBox(height: 16.0),
               _buildReceiptRow(Icons.payment, 'Payment Method:', paymentMethod),

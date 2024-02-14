@@ -35,18 +35,19 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
       appBar: AppBar(
           title: const Text('Charging History',
             style: TextStyle(
-                color: Colors.black
+                fontWeight: FontWeight.bold,
+                color: Colors.white
             ),
       ),
           centerTitle: true,
-          backgroundColor: Colors.lightBlue[100],
+          backgroundColor: Colors.blue,
 
       ),
       drawer: const DrawerWidget(),
       body: WillPopScope(
         onWillPop: onWillPop,
         child: Container(
-          color: Colors.lightBlue[100],
+          color: Colors.white70,
 
           child: ListView.builder(
             itemCount: chargingHistoryData.length,
@@ -58,16 +59,17 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
               return ListTile(
                 leading: CircleAvatar(
                   child: Text('${index+1}'),
+                  backgroundColor: Colors.lightBlueAccent,
                 ),
                 title: Text('Time spent charging: $chargeTime',style: const TextStyle(
-                  color: Colors.black
+                  color: Colors.black87
                 ),),
                 subtitle: Text('${volume.toString()}, kWh. You paid: $price, euro'),
                 trailing: ElevatedButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, 'receiptRoute');
                   },
-                  child: Text('Receipt'),
+                  child: const Text('Receipt'),
                 ),
               );
             },

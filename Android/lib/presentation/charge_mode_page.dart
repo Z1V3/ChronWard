@@ -200,7 +200,7 @@ class _ChargeModePageState extends State<ChargeModePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: const Color(0xff48c8ff),
+        backgroundColor: Colors.blue,
         elevation: 0, // Removes the shadow
         actions: [
           IconButton(
@@ -216,7 +216,7 @@ class _ChargeModePageState extends State<ChargeModePage> {
       body: WillPopScope(
         onWillPop: onWillPop,
         child: Container(
-          color: const Color(0xFF9EF9FF),
+          color: Colors.white70,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -243,7 +243,7 @@ class _ChargeModePageState extends State<ChargeModePage> {
                                     const Text(
                                       'Time (min):',
                                       style: TextStyle(
-                                        color: Colors.black54,
+                                        color: Colors.black87,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 25,
                                       ),
@@ -272,7 +272,7 @@ class _ChargeModePageState extends State<ChargeModePage> {
                                     const Text(
                                       'Power:',
                                       style: TextStyle(
-                                        color: Colors.black54,
+                                        color: Colors.black87,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 25,
                                       ),

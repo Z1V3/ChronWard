@@ -71,7 +71,7 @@
                 fontWeight: FontWeight.bold,
             ),
           ),
-          backgroundColor: const Color(0xFFADD8E6),
+          backgroundColor: Colors.blue,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -82,7 +82,7 @@
         ),
         drawer: const DrawerWidget(),
         body: Container(
-          color: const Color(0xFFADD8E6),
+          color: Colors.white70,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -96,13 +96,13 @@
                   ),
                 ),
                 if (_isLoading)
-                  CircularProgressIndicator() // Show loading indicator if isLoading is true
+                  CircularProgressIndicator(color: Colors.black87,) // Show loading indicator if isLoading is true
                 else
                   const SizedBox(height: 40), // Empty SizedBox if not loading
                 const Text(
                   'Scan your card...',
                   style: TextStyle(
-                    color: Colors.black38,
+                    color: Colors.black87,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),

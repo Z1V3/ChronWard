@@ -45,10 +45,11 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
     }*/
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.blue,
         title: const Text(
           'My RFID Cards',
           style: TextStyle(
+            fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
@@ -60,9 +61,9 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
           },
         ),
       ),
-      drawer: DrawerWidget(),
+      drawer: const DrawerWidget(),
       body: Container(
-        color: Colors.black87,
+        color: Colors.white70,
         child: ListView.builder(
           itemCount: rfidCardsData.length,
           itemBuilder: (context, index) {
@@ -71,13 +72,14 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
             return Card(
                 child: ListTile(
                 leading: CircleAvatar(
-                child: Text('${index + 1}'),
-            ),
-              title:  Text('Kartica ${cardID}',
-                style: const TextStyle(
-                color: Colors.black,
+                  child: Text('${index + 1}'),
+                  backgroundColor: Colors.lightBlueAccent,
                 ),
-              ),
+                    title:  Text('Kartica ${cardID}',
+                    style: const TextStyle(
+                    color: Colors.black,
+                    ),
+                  ),
 
               onTap: () {
                 // _showPopUp(context, rfidCard);
