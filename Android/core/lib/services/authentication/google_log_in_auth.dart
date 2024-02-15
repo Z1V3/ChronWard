@@ -5,6 +5,9 @@ import 'package:core/utils/api_configuration.dart';
 import 'package:core/handlers/shared_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'package:core/providers/user_provider.dart';
+import 'package:core/models/user_model.dart';
 
 class GoogleSignInService {
   static Future<void> signInWithGoogle(BuildContext context) async {
@@ -18,6 +21,10 @@ class GoogleSignInService {
       );
       UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       String? username = userCredential.user?.displayName.toString();
+      int userID = int.parse(userCredential.user?.uid ?? '0');
+      UserModel user = UserModel(userID);
+      await SharedHandlerUtil.saveUserID(userID);
+      Provider.of<UserProvider>(context, listen: false).setUser(user);
       SharedHandlerUtil.saveUserName(username!);
 
       if (userCredential.user != null) {
