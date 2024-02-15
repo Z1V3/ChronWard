@@ -6,6 +6,5 @@ class GoogleSignOutService {
   static Future<void> signOutWithGoogle (BuildContext context) async {
     await GoogleSignIn().signOut();
     FirebaseAuth.instance.signOut();
-    Navigator.pushReplacementNamed(context, 'startMenuRoute');
   }
 }

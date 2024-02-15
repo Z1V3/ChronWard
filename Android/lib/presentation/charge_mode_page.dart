@@ -188,10 +188,6 @@ class _ChargeModePageState extends State<ChargeModePage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<bool> onWillPop() async {
-      Navigator.pushReplacementNamed(context, 'startMenuRoute');
-      return false;
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -212,8 +208,7 @@ class _ChargeModePageState extends State<ChargeModePage> {
           },
         ),
       ),
-      body: WillPopScope(
-        onWillPop: onWillPop,
+      body: PopScope(
         child: Container(
           color: Colors.white70,
           child: Center(

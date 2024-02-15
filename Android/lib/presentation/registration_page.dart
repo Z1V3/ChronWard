@@ -117,7 +117,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.pushReplacementNamed(context, 'loginPageRoute');
+                                    Navigator.pushReplacementNamed(context, 'loginRoute');
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.lightBlue[100],

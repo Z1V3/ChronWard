@@ -57,10 +57,16 @@ class _UserModePageState extends State<UserModePage> {
         backgroundColor: Colors.blue,
         actions: [
           IconButton(
-              onPressed: () async {
-                GoogleSignOutService.signOutWithGoogle(context);
-              },
-              icon: Icon(Icons.power_settings_new)),
+            onPressed: () async {
+              GoogleSignOutService.signOutWithGoogle(context);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'startMenuRoute',
+                    (route) => false, // Remove all routes until the startMenuRoute
+              );
+            },
+            icon: Icon(Icons.power_settings_new),
+          ),
         ],
       ),
       drawer: const DrawerWidget(),

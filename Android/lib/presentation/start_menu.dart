@@ -39,17 +39,6 @@ class _StartMenuState extends State<StartMenu> {
   late Timer _buttonVisibilityTimer;
   late CardController _cardController;
 
-  // Function to navigate to a new screen
-  Future<void> _navigateToNewScreen(BuildContext context) async {
-    //await Future.delayed(Duration(seconds: 2)); // Simulating an async operation
-
-    // Navigating to a new screen using push
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ChargeModePage()),
-    );
-  }
-
   void _showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -148,7 +137,7 @@ class _StartMenuState extends State<StartMenu> {
                             UserModel userModel = UserModel(userID);
                             Provider.of<UserProvider>(context, listen: false).setUser(userModel);
                             if (userID > 0) {
-                              await _navigateToNewScreen(context);
+                              Navigator.pushReplacementNamed(context, 'chargeModePageRoute');
                             }
                             else {
                               _showSnackbar(context, 'Card was not found!');
