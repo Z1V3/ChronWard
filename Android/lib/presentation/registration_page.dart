@@ -55,6 +55,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
             ),
           ),
           centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, 'startMenuRoute');
+            },
+          ),
         ),
         body:
 
@@ -111,11 +117,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (
-                                          context) => const LoginPage()),
-                                    );
+                                    Navigator.pushReplacementNamed(context, 'loginPageRoute');
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.lightBlue[100],

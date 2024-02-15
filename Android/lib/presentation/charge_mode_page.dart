@@ -205,16 +205,12 @@ class _ChargeModePageState extends State<ChargeModePage> {
         ),
         backgroundColor: Colors.blue,
         elevation: 0, // Removes the shadow
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.sunny,
-              color: Colors.white,
-              size: 28,
-            ),
-          ),
-        ],
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, 'startMenuRoute');
+          },
+        ),
       ),
       body: WillPopScope(
         onWillPop: onWillPop,

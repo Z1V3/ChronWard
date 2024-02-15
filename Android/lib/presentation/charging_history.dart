@@ -27,10 +27,6 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
   }
   @override
   Widget build(BuildContext context) {
-    Future<bool> onWillPop() async {
-      Navigator.pushReplacementNamed(context, 'userModePageRoute');
-      return false;
-    }
     return Scaffold(
       appBar: AppBar(
           title: const Text('Charging History',
@@ -41,11 +37,15 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
       ),
           centerTitle: true,
           backgroundColor: Colors.blue,
-
+          leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, 'userModePageRoute');
+          },
+        ),
       ),
       drawer: const DrawerWidget(),
-      body: WillPopScope(
-        onWillPop: onWillPop,
+      body: PopScope(
         child: Container(
           color: Colors.white70,
 

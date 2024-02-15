@@ -21,10 +21,6 @@ class _LoginPageState extends State<LoginPage> {
   }
   @override
   Widget build(BuildContext context) {
-    Future<bool> onWillPop() async {
-      Navigator.pushReplacementNamed(context, 'startMenuRoute');
-      return false;
-    }
     bool isLoginPage = ModalRoute.of(context)?.settings.name == '/login';
     return Scaffold(
       appBar: AppBar(
@@ -35,6 +31,12 @@ class _LoginPageState extends State<LoginPage> {
               fontWeight: FontWeight.bold
           ),),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, 'startMenuRoute');
+          },
+        ),
       ),
       resizeToAvoidBottomInset: false,
       body:Container(
@@ -73,10 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                                     Expanded(
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => const RegistrationPage()),
-                                          );
+                                          Navigator.pushReplacementNamed(context, 'registrationRoute');
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.lightBlue[100],

@@ -55,9 +55,9 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, 'userModePageRoute');
           },
         ),
       ),

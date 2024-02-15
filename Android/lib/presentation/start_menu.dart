@@ -74,13 +74,14 @@ class _StartMenuState extends State<StartMenu> {
             width: 56, // Define the width of the button
             child: IconButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushReplacement( // Use pushReplacement to replace the current route with the login page
                   context,
                   MaterialPageRoute(builder: (context) => const LoginPage()),
                 );
               },
               icon: const Icon(Icons.login_rounded),
-              iconSize: 50, // Increase the icon size
+              iconSize: 45,
+              color: Colors.white,
             ),
           ),
           const SizedBox(width: 16), // Adjust the width for spacing
