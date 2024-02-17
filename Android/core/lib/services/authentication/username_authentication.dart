@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:core/services/authentication/IAuthService.dart';
 import 'package:http/http.dart' as http;
 import 'package:core/utils/api_configuration.dart';
 import 'package:core/models/user_model.dart';
@@ -8,8 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:core/providers/user_provider.dart';
 import 'package:core/handlers/shared_handler.dart';
 
-class AuthService {
-  static Future<void> loginUser(BuildContext context, String email, String password) async {
+class AuthService implements IAuthService{
+  @override
+  Future<void> signIn(BuildContext context, String? email, String? password) async {
     final String apiUrl = ApiConfig.apiUrl;
 
     final response = await http.post(
@@ -35,22 +37,9 @@ class AuthService {
       Provider.of<UserProvider>(context, listen: false).setUser(user);
       print('User ID: $userID');
 
-      AlertDialog alertDialog = AlertDialog(
-        title: const Text('Login Successful'),
-        content: const Text('Welcome!'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, 'userModePageRoute');
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      );
+      Navigator.pushReplacementNamed(
+          context, 'userModePageRoute');
 
-      Future.delayed(const Duration(seconds: 1));
-
-      showDialog(context: context, builder: (context) => alertDialog);
     } else if (response.statusCode == 404) {
       // Failed login
       AlertDialog alertDialog = AlertDialog(
@@ -105,5 +94,9 @@ class AuthService {
       print('Error: ${response.statusCode}');
       showDialog(context: context, builder: (context) => alertDialog);
     }
+  }
+  @override
+  Future <void> signOut (BuildContext context) async{
+    SharedHandlerUtil.setUserNull();
   }
 }

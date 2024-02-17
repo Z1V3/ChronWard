@@ -22,4 +22,8 @@ class SharedHandlerUtil {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(username);
   }
+  static Future<void> setUserNull() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt(keyUserID, -1);
+  }
 }

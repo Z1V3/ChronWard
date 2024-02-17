@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:core/services/authentication/google_sign_out_auth.dart';
 import 'package:android/presentation/widgets/drawer_widget.dart';
 import 'package:core/handlers/shared_handler.dart';
 import 'package:android/presentation/rfid_cards_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:core/services/authentication/google_authentication.dart';
 
 class UserModePage extends StatefulWidget {
   @override
@@ -58,7 +58,7 @@ class _UserModePageState extends State<UserModePage> {
         actions: [
           IconButton(
             onPressed: () async {
-              GoogleSignOutService.signOutWithGoogle(context);
+              GoogleAuthentication().signOut(context);
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 'startMenuRoute',

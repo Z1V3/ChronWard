@@ -1,7 +1,8 @@
 import 'package:android/presentation/registration_page.dart';
+import 'package:core/services/authentication/IAuthService.dart';
 import 'package:flutter/material.dart';
 import 'package:core/services/authentication/username_authentication.dart';
-import 'package:core/services/authentication/google_log_in_auth.dart';
+import 'package:core/services/authentication/google_authentication.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -17,7 +18,8 @@ class _LoginPageState extends State<LoginPage> {
   final _formKeyLogin = GlobalKey<FormState>();
 
   Future<void> loginUser() async {
-    AuthService.loginUser(context, _emailController.text, _passwordController.text);
+
+    AuthService().signIn(context, _emailController.text, _passwordController.text);
   }
   @override
   Widget build(BuildContext context) {
@@ -180,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
                                       const SizedBox(width: 5,),
                                       ElevatedButton(
                                         onPressed: () {
-                                          GoogleSignInService.signInWithGoogle(context);
+                                          GoogleAuthentication().signIn(context,null,null);
                                         },
                                         style: ButtonStyle(
                                             backgroundColor: MaterialStateProperty.all(Colors.lightBlue[300])

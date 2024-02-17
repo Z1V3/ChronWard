@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:core/services/authentication/IAuthService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:core/utils/api_configuration.dart';
@@ -6,8 +7,10 @@ import 'package:core/handlers/shared_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class GoogleSignInService {
-  static Future<void> signInWithGoogle(BuildContext context) async {
+class GoogleAuthentication implements IAuthService {
+
+  @override
+  Future<void> signIn(BuildContext context, String? email,String? password) async {
     try {
       GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
@@ -30,6 +33,12 @@ class GoogleSignInService {
       print('Error signing in with Google: $error');
     }
 
+  }
+
+  @override
+  Future <void> signOut (BuildContext context) async{
+    await GoogleSignIn().signOut();
+    FirebaseAuth.instance.signOut();
   }
 
   static Future<void> sendIdTokenToBackend(String? idToken) async {
@@ -56,4 +65,5 @@ class GoogleSignInService {
       print('Error sending IdToken to backend: $error');
     }
   }
+
 }
