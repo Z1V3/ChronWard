@@ -74,7 +74,7 @@ namespace backend.Services
                 Active = true,
                 Created = DateTime.Now,
                 Role = "user",
-                password = "lozinka"
+                Password = "lozinka"
             };
 
             _context.Users.Add(newRegisteredUser);
