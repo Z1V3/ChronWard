@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:core/handlers/shared_handler.dart';
 import 'package:core/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,8 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
 
   void fetchRfidCards() async {
 
-    final int? userId = Provider.of<UserProvider>(context, listen: false).user?.userID;
+    // final int? userId = Provider.of<UserProvider>(context, listen: false).user?.userID;
+    int? userId = await SharedHandlerUtil.getUserID();
     print('Fetching history');
     final url = 'http://${returnAddress()}:8080/api/card/getUserCards/$userId';
     final uri = Uri.parse(url);

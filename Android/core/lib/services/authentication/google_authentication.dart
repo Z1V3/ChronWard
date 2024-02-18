@@ -26,6 +26,7 @@ class GoogleAuthentication implements IAuthService {
       if (userCredential.user != null) {
         String? idToken = googleAuth?.idToken;
         await sendIdTokenToBackend(idToken);
+        await getUserId(idToken);
         Navigator.pushReplacementNamed(context, 'userModePageRoute');
       }
 
@@ -66,4 +67,30 @@ class GoogleAuthentication implements IAuthService {
     }
   }
 
+  static Future<void> getUserId(String? token) async {
+    final String url = ApiConfig.googleApi;
+    final Map<String, String> headers = {'Content-Type': 'application/json'};
+    final Map<String, dynamic> body = {'token': token};
+
+    try {
+      final response = await http.post(Uri.parse(url),
+          headers: headers, body: json.encode(body));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        if (responseData.containsKey('user')) {
+          final userResponse = responseData['user'];
+          print(userResponse['userId'].toString());
+          SharedHandlerUtil.saveUserID(userResponse['userId']);
+          //Provider.of<UserProvider>(context, listen: false).setUser(user);
+        } else {
+          print('User data not found in response');
+        }
+      } else {
+        print('Failed with status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
 }

@@ -5,7 +5,7 @@ class AddCard {
 
   AddCard(this._cardService);
 
-  Future<int> execute(int userID, String cardValue) async {
+  Future<int> execute(int? userID, String cardValue) async {
     return await _cardService.sendAddNewCard(userID, cardValue);
   }
 }

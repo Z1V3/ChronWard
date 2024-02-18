@@ -1,4 +1,5 @@
-  import 'package:flutter/material.dart';
+  import 'package:core/handlers/shared_handler.dart';
+import 'package:flutter/material.dart';
   import 'package:core/handlers/nfc_handler.dart';
   import 'package:android/domain/controllers/card_controller.dart';
   import 'package:ws/services/card_service.dart';
@@ -28,7 +29,8 @@
             _isLoading = false; // Update loading state when NFC reading is complete
           });
           debugPrint("Received NFC Identifier (Hex): $hexIdentifier");
-          int userID = Provider.of<UserProvider>(context, listen: false).user?.userID ?? 0;
+          // int userID = Provider.of<UserProvider>(context, listen: false).user?.userID ?? 0;
+          int? userID = await SharedHandlerUtil.getUserID();
           int code = await _cardController.sendAddNewCard(userID, hexIdentifier);
           if(code != 409){
             _showSnackbar('Card added successfully');

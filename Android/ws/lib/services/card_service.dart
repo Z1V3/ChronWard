@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:ws/privateAddress.dart';
 
 class CardService {
-  Future<int> sendAddNewCard(int userID, String cardValue) async {
+  Future<int> sendAddNewCard(int? userID, String cardValue) async {
     try {
       final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/card/addNewCard');
       final response = await http.post(

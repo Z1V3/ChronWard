@@ -55,7 +55,8 @@ namespace backend.Services
                 Password = hashedPassword,
                 Active = true,
                 Created = DateTime.Now,
-                Role = "user"
+                Role = "user",
+                
             };
 
             _context.Users.Add(newRegisteredUser);
@@ -72,7 +73,8 @@ namespace backend.Services
                 Email = email,
                 Active = true,
                 Created = DateTime.Now,
-                Role = "user"
+                Role = "user",
+                password = "lozinka"
             };
 
             _context.Users.Add(newRegisteredUser);
