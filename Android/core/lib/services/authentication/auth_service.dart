@@ -1,16 +1,18 @@
 import 'dart:convert';
-import 'package:core/services/authentication/IAuthService.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:core/utils/api_configuration.dart';
-import 'package:core/handlers/shared_handler.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
-class GoogleAuthentication implements IAuthService {
+import '../../handlers/shared_handler.dart';
+import '../../utils/api_configuration.dart';
 
-  @override
-  Future<void> signIn(BuildContext context, String? email,String? password) async {
+
+class AuthServiceNew {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> signInWithGoogle(BuildContext context, String? email,String? password) async {
     try {
       GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
@@ -35,13 +37,7 @@ class GoogleAuthentication implements IAuthService {
 
   }
 
-  @override
-  Future <void> signOut (BuildContext context) async{
-    await GoogleSignIn().signOut();
-    FirebaseAuth.instance.signOut();
-  }
-
-  Future<void> sendIdTokenToBackend(String? idToken) async {
+  static Future<void> sendIdTokenToBackend(String? idToken) async {
     final String backendApiUrl = ApiConfig.googleApi;
 
     try {
@@ -66,4 +62,27 @@ class GoogleAuthentication implements IAuthService {
     }
   }
 
+  Future<void> signInWithFacebook(BuildContext context, String? email, String? password) async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      if (loginResult.status == LoginStatus.success) {
+        final AccessToken? accessToken = loginResult.accessToken;
+        final AuthCredential credential = FacebookAuthProvider.credential(accessToken!.token);
+        final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+        final String? username = userCredential.user?.displayName.toString();
+        SharedHandlerUtil.saveUserName(username!);
+
+        if (userCredential.user != null) {
+          final String? idToken = await userCredential.user?.getIdToken();
+          await sendIdTokenToBackend(idToken);
+          Navigator.pushReplacementNamed(context, 'userModePageRoute');
+        }
+      } else {
+        print('Error signing in with Facebook: ${loginResult.message}');
+      }
+    } catch (error) {
+      print('Error signing in with Facebook: $error');
+    }
+  }
 }

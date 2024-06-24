@@ -7,7 +7,6 @@ import 'package:core/handlers/shared_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:core/providers/user_provider.dart';
-import 'package:core/handlers/shared_handler.dart';
 
 class AuthService implements IAuthService{
   @override

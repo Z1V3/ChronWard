@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">EVCharge</string>
+    <string name="facebook_app_id">3654306511510288</string>
+    <string name="fb_login_protocol_scheme">fb3654306511510288</string>
+    <string name="facebook_client_token">558fcf20d83fac040ce6c4440ccc6b0f</string>
+</resources>

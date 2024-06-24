@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:android/presentation/widgets/drawer_widget.dart';
 import 'package:core/handlers/shared_handler.dart';
 import 'package:android/presentation/rfid_cards_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:core/services/authentication/google_authentication.dart';
+import 'package:ev_google_login/ev_google_login.dart';
+//import 'package:ev_facebook_login/ev_facebook_login.dart';
 
 class UserModePage extends StatefulWidget {
+  const UserModePage({super.key});
+
   @override
   _UserModePageState createState() => _UserModePageState();
 }
 
 class _UserModePageState extends State<UserModePage> {
   String? username;
+  final Login _login = Login();
 
   @override
   void initState() {
@@ -58,14 +62,14 @@ class _UserModePageState extends State<UserModePage> {
         actions: [
           IconButton(
             onPressed: () async {
-              GoogleAuthentication().signOut(context);
+              _login.signOut(context);
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 'startMenuRoute',
                     (route) => false, // Remove all routes until the startMenuRoute
               );
             },
-            icon: Icon(Icons.power_settings_new),
+            icon: const Icon(Icons.power_settings_new),
           ),
         ],
       ),
@@ -80,7 +84,7 @@ class _UserModePageState extends State<UserModePage> {
               thickness: 0.5,
             ),
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -4,7 +4,7 @@ import 'package:core/services/history_data_manager_service.dart';
 import 'package:android/presentation/widgets/drawer_widget.dart';
 
 class ChargingHistoryPage extends StatefulWidget {
-  const ChargingHistoryPage({Key? key}) : super(key: key);
+  const ChargingHistoryPage({super.key});
 
   @override
   State<ChargingHistoryPage> createState() => _ChargingHistoryScreenState();
@@ -58,8 +58,8 @@ class _ChargingHistoryScreenState extends State<ChargingHistoryPage> {
               final price = chargingHistoryItem['price'];
               return ListTile(
                 leading: CircleAvatar(
-                  child: Text('${index+1}'),
                   backgroundColor: Colors.lightBlueAccent,
+                  child: Text('${index+1}'),
                 ),
                 title: Text('Time spent charging: $chargeTime',style: const TextStyle(
                   color: Colors.black87

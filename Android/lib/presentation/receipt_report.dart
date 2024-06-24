@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:android/presentation/widgets/drawer_widget.dart';
 
 class ReceiptScreen extends StatelessWidget {
   final String chargingStationName;
@@ -13,7 +12,7 @@ class ReceiptScreen extends StatelessWidget {
   final String transactionId;
 
   const ReceiptScreen({
-    Key? key,
+    super.key,
     required this.chargingStationName,
     required this.chargingStationLocation,
     required this.dateTimeOfCharge,
@@ -22,7 +21,7 @@ class ReceiptScreen extends StatelessWidget {
     required this.chargingPricePerKwh,
     required this.paymentMethod,
     required this.transactionId,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     double totalChargeCost = electricityConsumed * chargingPricePerKwh;
@@ -33,7 +32,7 @@ class ReceiptScreen extends StatelessWidget {
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushReplacementNamed(context, 'chargeHistoryPageRoute');
           },
@@ -92,7 +91,7 @@ class ReceiptScreen extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
             Text(value, style: TextStyle(fontWeight: fontWeight)),
           ],
         ),

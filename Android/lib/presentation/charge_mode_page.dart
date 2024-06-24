@@ -2,10 +2,8 @@ import 'dart:async';
 import 'package:provider/provider.dart';
 import 'package:core/providers/user_provider.dart';
 import 'package:android/domain/use_cases/create_charging_event.dart';
-import 'package:core/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:ws/models/charging_data.dart';
 import 'package:core/utils/duration_formatter.dart';
 import 'package:android/domain/controllers/charger_controller.dart';
@@ -13,7 +11,7 @@ import 'package:ws/services/charge_service.dart';
 import 'package:android/domain/use_cases/update_charger_availability.dart';
 
 class ChargeModePage extends StatefulWidget {
-  const ChargeModePage({Key? key}) : super(key: key);
+  const ChargeModePage({super.key});
 
   @override
   State<ChargeModePage> createState() => _ChargeModePageState();
@@ -392,12 +390,11 @@ class CircleButton extends StatefulWidget {
   final bool breathing;
 
   const CircleButton(
-      {Key? key,
+      {super.key,
         required this.icon,
         required this.color,
         required this.breathing,
-        this.onClick})
-      : super(key: key);
+        this.onClick});
 
   @override
   _CircleButtonState createState() => _CircleButtonState();

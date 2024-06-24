@@ -2,8 +2,6 @@ import '../privateAddress.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/charging_data.dart';
-import 'package:provider/provider.dart';
-import 'package:core/providers/user_provider.dart';
 
 class ChargeService {
   Future<void> sendChargerOccupation(int chargerID, bool occupied) async {

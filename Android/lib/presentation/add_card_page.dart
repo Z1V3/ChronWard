@@ -1,14 +1,12 @@
   import 'package:flutter/material.dart';
   import 'package:core/handlers/nfc_handler.dart';
   import 'package:android/domain/controllers/card_controller.dart';
-  import 'package:ws/services/card_service.dart';
-  import 'package:android/domain/use_cases/add_card.dart';
   import 'package:android/presentation/widgets/drawer_widget.dart';
   import 'package:provider/provider.dart';
   import 'package:core/providers/user_provider.dart';
 
   class AddCardPage extends StatefulWidget {
-    const AddCardPage({Key? key}) : super(key: key);
+    const AddCardPage({super.key});
 
     @override
     State<AddCardPage> createState() => _AddCardPageState();
@@ -102,7 +100,7 @@
                   ),
                 ),
                 if (_isLoading)
-                  CircularProgressIndicator(color: Colors.black87,) // Show loading indicator if isLoading is true
+                  const CircularProgressIndicator(color: Colors.black87,) // Show loading indicator if isLoading is true
                 else
                   const SizedBox(height: 40), // Empty SizedBox if not loading
                 const Text(
@@ -125,8 +123,7 @@
     final String label;
     final VoidCallback? onClick;
 
-    const CircleButton({Key? key, required this.label, this.onClick})
-        : super(key: key);
+    const CircleButton({super.key, required this.label, this.onClick});
 
     @override
     Widget build(BuildContext context) {

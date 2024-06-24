@@ -1,9 +1,8 @@
-import 'package:android/presentation/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:android/domain/use_cases/register_user.dart';
 
 class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({Key? key}) : super(key: key);
+  const RegistrationPage({super.key});
 
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
@@ -257,7 +256,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 registerUser();
                               },
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
+                                backgroundColor: WidgetStateProperty.all(
                                     Colors.lightBlue[300]),
                               ),
                               child: const Text('Register',

@@ -1,15 +1,12 @@
-import 'package:android/presentation/charge_mode_page.dart';
 import 'package:android/presentation/login_page.dart';
 import 'package:core/handlers/nfc_handler.dart';
 import 'package:core/models/user_model.dart';
 import 'package:core/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ws/services/card_service.dart';
 import 'dart:async';
 
 import '../domain/controllers/card_controller.dart';
-import '../domain/use_cases/add_card.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +24,7 @@ class MyApp extends StatelessWidget {
 }
 
 class StartMenu extends StatefulWidget {
-  const StartMenu({Key? key}) : super(key: key);
+  const StartMenu({super.key});
 
   @override
   _StartMenuState createState() => _StartMenuState();

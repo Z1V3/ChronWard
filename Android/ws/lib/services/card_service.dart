@@ -30,7 +30,7 @@ class CardService {
 
   Future<int> sendAuthenticateCard(String cardValue) async {
     try {
-      final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/card/authenticateCard/${cardValue}');
+      final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/card/authenticateCard/$cardValue');
       final response = await http.get(
         uri,
         headers: {'Content-Type': 'application/json'},

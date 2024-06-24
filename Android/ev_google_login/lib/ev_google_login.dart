@@ -1,16 +1,18 @@
 import 'dart:convert';
-import 'package:core/services/authentication/IAuthService.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:core/utils/api_configuration.dart';
-import 'package:core/handlers/shared_handler.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:core/handlers/shared_handler.dart';
+import 'package:core/utils/api_configuration.dart';
+import 'package:core/services/ILogin.dart';
+import 'package:ndef/utilities.dart';
 
-class GoogleAuthentication implements IAuthService {
+class Login implements ILogin{
 
   @override
-  Future<void> signIn(BuildContext context, String? email,String? password) async {
+  Future<void> signIn(BuildContext context, String? email,
+      String? password) async {
     try {
       GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
@@ -19,7 +21,8 @@ class GoogleAuthentication implements IAuthService {
         accessToken: googleAuth?.accessToken,
         idToken: googleAuth?.idToken,
       );
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithCredential(credential);
       String? username = userCredential.user?.displayName.toString();
       SharedHandlerUtil.saveUserName(username!);
 
@@ -28,19 +31,12 @@ class GoogleAuthentication implements IAuthService {
         await sendIdTokenToBackend(idToken);
         Navigator.pushReplacementNamed(context, 'userModePageRoute');
       }
-
     } catch (error) {
       print('Error signing in with Google: $error');
     }
-
   }
 
   @override
-  Future <void> signOut (BuildContext context) async{
-    await GoogleSignIn().signOut();
-    FirebaseAuth.instance.signOut();
-  }
-
   Future<void> sendIdTokenToBackend(String? idToken) async {
     final String backendApiUrl = ApiConfig.googleApi;
 
@@ -66,4 +62,14 @@ class GoogleAuthentication implements IAuthService {
     }
   }
 
+  @override
+  Future<void> signOut (BuildContext context)async {
+    await GoogleSignIn().signOut();
+    FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  String getVendorName(){
+    return 'ikonica.png';
+  }
 }

@@ -7,7 +7,7 @@ import 'package:ws/privateAddress.dart';
 import 'package:android/presentation/widgets/drawer_widget.dart';
 
 class RfidCardsPage extends StatefulWidget {
-  const RfidCardsPage({Key? key}) : super(key: key);
+  const RfidCardsPage({super.key});
 
   @override
   State<RfidCardsPage> createState() => _RfidCardsPageState();
@@ -72,10 +72,10 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
             return Card(
                 child: ListTile(
                 leading: CircleAvatar(
-                  child: Text('${index + 1}'),
                   backgroundColor: Colors.lightBlueAccent,
+                  child: Text('${index + 1}'),
                 ),
-                    title:  Text('Kartica ${cardID}',
+                    title:  Text('Kartica $cardID',
                     style: const TextStyle(
                     color: Colors.black,
                     ),
@@ -97,8 +97,8 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
               Navigator.pushReplacementNamed(
                   context, 'addCardPageRoute');
             },
-            child: const Icon(Icons.add, color: Colors.white),
             backgroundColor: Colors.blue,
+            child: const Icon(Icons.add, color: Colors.white),
           ),
         ),
       ),
@@ -112,14 +112,14 @@ void _showPopUp(BuildContext context, Map<String, dynamic> cardData) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text('Card Details'),
+        title: const Text('Card Details'),
         content: Text('Card ID: ${card.cardID}\nCard Name: ${card.cardName}'),
         actions: <Widget>[
           TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            child: Text('Close'),
+            child: const Text('Close'),
           ),
         ],
       );
