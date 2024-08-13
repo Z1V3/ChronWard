@@ -10,6 +10,7 @@ class FetchHistoryService {
   static Future <void> fetchUserHistory (BuildContext context) async {
     final int? userId = Provider.of<UserProvider>(context, listen: false).user?.userID;
     print('Fetching history');
+    print(userId);
     final url = '${ApiConfig.userHistoryApi}$userId';
     final uri = Uri.parse(url);
     final response = await http.get(uri);

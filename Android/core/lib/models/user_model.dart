@@ -1,8 +1,9 @@
 // user_model.dart
 class UserModel {
   final int userID;
+  final String role;
 
-  UserModel(this.userID);
+  UserModel(this.userID, this.role);
 }
 
 class User {

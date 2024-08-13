@@ -152,17 +152,18 @@ class _ChargeModePageState extends State<ChargeModePage> {
               ],
             ),
             actions: [
-              TextButton(
+              ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.pushReplacementNamed(context, 'paymentPageRoute');
                 },
-                child: const Text('OK'),
+                child: const Text('Proceed to Payment'),
               ),
             ],
           );
         },
       );
     }
+
     setState(() {
       counter = 0;
       loadingProgress = 0;
@@ -170,6 +171,7 @@ class _ChargeModePageState extends State<ChargeModePage> {
       stopButtonVisible = false;
     });
   }
+
 
   void _updateChargingData() {
     _chargingData.volume = _calculateVolume(counter);

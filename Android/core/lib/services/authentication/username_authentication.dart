@@ -29,8 +29,9 @@ class AuthService implements IAuthService{
 
       int userID = jsonResponse['user']['userId'];
       String username = jsonResponse['user']['username'];
+      String role = jsonResponse['user']['role'];
 
-      UserModel user = UserModel(userID);
+      UserModel user = UserModel(userID,role);
       await SharedHandlerUtil.saveUserID(userID);
       await SharedHandlerUtil.saveUserName(username);
       Provider.of<UserProvider>(context, listen: false).setUser(user);

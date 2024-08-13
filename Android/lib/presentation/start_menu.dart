@@ -131,7 +131,7 @@ class _StartMenuState extends State<StartMenu> {
 
                             if (!context.mounted) return;
 
-                            UserModel userModel = UserModel(userID);
+                            UserModel userModel = UserModel(userID, "test");
                             Provider.of<UserProvider>(context, listen: false).setUser(userModel);
                             if (userID > 0) {
                               Navigator.pushReplacementNamed(context, 'chargeModePageRoute');

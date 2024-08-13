@@ -2,6 +2,7 @@ import 'package:android/presentation/add_card_page.dart';
 import 'package:android/presentation/charge_mode_page.dart';
 import 'package:android/presentation/charging_history.dart';
 import 'package:android/presentation/login_page.dart';
+import 'package:android/presentation/payment_page.dart';
 import 'package:android/presentation/registration_page.dart';
 import 'package:flutter/material.dart';
 import 'package:android/presentation/user_mode_page.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
           'chargeHistoryPageRoute': (context) => const ChargingHistoryPage(),
           'addCardPageRoute': (context) => const AddCardPage(),
           'rfidCardsPage': (context) => const RfidCardsPage(),
+          'paymentPageRoute': (context) => const PaymentPage(),
           'receiptRoute': (context) => ReceiptScreen(
             chargingStationName: 'Varaždin Charging Station',
             chargingStationLocation: 'Ulica Julija Merlića 9, 42000 Varaždin',
