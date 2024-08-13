@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using backend.IServices;
 using backend.Models.request;
+using backend.Services;
 
 namespace backend.Controllers
 {
@@ -172,6 +173,24 @@ namespace backend.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message});
+            }
+        }
+
+        [HttpGet("getUserByUserId/{userID}")]
+        public async Task<IActionResult> GetUserByUserId(int userID)
+        {
+            try
+            {
+                var user = await _iUserService.GetUserByUserId(userID);
+                if (user == null)
+                {
+                    return Conflict(new { Message = "User not found" });
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
     }

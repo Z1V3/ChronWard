@@ -3,6 +3,7 @@ using backend.Models.entity;
 using backend.IServices;
 using BCrypt.Net;
 using Google.Apis.Auth;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services
 {
@@ -17,6 +18,16 @@ namespace backend.Services
         public User GetUserByEmail(string email)
         {
             return _context.Users.FirstOrDefault(u => u.Email == email);
+        }
+
+        public async Task<List<object>> GetUserByUserId(int userId)
+        {
+            var user = await _context.Users
+                    .Where(u => u.UserId == userId)
+                    .Select(u => new {UserId = u.UserId, Role = u.Role})
+                    .ToListAsync();
+
+            return user.Cast<object>().ToList();
         }
 
         public bool AuthenticateUser(string password, string hashedPassword)
