@@ -49,6 +49,13 @@ class DrawerWidget extends StatelessWidget {
               Navigator.pushReplacementNamed(context, 'addCardPageRoute');
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.wallet),
+            title: const Text('Wallet'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, 'walletPageRoute');
+            },
+          ),
         ],
       ),
     );
