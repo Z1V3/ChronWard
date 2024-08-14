@@ -1,8 +1,8 @@
-INSERT INTO evchargeschema.users (username, email, password, active, created, role)
+INSERT INTO evchargeschema.users (username, email, password, active, created, role, wallet)
 VALUES
-  ('admin', 'admin@gmail.com', '$2b$10$fsyj8SNc7gBxAphX9NZZLuyhX7jHnYKyjVuPSXhOvuUSUHYpY3O2y', true, CURRENT_TIMESTAMP, 'admin'),
-  ('mmarkic', 'airtest3211@gmail.com', '$2b$10$7CRa3Vahzqcxla3/U62ORum6PnQa3zj9hEcj/QkPRryntsZyx53m6', true, CURRENT_TIMESTAMP, 'user'),
-  ('ivoivic', 'iivic@gmail.com', '$2b$10$AZIJwdog9QAwsjwPaGNnz.b8pF/UmkHfCTh0colSXIsyqVt6FC3T.', true, CURRENT_TIMESTAMP, 'user');
+  ('admin', 'admin@gmail.com', '$2b$10$fsyj8SNc7gBxAphX9NZZLuyhX7jHnYKyjVuPSXhOvuUSUHYpY3O2y', true, CURRENT_TIMESTAMP, 'admin', 0),
+  ('mmarkic', 'airtest3211@gmail.com', '$2b$10$7CRa3Vahzqcxla3/U62ORum6PnQa3zj9hEcj/QkPRryntsZyx53m6', true, CURRENT_TIMESTAMP, 'user', 0),
+  ('ivoivic', 'iivic@gmail.com', '$2b$10$AZIJwdog9QAwsjwPaGNnz.b8pF/UmkHfCTh0colSXIsyqVt6FC3T.', true, CURRENT_TIMESTAMP, 'user', 0);
 
 INSERT INTO evchargeschema.charger (name, latitude, longitude, created, creator, lastsync, active, occupied)
 VALUES

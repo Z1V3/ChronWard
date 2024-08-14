@@ -193,5 +193,23 @@ namespace backend.Controllers
                 return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
+
+        [HttpGet("getWalletByUserId/{userID}")]
+        public async Task<IActionResult> GetWalletByUserId(int userID)
+        {
+            try
+            {
+                var wallet = await _iUserService.GetWalletByUserId(userID);
+                if (wallet == null)
+                {
+                    return Conflict(new { Message = "User not found" });
+                }
+                return Ok(wallet);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
+            }
+        }
     }
 }

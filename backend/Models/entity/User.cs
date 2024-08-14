@@ -19,6 +19,7 @@ namespace backend.Models.entity
         public bool Active { get; set; }
         public DateTime Created { get; set; }
         public string Role { get; set; } = null!;
+        public decimal Wallet { get; set; }
 
         public virtual ICollection<Card> Cards { get; set; }
         public virtual ICollection<Charger> Chargers { get; set; }

@@ -30,6 +30,17 @@ namespace backend.Services
             return user.Cast<object>().ToList();
         }
 
+        public async Task<decimal> GetWalletByUserId(int userId)
+        {
+            var userWallet = await _context.Users
+                .Where(u => u.UserId == userId)
+                .Select(u => u.Wallet)
+                .FirstOrDefaultAsync();
+
+            return userWallet;
+        }
+
+
         public bool AuthenticateUser(string password, string hashedPassword)
         { 
             bool isPasswordValid = VerifyPassword(password, hashedPassword);
@@ -66,7 +77,8 @@ namespace backend.Services
                 Password = hashedPassword,
                 Active = true,
                 Created = DateTime.Now,
-                Role = "user"
+                Role = "user",
+                Wallet = 0
             };
 
             _context.Users.Add(newRegisteredUser);
@@ -83,7 +95,8 @@ namespace backend.Services
                 Email = email,
                 Active = true,
                 Created = DateTime.Now,
-                Role = "user"
+                Role = "user",
+                Wallet = 0
             };
 
             _context.Users.Add(newRegisteredUser);

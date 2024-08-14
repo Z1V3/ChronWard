@@ -10,7 +10,8 @@ create table evchargeschema.users
     password varchar(60),
     active   boolean     not null,
     created  timestamp   not null,
-    role     varchar(30) not null
+    role     varchar(30) not null,
+    wallet   decimal(19,2)      not null
 );
 
 drop table if exists evchargeschema.charger cascade;

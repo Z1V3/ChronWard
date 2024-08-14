@@ -163,6 +163,8 @@ namespace backend.Models
                     .HasMaxLength(30)
                     .HasColumnName("role");
 
+                entity.Property(e => e.Wallet).HasColumnName("wallet");
+
                 entity.Property(e => e.Username)
                     .HasMaxLength(50)
                     .HasColumnName("username");
