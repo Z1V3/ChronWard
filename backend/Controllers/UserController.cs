@@ -211,5 +211,31 @@ namespace backend.Controllers
                 return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
             }
         }
+
+        [HttpPost("updateWalletValue")]
+        public async Task<IActionResult> UpdateWalletValue([FromBody] userWalletUpdateRequest userWalletUpdateReq)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var updatedWalletValue = await _iUserService.UpdateWalletValue(userWalletUpdateReq.UserId.Value, userWalletUpdateReq.Wallet.Value);
+                if (updatedWalletValue != null)
+                {
+                    return Ok(new { Message = "Wallet value updated sucessfully!" });
+                }
+                else
+                {
+                    return NotFound(new { Message = "User not found" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Internal server error", ExceptionMessage = ex.Message });
+            }
+        }
     }
 }

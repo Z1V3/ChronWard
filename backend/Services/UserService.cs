@@ -30,6 +30,12 @@ namespace backend.Services
             return user.Cast<object>().ToList();
         }
 
+        public async Task<User> GetFullUserByUserId(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            return user;
+        }
+
         public async Task<decimal> GetWalletByUserId(int userId)
         {
             var userWallet = await _context.Users
@@ -40,6 +46,17 @@ namespace backend.Services
             return userWallet;
         }
 
+        public async Task<User> UpdateWalletValue(int userId, decimal value)
+        {
+            User user = await GetFullUserByUserId(userId);
+            if (user != null)
+            {
+                user.Wallet += value;
+
+                await _context.SaveChangesAsync();
+            }
+            return user;
+        }
 
         public bool AuthenticateUser(string password, string hashedPassword)
         { 
