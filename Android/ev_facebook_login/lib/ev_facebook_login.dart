@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:core/handlers/shared_handler.dart';
 import 'package:core/utils/api_configuration.dart';
-import 'package:core/services/ILogin.dart';
+import 'package:core/interfaces/ILogin.dart';
 
 class Login implements ILogin{
   @override

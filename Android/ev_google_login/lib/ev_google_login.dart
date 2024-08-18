@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:core/handlers/shared_handler.dart';
 import 'package:core/utils/api_configuration.dart';
-import 'package:core/services/ILogin.dart';
+import 'package:core/interfaces/ILogin.dart';
 import 'package:ndef/utilities.dart';
 
 class Login implements ILogin{
