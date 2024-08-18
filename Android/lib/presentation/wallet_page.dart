@@ -16,12 +16,12 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> {
-  double walletBalance = 12.0;
+  double walletBalance = 0.0;
 
   @override
   void initState() {
     super.initState();
-    fetchWallet(); // Call fetchWallet here
+    fetchWallet();
   }
 
   void fetchWallet() async {
@@ -38,8 +38,63 @@ class _WalletPageState extends State<WalletPage> {
     print(walletBalance);
   }
 
+  void _showAddMoneyPrompt(BuildContext context) {
+    TextEditingController _amountController = TextEditingController();
 
-
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          title: const Text('Add Money'),
+          content: TextField(
+            controller: _amountController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              hintText: 'Enter amount',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                double? amount = double.tryParse(_amountController.text);
+                if (amount != null && amount > 0) {
+                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.pushReplacementNamed(
+                    context,
+                    'paymentPageRoute',
+                    arguments: {'amount': amount},
+                  );
+                } else {
+                  // Show error message if the amount is invalid
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please enter a valid amount.'),
+                    ),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +162,7 @@ class _WalletPageState extends State<WalletPage> {
               // Add Money Button
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(
-                      context, 'paymentPageRoute');
+                  _showAddMoneyPrompt(context);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(

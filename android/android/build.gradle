@@ -20,6 +20,11 @@ allprojects {
         maven { url 'https://storage.googleapis.com/download.flutter.io' }
 
     }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:deprecation"
+        }
+    }
 }
 
 rootProject.buildDir = '../build'

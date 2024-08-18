@@ -1,3 +1,4 @@
+import 'package:android/consts.dart';
 import 'package:android/presentation/add_card_page.dart';
 import 'package:android/presentation/charge_mode_page.dart';
 import 'package:android/presentation/charging_history.dart';
@@ -14,8 +15,10 @@ import 'package:android/presentation/receipt_report.dart';
 import 'package:android/presentation/rfid_cards_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
+  await _setup();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FacebookAuth.instance.webAndDesktopInitialize(
@@ -25,6 +28,11 @@ void main() async {
     version: "v11.0",
   );
   runApp(const MyApp());
+}
+
+Future<void> _setup() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = stripePublishableKey;
 }
 
 class MyApp extends StatelessWidget {
@@ -51,7 +59,11 @@ class MyApp extends StatelessWidget {
           'addCardPageRoute': (context) => const AddCardPage(),
           'rfidCardsPage': (context) => const RfidCardsPage(),
           'walletPageRoute': (context) => const WalletPage(),
-          'paymentPageRoute': (context) => const PaymentPage(),
+          'paymentPageRoute': (context) {
+            final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+            final double amount = args?['amount'] ?? 0.0;
+            return PaymentPage(amount: amount);
+          },
           'receiptRoute': (context) => ReceiptScreen(
             chargingStationName: 'Varaždin Charging Station',
             chargingStationLocation: 'Ulica Julija Merlića 9, 42000 Varaždin',
@@ -61,9 +73,9 @@ class MyApp extends StatelessWidget {
             chargingPricePerKwh: 0.506558,
             paymentMethod: 'Credit Card',
             transactionId: '1234567890',
-      )
-        }
-      )
+          )
+        },
+      ),
     );
   }
 }
