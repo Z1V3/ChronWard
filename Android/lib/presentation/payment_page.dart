@@ -1,20 +1,26 @@
-import 'dart:io';
-import 'package:android/services/stripe_service.dart';
 import 'package:flutter/material.dart';
-import 'package:core/utils/payment_configuration.dart';
-import 'package:pay/pay.dart';
+import 'package:payment_google_pay/payment_google_pay.dart';
+import 'package:payment_card/stripe_service.dart';
 import 'package:provider/provider.dart';
 import 'package:core/providers/user_provider.dart';
+import 'package:android/domain/controllers/wallet_controller.dart';
 
 class PaymentPage extends StatefulWidget {
   final double amount;
   const PaymentPage({Key? key, required this.amount}) : super(key: key);
 
   @override
-  State<PaymentPage> createState() => _PaymentPageState();
+  _PaymentPageState createState() => _PaymentPageState();
 }
 
 class _PaymentPageState extends State<PaymentPage> {
+  late WalletController _walletController;
+
+  @override
+  void initState() {
+    super.initState();
+    _walletController = WalletController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,43 +38,56 @@ class _PaymentPageState extends State<PaymentPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, 'walletPageRoute');
+            Navigator.pop(context); // Navigate back
           },
         ),
       ),
-      body: SizedBox.expand(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            MaterialButton(
+            ElevatedButton(
               onPressed: () async {
                 final int? userId = Provider.of<UserProvider>(context, listen: false).user?.userID;
 
                 if (userId == null) {
-                  // Handle the case where the user ID is null
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('User ID is not available.')),
                   );
                   return;
                 }
 
-                // Start the payment process
                 bool paymentSuccess = await StripeService.instance.makePayment(userId, (widget.amount * 100).toInt());
 
                 if (paymentSuccess) {
-                  // Navigate to wallet page only if payment is successful
+                  double wallet = await _walletController.fetchWallet(userId);
+                  wallet += widget.amount;
+                  await _walletController.updateWallet(userId, wallet);
                   Navigator.pushReplacementNamed(context, 'walletPageRoute');
                 } else {
-                  // Handle payment failure scenario
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Payment failed. Please try again.')),
+                    SnackBar(content: Text('Card payment failed. Please try again.')),
                   );
                 }
               },
-              color: Colors.green,
-              child: const Text("Pay"),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue, // Text color
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                elevation: 5,
+              ),
+              child: Text(
+                "Pay with Card",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
+            const SizedBox(height: 20),
+            GooglePayService.instance.googlePayButton(context, widget.amount),
           ],
         ),
       ),
