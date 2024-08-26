@@ -1,4 +1,5 @@
-import 'package:android/consts.dart';
+import 'package:android/presentation/charge_mode_payment.dart';
+import 'package:payment_card/consts.dart';
 import 'package:android/presentation/add_card_page.dart';
 import 'package:android/presentation/charge_mode_page.dart';
 import 'package:android/presentation/charging_history.dart';
@@ -54,6 +55,11 @@ class MyApp extends StatelessWidget {
           'loginPageRoute': (context) => const LoginPage(),
           'registrationRoute': (context) => const RegistrationPage(),
           'chargeModePageRoute': (context) => const ChargeModePage(),
+          'chargeModePaymentPageRoute': (context) {
+            final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+            final double amount = args?['amount'] ?? 0.0;
+            return ChargeModePaymentPage(amount: amount);
+          },
           'userModePageRoute': (context) => const UserModePage(),
           'chargeHistoryPageRoute': (context) => const ChargingHistoryPage(),
           'addCardPageRoute': (context) => const AddCardPage(),

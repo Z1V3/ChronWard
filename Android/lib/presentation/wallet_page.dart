@@ -1,12 +1,11 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:core/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:ws/privateAddress.dart';
-import 'package:android/presentation/widgets/drawer_widget.dart';
+
+// TODO ukljuci koristenje fetch wallet iz controllera i makni funkciju koja je tu
 
 class WalletPage extends StatefulWidget {
   const WalletPage({super.key});
@@ -67,14 +66,13 @@ class _WalletPageState extends State<WalletPage> {
               onPressed: () {
                 double? amount = double.tryParse(_amountController.text);
                 if (amount != null && amount > 0) {
-                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.of(context).pop();
                   Navigator.pushReplacementNamed(
                     context,
                     'paymentPageRoute',
                     arguments: {'amount': amount},
                   );
                 } else {
-                  // Show error message if the amount is invalid
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Please enter a valid amount.'),
@@ -123,7 +121,6 @@ class _WalletPageState extends State<WalletPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Card-like container for wallet balance
               Container(
                 padding: const EdgeInsets.all(24.0),
                 decoration: BoxDecoration(
@@ -159,7 +156,6 @@ class _WalletPageState extends State<WalletPage> {
                 ),
               ),
               const SizedBox(height: 50.0),
-              // Add Money Button
               ElevatedButton(
                 onPressed: () {
                   _showAddMoneyPrompt(context);
@@ -170,8 +166,8 @@ class _WalletPageState extends State<WalletPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),
-                  backgroundColor: Colors.blueAccent, // Button background color
-                  elevation: 5.0, // Adds shadow to the button
+                  backgroundColor: Colors.blueAccent,
+                  elevation: 5.0,
                 ),
                 child: const Text(
                   'Add Money',
@@ -185,7 +181,7 @@ class _WalletPageState extends State<WalletPage> {
           ),
         ),
       ),
-      backgroundColor: Colors.blue[50], // Light blue background for contrast
+      backgroundColor: Colors.blue[50],
     );
   }
 }

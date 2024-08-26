@@ -506,6 +506,20 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  payment_card:
+    dependency: "direct main"
+    description:
+      path: payment_card
+      relative: true
+    source: path
+    version: "0.0.1"
+  payment_google_pay:
+    dependency: "direct main"
+    description:
+      path: payment_google_pay
+      relative: true
+    source: path
+    version: "0.0.1"
   permission_handler:
     dependency: "direct main"
     description:
@@ -783,5 +797,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.4.1 <4.0.0"
+  dart: ">=3.5.0 <4.0.0"
   flutter: ">=3.22.0"

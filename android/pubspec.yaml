@@ -47,6 +47,10 @@ dependencies:
     path: ./core
   ws:
     path: ./ws
+  payment_card:
+    path: ./payment_card
+  payment_google_pay:
+    path: ./payment_google_pay
 
   ev_google_login:
     path: ./ev_google_login

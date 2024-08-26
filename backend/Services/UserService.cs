@@ -51,7 +51,7 @@ namespace backend.Services
             User user = await GetFullUserByUserId(userId);
             if (user != null)
             {
-                user.Wallet += value;
+                user.Wallet = value;
 
                 await _context.SaveChangesAsync();
             }

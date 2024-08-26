@@ -1,10 +1,6 @@
-import 'package:android/consts.dart';
+import 'package:payment_card/consts.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:ws/privateAddress.dart';
 
 class StripeService {
   StripeService._();
@@ -23,13 +19,8 @@ class StripeService {
         ),
       );
 
-      // Wait for the payment process to complete
       bool paymentSuccess = await _processPayment();
-      print("STRIPE SERVICE");
-      print(paymentSuccess);
       if (paymentSuccess) {
-        // Only update the wallet if payment is successful
-        await updateWalletValue(userId, (amount.toDouble() / 100));
         return true;
       }
       return false;
@@ -52,7 +43,7 @@ class StripeService {
         options: Options(
             contentType: Headers.formUrlEncodedContentType,
             headers: {
-              "Authorization": "Bearer ${stripeSecretKey}",
+              "Authorization": "Bearer $stripeSecretKey",
               "Content-Type": 'application/x-www-form-urlencoded'
             }
         ),
@@ -72,37 +63,10 @@ class StripeService {
   Future<bool> _processPayment() async {
     try {
       await Stripe.instance.presentPaymentSheet();
-      return true; // Payment succeeded
+      return true;
     } catch (e) {
       print("Payment failed!");
-      // TODO: Notify the user about the failure
-      return false; // Payment failed
-    }
-  }
-
-  Future<void> updateWalletValue(int userId, double amount) async {
-    final Uri uri = Uri.parse('http://${returnAddress()}:8080/api/user/updateWalletValue');
-
-    try {
-      final response = await http.post(
-        uri,
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'userId': userId,
-          'wallet': amount,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        print('Request successful');
-        print('Response: ${response.body}');
-      } else {
-        print('Request failed with status: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error sending POST request: $e');
+      return false;
     }
   }
 }
