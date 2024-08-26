@@ -154,8 +154,11 @@ class _ChargeModePageState extends State<ChargeModePage> {
             actions: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacementNamed(context, 'paymentPageRoute');
-                },
+                  Navigator.pushReplacementNamed(
+                    context,
+                    'chargeModePaymentPageRoute',
+                    arguments: {'amount': _chargingData.price},
+                  );                },
                 child: const Text('Proceed to Payment'),
               ),
             ],

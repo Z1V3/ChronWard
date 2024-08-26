@@ -57,10 +57,10 @@ class _StartMenuState extends State<StartMenu> {
         ),
         actions: [
           SizedBox(
-            width: 56, // Define the width of the button
+            width: 56,
             child: IconButton(
               onPressed: () {
-                Navigator.pushReplacement( // Use pushReplacement to replace the current route with the login page
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const LoginPage()),
                 );
@@ -70,7 +70,7 @@ class _StartMenuState extends State<StartMenu> {
               color: Colors.white,
             ),
           ),
-          const SizedBox(width: 16), // Adjust the width for spacing
+          const SizedBox(width: 16),
         ],
       ),
       body: Stack(
@@ -99,8 +99,8 @@ class _StartMenuState extends State<StartMenu> {
                             color: Colors.black87,
                           ),
                         ),
-                          CircularProgressIndicator(color: Colors.black87), // Show loading indicator if isLoading is true
-                          SizedBox(height: 40), // Empty SizedBox if not loading
+                          CircularProgressIndicator(color: Colors.black87),
+                          SizedBox(height: 40),
                         Text(
                           'Scan your card...',
                           style: TextStyle(
@@ -117,7 +117,7 @@ class _StartMenuState extends State<StartMenu> {
                       label: 'Charge Mode',
                       onClick: () async {
                         setState(() {
-                          isLoading = true; // Show the bottom button when "Charge Mode" is pressed
+                          isLoading = true;
                         });
 
                         _cardController = CardController();
@@ -126,7 +126,7 @@ class _StartMenuState extends State<StartMenu> {
                             int userID = await _cardController.sendAuthenticateCard(hexIdentifier);
                             NFCHandler.stopNFCReading();
                             setState(() {
-                              isLoading = false; // Update loading state when NFC reading is complete
+                              isLoading = false;
                             });
 
                             if (!context.mounted) return;
@@ -142,12 +142,11 @@ class _StartMenuState extends State<StartMenu> {
                           },
                               (errorMessage) {
                             setState(() {
-                              isLoading = false; // Update loading state when NFC reading encounters an error
+                              isLoading = false;
                             });
                             _showSnackbar(context, 'Card was not read successfully!');
                             debugPrint(
                                 "Error occurred while reading NFC: $errorMessage");
-                            // Handle the error
                           },
                         );
                       },
