@@ -3,18 +3,17 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:pay/pay.dart';
 
+// TODO interface koji implementira?
 class GooglePayService {
   GooglePayService._();
 
   static final GooglePayService instance = GooglePayService._();
 
-  // TODO odluci kaj bude sa ovom funkcijom
-  final String _backendUrl = 'http://your-backend-url.com/handle_google_pay';
-
-  Future<void> handlePaymentToken(String paymentToken) async {
+  // TODO always returns true becaues this function has not been finished and the backendUrl is test and it is set in payment page
+  Future<bool> handlePaymentToken(String paymentToken, String backendUrl) async {
     try {
       final response = await http.post(
-        Uri.parse(_backendUrl),
+        Uri.parse(backendUrl),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -25,53 +24,20 @@ class GooglePayService {
 
       if (response.statusCode == 200) {
         print('Payment handled successfully');
+        return true;
       } else {
         print('Failed to handle payment. Status: ${response.statusCode}');
+        return true;
       }
     } catch (e) {
       print('Error handling payment: $e');
+      return true;
     }
   }
 
-  //TODO izdovji konfiguraciju u poseban file
-  Widget googlePayButton(BuildContext context, double amount) {
+  GooglePayButton googlePayButton(BuildContext context, double amount, String backendUrl, String paymentConfig, Function(bool) onPaymentSuccess) {
     return GooglePayButton(
-      paymentConfiguration: PaymentConfiguration.fromJsonString(
-        '''{
-        "provider": "google_pay",
-        "data": {
-          "environment": "TEST",
-          "apiVersion": 2,
-          "apiVersionMinor": 0,
-          "allowedPaymentMethods": [
-            {
-              "type": "CARD",
-              "parameters": {
-                "allowedAuthMethods": ["PAN_ONLY", "CRYPTOGRAM_3DS"],
-                "allowedCardNetworks": ["AMEX", "DISCOVER", "JCB", "MASTERCARD", "VISA"]
-              },
-              "tokenizationSpecification": {
-                "type": "PAYMENT_GATEWAY",
-                "parameters": {
-                  "gateway": "example", 
-                  "gatewayMerchantId": "exampleMerchantId"
-                }
-              }
-            }
-          ],
-          "merchantInfo": {
-            "merchantId": "exampleMerchantId",
-            "merchantName": "Example Merchant"
-          },
-          "transactionInfo": {
-            "totalPriceStatus": "FINAL",
-            "totalPriceLabel": "Total",
-            "currencyCode": "USD",
-            "countryCode": "US"
-          }
-        }
-      }''',
-      ),
+      paymentConfiguration: PaymentConfiguration.fromJsonString(paymentConfig),
       paymentItems: [
         PaymentItem(
           label: 'Total',
@@ -83,7 +49,10 @@ class GooglePayService {
       type: GooglePayButtonType.pay,
       margin: const EdgeInsets.only(top: 15.0),
       onPaymentResult: (result) async {
-        Navigator.pushReplacementNamed(context, 'walletPageRoute');
+        print(result);
+        String token = result['paymentMethodData']['tokenizationData']['token'];
+        bool paymentSuccess = await handlePaymentToken(token, backendUrl);
+        onPaymentSuccess(paymentSuccess); // Notify the PaymentPage of the result
       },
       loadingIndicator: const Center(
         child: CircularProgressIndicator(),

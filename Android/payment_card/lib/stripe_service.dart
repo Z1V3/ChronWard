@@ -1,13 +1,38 @@
+import 'package:flutter/material.dart';
 import 'package:payment_card/consts.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
+// TODO interface koji implementira?
 class StripeService {
   StripeService._();
 
   static final StripeService instance = StripeService._();
 
-  Future<bool> makePayment(int userId, int amount) async {
+  Widget stripeButton(BuildContext context, double amount, Function(bool) onPaymentSuccess){
+    return ElevatedButton(
+      onPressed: () async {
+        int amountToSend = (amount*100).toInt();
+        bool paymentSuccess = await makePayment(amountToSend);
+        onPaymentSuccess(paymentSuccess);
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.blue, // Text color
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        elevation: 5,
+      ),
+      child: const Text(
+        "Pay with Card",
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+  
+  Future<bool> makePayment(int amount) async {
     try {
       String? paymentIntentClientSecret = await _createPaymentIntent(amount, "usd");
       if (paymentIntentClientSecret == null) return false;

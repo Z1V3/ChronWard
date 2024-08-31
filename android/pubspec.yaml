@@ -51,14 +51,17 @@ dependencies:
     path: ./payment_card
   payment_google_pay:
     path: ./payment_google_pay
+  receipt_gen:
+    path: ./receipt_gen
 
-  ev_google_login:
-    path: ./ev_google_login
-  ev_facebook_login:
-    path: ./ev_facebook_login
-  firebase_auth: ^4.16.0
+
+  #ev_google_login:
+  #  path: ./ev_google_login
+  #ev_facebook_login:
+  #  path: ./ev_facebook_login
+  #firebase_auth: ^4.16.0
   google_sign_in: ^6.2.1
-  firebase_core: ^2.24.2
+  #firebase_core: ^2.28.0
   nfc_manager: ^3.3.0
   permission_handler: ^11.2.0
   flutter_facebook_auth: ^6.0.0

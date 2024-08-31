@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:android/presentation/widgets/drawer_widget.dart';
 import 'package:core/handlers/shared_handler.dart';
 import 'package:android/presentation/rfid_cards_page.dart';
-import 'package:core/services/authentication/google_authentication.dart';
-import 'package:ev_google_login/ev_google_login.dart';
+import 'package:provider/provider.dart';
+import 'package:core/providers/user_provider.dart';
+//import 'package:core/services/authentication/google_authentication.dart';
+//import 'package:ev_google_login/ev_google_login.dart';
 //import 'package:ev_facebook_login/ev_facebook_login.dart';
 
 class UserModePage extends StatefulWidget {
@@ -15,12 +17,14 @@ class UserModePage extends StatefulWidget {
 
 class _UserModePageState extends State<UserModePage> {
   String? username;
-  final Login _login = Login();
+//  final Login _login = Login();
+  String role = "";
 
   @override
   void initState() {
     super.initState();
     loadSavedUserName();
+    role = Provider.of<UserProvider>(context, listen: false).user?.role ?? "";
   }
 
   Future<void> loadSavedUserName() async {
@@ -62,7 +66,7 @@ class _UserModePageState extends State<UserModePage> {
         actions: [
           IconButton(
             onPressed: () async {
-              _login.signOut(context);
+//              _login.signOut(context);
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 'startMenuRoute',
@@ -124,6 +128,7 @@ class _UserModePageState extends State<UserModePage> {
               ),
             ),
             const Spacer(),
+
             Container(
               height: 100.0,
               decoration: const BoxDecoration(
