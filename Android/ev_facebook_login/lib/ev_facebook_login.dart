@@ -1,4 +1,4 @@
-import 'dart:convert';
+/*import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,4 +69,4 @@ class Login implements ILogin{
   String getVendorName(){
     return 'facebook_ikona.png';
   }
-}
+}*/

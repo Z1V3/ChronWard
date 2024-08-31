@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:core/services/authentication/username_authentication.dart';
 //import 'package:ev_facebook_login/ev_facebook_login.dart';
-import 'package:ev_google_login/ev_google_login.dart';
+//import 'package:ev_google_login/ev_google_login.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,7 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKeyLogin = GlobalKey<FormState>();
-  final Login _login = Login();
+//  final Login _login = Login();
 
   Future<void> loginUser() async {
     AuthService().signIn(context, _emailController.text, _passwordController.text);
@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 10.0),
+                             /* const SizedBox(height: 10.0),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -193,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   ),
                                 ],
-                              ),
+                              ),*/
 
                             ],
                           ),

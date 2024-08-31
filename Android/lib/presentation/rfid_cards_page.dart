@@ -19,7 +19,8 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
   void fetchRfidCards() async {
 
     final int? userId = Provider.of<UserProvider>(context, listen: false).user?.userID;
-    print('Fetching history');
+    print('Fetching cards');
+    print(userId);
     final url = 'http://${returnAddress()}:8080/api/card/getUserCards/$userId';
     final uri = Uri.parse(url);
     final response = await http.get(uri);
@@ -29,7 +30,7 @@ class _RfidCardsPageState extends State<RfidCardsPage> {
       rfidCardsData = json;
       //_isLoading = false;
     });
-    print(json);
+    //print(json);
   }
 
   @override

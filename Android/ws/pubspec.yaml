@@ -13,7 +13,7 @@ dependencies:
   provider: ^6.1.1
   shared_preferences: ^2.0.10
   cupertino_icons: ^1.0.2
-  flutter_nfc_kit: ^3.4.2
+  flutter_nfc_kit: ^3.5.2
   ndef: ^0.3.3
   flutter:
     sdk: flutter
