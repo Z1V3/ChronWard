@@ -19,7 +19,7 @@ class FetchHistoryService {
 
     HistoryDataManager.updateHistoryList(List<Map<String, dynamic>>.from(json));
 
-    print(json);
+    //print(json);
     print('Fetch charging history finished');
   }
 }

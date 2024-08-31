@@ -14,14 +14,16 @@ import 'package:provider/provider.dart';
 import 'package:android/presentation/start_menu.dart';
 import 'package:android/presentation/receipt_report.dart';
 import 'package:android/presentation/rfid_cards_page.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:android/presentation/statistics_page.dart';
+//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:receipt_gen/models/receipt_model.dart';
 
 void main() async {
   await _setup();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  //await Firebase.initializeApp();
   FacebookAuth.instance.webAndDesktopInitialize(
     appId: "3654306511510288",
     cookie: true,
@@ -38,6 +40,7 @@ Future<void> _setup() async{
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  final double pricePerKwh = 0.15;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +64,9 @@ class MyApp extends StatelessWidget {
             return ChargeModePaymentPage(amount: amount);
           },
           'userModePageRoute': (context) => const UserModePage(),
-          'chargeHistoryPageRoute': (context) => const ChargingHistoryPage(),
+          'chargeHistoryPageRoute': (context) {
+            return ChargingHistoryPage(pricePerKwh: pricePerKwh);
+          },
           'addCardPageRoute': (context) => const AddCardPage(),
           'rfidCardsPage': (context) => const RfidCardsPage(),
           'walletPageRoute': (context) => const WalletPage(),
@@ -70,16 +75,18 @@ class MyApp extends StatelessWidget {
             final double amount = args?['amount'] ?? 0.0;
             return PaymentPage(amount: amount);
           },
-          'receiptRoute': (context) => ReceiptScreen(
-            chargingStationName: 'Varaždin Charging Station',
-            chargingStationLocation: 'Ulica Julija Merlića 9, 42000 Varaždin',
-            dateTimeOfCharge: DateTime(2023, 12, 22, 12, 0, 0),
-            vehicleIdentificationNumber: '123456789ABC',
-            electricityConsumed: 30.5,
-            chargingPricePerKwh: 0.506558,
-            paymentMethod: 'Credit Card',
-            transactionId: '1234567890',
-          )
+          'receiptRoute': (context) {
+            final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+            final String startTime = args?['startTime'] ?? "";
+            final String endTime = args?['endTime'] ?? "";
+            final String chargeTime = args?['chargeTime'] ?? "";
+            final double volume = args?['volume'] ?? 0.0;
+            final double price = args?['price'] ?? 0.0;
+            final int id = args?['id'] ?? 0;
+            ChargeReceipt receipt = ChargeReceipt(id: id, price: price, startTime: startTime, timeOfIssue: endTime, chargeTime: chargeTime, pricePerKwh: pricePerKwh, volume: volume);
+            return ReceiptScreen(receipt: receipt);
+          },
+          'statisticsPageRoute': (context) => const StatisticsPage(),
         },
       ),
     );
