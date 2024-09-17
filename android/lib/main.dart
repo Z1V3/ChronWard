@@ -72,8 +72,12 @@ class MyApp extends StatelessWidget {
           'walletPageRoute': (context) => const WalletPage(),
           'paymentPageRoute': (context) {
             final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+            final String description = args?['description'] ?? "";
+            final String itemName = args?['itemName'] ?? "";
+            final String quantity = args?['quantity'] ?? '0';
+            final String currency = args?['currency'] ?? "USD";
             final double amount = args?['amount'] ?? 0.0;
-            return PaymentPage(amount: amount);
+            return PaymentPage(amount: amount, description: description, itemName: itemName, quantity: quantity, currency: currency);
           },
           'receiptRoute': (context) {
             final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;

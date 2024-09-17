@@ -173,6 +173,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.1"
+  flutter_inappwebview:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview
+      sha256: d198297060d116b94048301ee6749cd2e7d03c1f2689783f52d210a6b7aba350
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.8.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -194,6 +202,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.5.2"
+  flutter_paypal_payment:
+    dependency: transitive
+    description:
+      name: flutter_paypal_payment
+      sha256: ba5c10e4c9aa20a13ff3e05ed57012d01dbb8836684fe1ed8f32112a6595d2a2
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.6"
   flutter_stripe:
     dependency: "direct main"
     description:
@@ -356,6 +372,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  login19:
+    dependency: "direct main"
+    description:
+      path: login19
+      relative: true
+    source: path
+    version: "0.0.1"
   matcher:
     dependency: transitive
     description:
@@ -476,6 +499,20 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  payment:
+    dependency: "direct main"
+    description:
+      path: payment
+      relative: true
+    source: path
+    version: "0.0.1"
+  payment19:
+    dependency: "direct main"
+    description:
+      path: payment19
+      relative: true
+    source: path
+    version: "0.0.1"
   payment_card:
     dependency: "direct main"
     description:
@@ -487,6 +524,13 @@ packages:
     dependency: "direct main"
     description:
       path: payment_google_pay
+      relative: true
+    source: path
+    version: "0.0.1"
+  payment_paypal:
+    dependency: "direct main"
+    description:
+      path: payment_paypal
       relative: true
     source: path
     version: "0.0.1"

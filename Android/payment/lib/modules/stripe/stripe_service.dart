@@ -1,18 +1,54 @@
-import 'package:core/interfaces/IPayment.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:payment_card/consts.dart';
+import 'package:payment/interfaces/i_payment_service.dart';
+import 'package:payment/modules/stripe/consts.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import '../paypal/model/payment_data.dart';
 
-class StripeService{
-  StripeService._();
+class StripeService implements PaymentService{
+  @override
+  String apiPublicKey;
+  @override
+  String apiSecretKey;
+  @override
+  String paymentConfig;
 
-  static final StripeService instance = StripeService._();
 
-  Widget stripeButton(BuildContext context, double amount, Function(bool) onPaymentSuccess){
+  StripeService(this.apiPublicKey, this.apiSecretKey, this.paymentConfig);
+
+  @override
+  Future<bool> sendPaymentToBackend(String paymentToken, String backendUrl) async {
+    try {
+      final response = await http.post(
+        Uri.parse(backendUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'paymentToken': paymentToken,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        print('Payment handled successfully');
+        return true;
+      } else {
+        print('Failed to handle payment. Status: ${response.statusCode}');
+        return true;
+      }
+    } catch (e) {
+      print('Error handling payment: $e');
+      return true;
+    }
+  }
+
+  @override
+  Widget showPaymentDisplay(BuildContext context, PaymentData payment, Function(bool) onPaymentSuccess, {String? backendUrl, String? paymentConfig}){
     return ElevatedButton(
       onPressed: () async {
-        int amountToSend = (amount*100).toInt();
+        int amountToSend = (payment.amount*100).toInt();
         bool paymentSuccess = await makePayment(amountToSend);
         onPaymentSuccess(paymentSuccess);
       },

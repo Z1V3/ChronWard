@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:core/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'package:ws/privateAddress.dart';
-
-// TODO ukljuci koristenje fetch wallet iz controllera i makni funkciju koja je tu
+import '../domain/controllers/wallet_controller.dart';
 
 class WalletPage extends StatefulWidget {
   const WalletPage({super.key});
@@ -15,26 +11,23 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> {
-  double walletBalance = 0.0;
+  late Future<double> walletBalance = Future.value(0);
+  late WalletController _walletController;
 
   @override
   void initState() {
     super.initState();
-    fetchWallet();
+    _walletController = WalletController();
+    final int? userId = Provider.of<UserProvider>(context, listen: false).user?.userID;
+    if (userId != null) {
+      assignBalance(userId);
+    }
   }
 
-  void fetchWallet() async {
-    final int? userId = Provider.of<UserProvider>(context, listen: false).user?.userID;
-    print('Fetching wallet');
-    final url = 'http://${returnAddress()}:8080/api/user/getWalletByUserId/$userId';
-    final uri = Uri.parse(url);
-    final response = await http.get(uri);
-    final body = response.body;
-    final json = jsonDecode(body);
+  void assignBalance(int userId) {
     setState(() {
-      walletBalance = json;
+      walletBalance = _walletController.fetchWallet(userId);
     });
-    print(walletBalance);
   }
 
   void _showAddMoneyPrompt(BuildContext context) {
@@ -70,7 +63,7 @@ class _WalletPageState extends State<WalletPage> {
                   Navigator.pushReplacementNamed(
                     context,
                     'paymentPageRoute',
-                    arguments: {'amount': amount},
+                    arguments: {'amount': amount, 'description' : 'Deposit into wallet', 'itemName': 'Wallet deposit', 'quantity' : '1', 'currency' : 'USD'},
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -134,25 +127,38 @@ class _WalletPageState extends State<WalletPage> {
                     ),
                   ],
                 ),
-                child: Column(
-                  children: [
-                    const Text(
-                      'Your Balance',
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    const SizedBox(height: 10.0),
-                    Text(
-                      '\$${walletBalance.toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        fontSize: 48.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                  ],
+                child: FutureBuilder<double>(
+                  future: walletBalance,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator(); // Loading indicator
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}'); // Display error
+                    } else if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          const Text(
+                            'Your Balance',
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          const SizedBox(height: 10.0),
+                          Text(
+                            '\$${snapshot.data!.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontSize: 48.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return const Text('No balance available');
+                    }
+                  },
                 ),
               ),
               const SizedBox(height: 50.0),

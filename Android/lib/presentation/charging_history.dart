@@ -3,9 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:android/domain/use_cases/fetch_user_history.dart';
 import 'package:core/services/history_data_manager_service.dart';
 import 'package:android/presentation/widgets/drawer_widget.dart';
-import 'package:receipt_gen/receipt_pdf.dart';
+import 'package:receipt_gen/modules/receipt_pdf//receipt_pdf.dart';
 import 'package:receipt_gen/models/receipt_model.dart';
-import 'package:receipt_gen/widgets/receipt_dialog.dart';
+import 'package:receipt_gen/modules/receipt_widget/receipt_dialog.dart';
 
 class ChargingHistoryPage extends StatefulWidget {
   final double pricePerKwh;

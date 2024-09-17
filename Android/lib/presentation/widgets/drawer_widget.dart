@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:core/providers/user_provider.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -6,6 +8,7 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const Color myColor = Color(0xFFADD8E6);
+    final String role = Provider.of<UserProvider>(context, listen: false).user?.role ?? "";
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -56,6 +59,14 @@ class DrawerWidget extends StatelessWidget {
               Navigator.pushReplacementNamed(context, 'walletPageRoute');
             },
           ),
+          if (role == "admin")
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Statistics'),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, 'statisticsPageRoute');
+              },
+            ),
         ],
       ),
     );

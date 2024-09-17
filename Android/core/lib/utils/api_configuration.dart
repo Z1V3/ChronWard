@@ -6,6 +6,7 @@ class ApiConfig {
   static String googleApi = 'http://${returnAddress()}:8080/api/user/google_login';
   static String userHistoryApi = 'http://${returnAddress()}:8080/api/event/getEventsByUserID/';
   static String registrationApiUrl = 'http://${returnAddress()}:8080/api/user/register';
+  static String backendPaymentApiUrl = 'http://${returnAddress()}:8080/api/wallet/payment';
 
   static void setApiUrl(String newUrl) {
     apiUrl = newUrl;

@@ -47,13 +47,20 @@ dependencies:
     path: ./core
   ws:
     path: ./ws
+  payment:
+    path: ./payment
   payment_card:
     path: ./payment_card
   payment_google_pay:
     path: ./payment_google_pay
+  payment_paypal:
+    path: ./payment_paypal
   receipt_gen:
     path: ./receipt_gen
-
+  login19:
+    path: ./login19
+  payment19:
+    path: ./payment19
 
   #ev_google_login:
   #  path: ./ev_google_login

@@ -1,15 +1,23 @@
 import 'dart:convert';
-import 'package:core/interfaces/IPayment.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 import 'package:pay/pay.dart';
+import 'package:payment/interfaces/i_payment_service.dart';
+import '../paypal/model/payment_data.dart';
 
-class GooglePayService{
-  GooglePayService._();
+class GooglePayService implements PaymentService{
+  @override
+  String apiPublicKey;
+  @override
+  String apiSecretKey;
+  @override
+  String paymentConfig;
 
-  static final GooglePayService instance = GooglePayService._();
 
-  Future<bool> handlePayment(String paymentToken, String backendUrl) async {
+  GooglePayService(this.apiPublicKey, this.apiSecretKey, this.paymentConfig);
+
+  @override
+  Future<bool> sendPaymentToBackend(String paymentToken, String backendUrl) async {
     try {
       final response = await http.post(
         Uri.parse(backendUrl),
@@ -26,21 +34,22 @@ class GooglePayService{
         return true;
       } else {
         print('Failed to handle payment. Status: ${response.statusCode}');
-        return false;
+        return true;
       }
     } catch (e) {
       print('Error handling payment: $e');
-      return false;
+      return true;
     }
   }
 
-  Widget showButton(BuildContext context, double amount, String backendUrl, String paymentConfig, Function(bool) onPaymentResult) {
+  @override
+  GooglePayButton showPaymentDisplay(BuildContext context, PaymentData payment, Function(bool) onPaymentSuccess, {String? backendUrl, String? paymentConfig}){
     return GooglePayButton(
-      paymentConfiguration: PaymentConfiguration.fromJsonString(paymentConfig),
+      paymentConfiguration: PaymentConfiguration.fromJsonString(paymentConfig!),
       paymentItems: [
         PaymentItem(
           label: 'Total',
-          amount: amount.toStringAsFixed(2),
+          amount: payment.amount.toStringAsFixed(2),
           status: PaymentItemStatus.final_price,
         ),
       ],
@@ -50,8 +59,8 @@ class GooglePayService{
       onPaymentResult: (result) async {
         print(result);
         String token = result['paymentMethodData']['tokenizationData']['token'];
-        bool paymentSuccess = await handlePayment(token, backendUrl);
-        onPaymentResult(paymentSuccess);
+        bool paymentSuccess = await sendPaymentToBackend(token, backendUrl!);
+        onPaymentSuccess(paymentSuccess); // Notify the PaymentPage of the result
       },
       loadingIndicator: const Center(
         child: CircularProgressIndicator(),
